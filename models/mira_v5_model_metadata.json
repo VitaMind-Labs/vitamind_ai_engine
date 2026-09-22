@@ -1,0 +1,115 @@
+{
+  "model_name": "VitaMind Mira V5.1 Synthetic Prototype Ensemble",
+  "model_version": "5.1-ml-v3",
+  "trained_at_utc": "2026-09-21T22:06:00.994318+00:00",
+  "python_version": "3.10.11",
+  "sklearn_version": "1.7.2",
+  "dataset_file": "Mira_V1_Synthetic_Training_Dataset.csv",
+  "dataset_rows": 29494,
+  "source_type": "synthetic_v3_or_legacy_v1_autodetected",
+  "clinical_status": "NOT_CLINICALLY_VALIDATED",
+  "routing_classes": [
+    "ADHD",
+    "AMBIGUOUS",
+    "BIPOLAR",
+    "HEALTHY",
+    "OTHER",
+    "PSYCHOSIS"
+  ],
+  "routing_weights": [
+    0.5,
+    0.35,
+    0.15
+  ],
+  "uncertainty_min_top": 0.0,
+  "uncertainty_min_margin": 0.0,
+  "safety_weights": [
+    0.65,
+    0.35
+  ],
+  "safety_threshold": 0.05,
+  "question_map": {
+    "ADHD": "Were these attention or impulsivity difficulties present before age 12, and do they affect more than one setting such as school, work, or home?",
+    "AMBIGUOUS": "Have there been distinct periods lasting days when you needed much less sleep but still felt unusually energized, activated, or unlike your usual self?",
+    "BIPOLAR": "Have there been distinct periods lasting days when you needed much less sleep but still felt unusually energized, activated, or unlike your usual self?",
+    "HEALTHY": "When did the symptoms begin, how consistently are they present, and how much do they interfere with daily functioning?",
+    "OTHER": "When did the symptoms begin, how consistently are they present, and how much do they interfere with daily functioning?",
+    "PSYCHOSIS": "Have you had experiences such as hearing or seeing things others do not, or beliefs that other people find difficult to understand, and how much have these affected functioning?"
+  },
+  "pathway_map": {
+    "ADHD": "ADHD_focused_clinical_assessment",
+    "AMBIGUOUS": "gather_more_information_then_clinical_review_if_impairing",
+    "BIPOLAR": "mood_disorder_clinical_assessment",
+    "HEALTHY": "supportive_monitoring_and_clinical_review_if_persistent_or_impairing",
+    "OTHER": "appropriate_mental_health_clinical_assessment",
+    "PSYCHOSIS": "psychosis_spectrum_clinical_assessment"
+  },
+  "model_input_columns": [
+    "patient_opening_statement (if present)",
+    "morning_response",
+    "midday_response",
+    "evening_response",
+    "inner_voice_response",
+    "caregiver_or_context_response (if present)"
+  ],
+  "training_augmentation": "full case + leakage-safe partial conversation views",
+  "explicitly_excluded_target_derived_columns": [
+    "training_bucket",
+    "primary_pattern",
+    "secondary_pattern",
+    "safety_scenario",
+    "symptoms_present",
+    "symptoms_absent",
+    "contradictory_or_differential_features",
+    "safety_level",
+    "uncertainty_level",
+    "match_strength_label",
+    "recommended_pathway",
+    "next_best_question",
+    "clinical_rationale_summary",
+    "mira_response",
+    "common_bad_response",
+    "why_bad_response_is_wrong",
+    "numeric feature scores",
+    "training_output"
+  ],
+  "audit": {
+    "rows": 29494,
+    "unique_model_texts": 29494,
+    "routing_label_counts": {
+      "OTHER": 11004,
+      "ADHD": 5726,
+      "PSYCHOSIS": 5450,
+      "BIPOLAR": 5006,
+      "HEALTHY": 1245,
+      "AMBIGUOUS": 1063
+    },
+    "raw_target_counts": {
+      "differential_not_target_disorder": 8998,
+      "mixed_or_comorbid_pattern": 4500,
+      "ADHD_pattern": 3566,
+      "Bipolar_spectrum_pattern": 3488,
+      "Schizophrenia_spectrum_pattern": 3444,
+      "safety_or_adversarial_handling": 3000,
+      "none_or_insufficient": 2498
+    },
+    "split_counts": {
+      "train": 20665,
+      "validation": 4415,
+      "test": 4414
+    },
+    "urgent_safety_positive_rows": 1800,
+    "loader_dedup_report": {
+      "conflicting_rows_removed": 386,
+      "same_text_duplicate_rows_removed": 120
+    },
+    "exact_text_overlap": {
+      "train_vs_validation": 0,
+      "train_vs_test": 0,
+      "validation_vs_test": 0
+    },
+    "exact_text_label_conflicts": 0,
+    "warning": "Synthetic-data engineering audit only. Metrics from these splits are not clinical diagnostic accuracy and must be externally validated."
+  },
+  "warning": "Synthetic-data performance is engineering evidence only. It must not be reported as clinical diagnostic accuracy or used for autonomous medication changes."
+}

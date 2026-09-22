@@ -1,0 +1,1 @@
+"""Optional model adapters isolated from the clinical application service."""

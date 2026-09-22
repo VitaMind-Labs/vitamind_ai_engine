@@ -1,0 +1,1 @@
+"""Independent safety detection and escalation."""
