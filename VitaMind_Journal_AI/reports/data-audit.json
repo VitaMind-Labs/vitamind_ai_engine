@@ -1,0 +1,139 @@
+{
+  "seed": 42,
+  "source_rows": {
+    "train": 4000,
+    "val": 500
+  },
+  "source_sha256": {
+    "train.jsonl": "92219b6e2b76914aaac28b4b1eae904d088768e9b137ee38f3f5d38527f30b1c",
+    "val.jsonl": "8891601f2108cb766bd2aa460e8c5fc2ceb116ca138cccf30d8424d6dcb6dfd4",
+    "journal-test-set.json": "78ed2b94b3f3138766a461dac7533e25f6d36bd581342c903caabdbbfa8189a5"
+  },
+  "original_shared_core_ids": [],
+  "original_shared_meaning_families": [
+    "h2",
+    "h4",
+    "si2",
+    "si6",
+    "si7"
+  ],
+  "quarantined_conflicting_texts": 0,
+  "duplicates_removed": 486,
+  "partition_policy": "Union of supplied train/val; normalized deduplication; family-stratified meaning split. Challenge set never used to fit features, weights or temperatures.",
+  "partitions": {
+    "train": {
+      "rows": 2724,
+      "families": [
+        "a1",
+        "a3",
+        "a5",
+        "ch1",
+        "ch2",
+        "e1",
+        "e3",
+        "g1",
+        "g4",
+        "g5",
+        "h1",
+        "h2",
+        "h3",
+        "h5",
+        "i1",
+        "i2",
+        "i4",
+        "i5",
+        "n1",
+        "n10",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n7",
+        "o2",
+        "o4",
+        "p1",
+        "p2",
+        "p4",
+        "p6",
+        "s4",
+        "si1",
+        "si2",
+        "si4",
+        "si6",
+        "si7"
+      ],
+      "tiers": {
+        "moderate": 576,
+        "low": 776,
+        "high": 520,
+        "none": 852
+      },
+      "languages": {
+        "en": 1171,
+        "mixed": 538,
+        "ar": 1015
+      }
+    },
+    "val": {
+      "rows": 661,
+      "families": [
+        "a2",
+        "ch3",
+        "e5",
+        "g3",
+        "h6",
+        "i6",
+        "n8",
+        "o1",
+        "p3",
+        "s3",
+        "si5"
+      ],
+      "tiers": {
+        "none": 179,
+        "low": 244,
+        "moderate": 160,
+        "high": 78
+      },
+      "languages": {
+        "en": 285,
+        "mixed": 136,
+        "ar": 240
+      }
+    },
+    "test": {
+      "rows": 629,
+      "families": [
+        "a4",
+        "ch4",
+        "e2",
+        "g2",
+        "h4",
+        "i3",
+        "n9",
+        "o3",
+        "p5",
+        "s1",
+        "si3"
+      ],
+      "tiers": {
+        "none": 184,
+        "moderate": 67,
+        "high": 171,
+        "low": 207
+      },
+      "languages": {
+        "en": 285,
+        "mixed": 121,
+        "ar": 223
+      }
+    }
+  },
+  "limitations": [
+    "Synthetic single-author data.",
+    "Original val has no command-hallucination, paranoia, elevated or overload examples.",
+    "Some source high labels describe ambiguous/passive wishes; labels are preserved, not clinically endorsed.",
+    "Context variants share phrases even with family splitting; clinical validation is absent.",
+    "Uploaded 48-entry challenge set is a known regression benchmark, not a blinded clinical test."
+  ]
+}
