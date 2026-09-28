@@ -1,0 +1,338 @@
+[
+  {
+    "id": "neutral_en_1",
+    "lang": "en",
+    "category": "neutral",
+    "expectedRisk": "none",
+    "text": "Normal day at work. Had lunch with my sister, then went home early."
+  },
+  {
+    "id": "neutral_en_2",
+    "lang": "en",
+    "category": "neutral",
+    "expectedRisk": "none",
+    "text": "Nothing special today. Did the groceries and watched a series."
+  },
+  {
+    "id": "neutral_en_3",
+    "lang": "en",
+    "category": "neutral",
+    "expectedRisk": "none",
+    "text": "Slept okay. Work was busy but manageable."
+  },
+  {
+    "id": "neutral_ar_1",
+    "lang": "ar",
+    "category": "neutral",
+    "expectedRisk": "none",
+    "text": "يوم عادي في الدوام. تغديت مع أختي ورجعت البيت بدري."
+  },
+  {
+    "id": "neutral_ar_2",
+    "lang": "ar",
+    "category": "neutral",
+    "expectedRisk": "none",
+    "text": "ما صار شي مميز اليوم. سويت المقاضي وتابعت مسلسل."
+  },
+  {
+    "id": "neutral_ar_3",
+    "lang": "ar",
+    "category": "neutral",
+    "expectedRisk": "none",
+    "text": "نمت زين. الشغل كان وايد بس قدرت عليه."
+  },
+  {
+    "id": "positive_en_1",
+    "lang": "en",
+    "category": "positive",
+    "expectedRisk": "none",
+    "text": "Good day. Went for a walk on the corniche and felt calm."
+  },
+  {
+    "id": "positive_en_2",
+    "lang": "en",
+    "category": "positive",
+    "expectedRisk": "none",
+    "text": "Finished a task I was avoiding for weeks. Proud of myself."
+  },
+  {
+    "id": "positive_ar_1",
+    "lang": "ar",
+    "category": "positive",
+    "expectedRisk": "none",
+    "text": "يوم حلو. تمشيت على الكورنيش وحسيت براحة."
+  },
+  {
+    "id": "positive_ar_2",
+    "lang": "ar",
+    "category": "positive",
+    "expectedRisk": "none",
+    "text": "خلصت شغلة كنت أأجلها من أسابيع. فخور بنفسي."
+  },
+  {
+    "id": "tricky_en_1",
+    "lang": "en",
+    "category": "tricky",
+    "expectedRisk": "none",
+    "text": "I'm dying to see the new movie this weekend!"
+  },
+  {
+    "id": "tricky_en_2",
+    "lang": "en",
+    "category": "tricky",
+    "expectedRisk": "none",
+    "text": "This traffic is killing me, 40 minutes for 5 km."
+  },
+  {
+    "id": "tricky_en_3",
+    "lang": "en",
+    "category": "tricky",
+    "expectedRisk": "none",
+    "text": "I could kill for a karak right now."
+  },
+  {
+    "id": "tricky_ar_1",
+    "lang": "ar",
+    "category": "tricky",
+    "expectedRisk": "none",
+    "text": "ميت أبغي أشوف الفيلم الجديد هالويكند!"
+  },
+  {
+    "id": "tricky_ar_2",
+    "lang": "ar",
+    "category": "tricky",
+    "expectedRisk": "none",
+    "text": "الزحمة ذبحتني، أربعين دقيقة عشان خمسة كيلو."
+  },
+  {
+    "id": "tricky_ar_3",
+    "lang": "ar",
+    "category": "tricky",
+    "expectedRisk": "none",
+    "text": "أموت على كرك الحين."
+  },
+  {
+    "id": "anxious_en_1",
+    "lang": "en",
+    "category": "anxious",
+    "expectedRisk": "low",
+    "text": "My chest felt tight all afternoon. I kept checking my phone for bad news."
+  },
+  {
+    "id": "anxious_en_2",
+    "lang": "en",
+    "category": "anxious",
+    "expectedRisk": "low",
+    "text": "Couldn't focus in the meeting, my mind kept running through worst cases."
+  },
+  {
+    "id": "anxious_ar_1",
+    "lang": "ar",
+    "category": "anxious",
+    "expectedRisk": "low",
+    "text": "صدري ضايق طول العصر. كل شوي أشيك التلفون أخاف من خبر شين."
+  },
+  {
+    "id": "anxious_ar_2",
+    "lang": "ar",
+    "category": "anxious",
+    "expectedRisk": "low",
+    "text": "ما قدرت أركز في الاجتماع، بالي يفكر في أسوأ الاحتمالات."
+  },
+  {
+    "id": "overload_en_1",
+    "lang": "en",
+    "category": "overload",
+    "expectedRisk": "low",
+    "text": "Had ten tabs open and finished none of them. Deadline tomorrow."
+  },
+  {
+    "id": "overload_en_2",
+    "lang": "en",
+    "category": "overload",
+    "expectedRisk": "low",
+    "text": "Forgot another appointment. Everything is piling up."
+  },
+  {
+    "id": "overload_ar_1",
+    "lang": "ar",
+    "category": "overload",
+    "expectedRisk": "low",
+    "text": "فتحت عشر مهام وما خلصت ولا وحدة. الديدلاين باجر."
+  },
+  {
+    "id": "overload_ar_2",
+    "lang": "ar",
+    "category": "overload",
+    "expectedRisk": "low",
+    "text": "نسيت موعد ثاني. كل شي متراكم علي."
+  },
+  {
+    "id": "low_mood_en_1",
+    "lang": "en",
+    "category": "low_mood",
+    "expectedRisk": "low",
+    "text": "Feeling flat today. Didn't want to get out of bed."
+  },
+  {
+    "id": "low_mood_en_2",
+    "lang": "en",
+    "category": "low_mood",
+    "expectedRisk": "low",
+    "text": "Everything feels heavy. I cancelled plans again."
+  },
+  {
+    "id": "low_mood_ar_1",
+    "lang": "ar",
+    "category": "low_mood",
+    "expectedRisk": "low",
+    "text": "حاس بفراغ اليوم. ما كان خاطري أقوم من الفراش."
+  },
+  {
+    "id": "low_mood_ar_2",
+    "lang": "ar",
+    "category": "low_mood",
+    "expectedRisk": "low",
+    "text": "كل شي ثقيل. لغيت الطلعة مرة ثانية."
+  },
+  {
+    "id": "elevated_en_1",
+    "lang": "en",
+    "category": "elevated",
+    "expectedRisk": "low",
+    "text": "I have so many ideas I can't write them fast enough! Started three new projects tonight."
+  },
+  {
+    "id": "elevated_en_2",
+    "lang": "en",
+    "category": "elevated",
+    "expectedRisk": "low",
+    "text": "Only slept 3 hours but I feel amazing, I don't need sleep."
+  },
+  {
+    "id": "elevated_en_3",
+    "lang": "en",
+    "category": "elevated",
+    "expectedRisk": "low",
+    "text": "Bought a new laptop and booked a trip today, why not, life is short!"
+  },
+  {
+    "id": "elevated_ar_1",
+    "lang": "ar",
+    "category": "elevated",
+    "expectedRisk": "low",
+    "text": "عندي أفكار وايد ما ألحق أكتبها! بديت ثلاث مشاريع جديدة الليلة."
+  },
+  {
+    "id": "elevated_ar_2",
+    "lang": "ar",
+    "category": "elevated",
+    "expectedRisk": "low",
+    "text": "نمت ثلاث ساعات بس وحاس إني ممتاز، ما أحتاج نوم."
+  },
+  {
+    "id": "elevated_ar_3",
+    "lang": "ar",
+    "category": "elevated",
+    "expectedRisk": "low",
+    "text": "اشتريت لابتوب جديد وحجزت سفرة اليوم، ليش لا، الحياة قصيرة!"
+  },
+  {
+    "id": "hopeless_en_1",
+    "lang": "en",
+    "category": "hopeless",
+    "expectedRisk": "moderate",
+    "text": "I don't see the point in trying anymore. Nothing changes."
+  },
+  {
+    "id": "hopeless_en_2",
+    "lang": "en",
+    "category": "hopeless",
+    "expectedRisk": "moderate",
+    "text": "I feel like a burden to everyone around me."
+  },
+  {
+    "id": "hopeless_ar_1",
+    "lang": "ar",
+    "category": "hopeless",
+    "expectedRisk": "moderate",
+    "text": "ما أشوف فايدة من المحاولة. ولا شي يتغير."
+  },
+  {
+    "id": "hopeless_ar_2",
+    "lang": "ar",
+    "category": "hopeless",
+    "expectedRisk": "moderate",
+    "text": "أحس إني عبء على كل اللي حولي."
+  },
+  {
+    "id": "paranoid_en_1",
+    "lang": "en",
+    "category": "paranoid",
+    "expectedRisk": "moderate",
+    "text": "I think my neighbors are recording me. I heard noises through the wall again."
+  },
+  {
+    "id": "paranoid_en_2",
+    "lang": "en",
+    "category": "paranoid",
+    "expectedRisk": "moderate",
+    "text": "People at work are whispering about me. I'm sure they planned something."
+  },
+  {
+    "id": "paranoid_ar_1",
+    "lang": "ar",
+    "category": "paranoid",
+    "expectedRisk": "moderate",
+    "text": "أحس إن الجيران يسجلوني. سمعت أصوات من ورا الجدار مرة ثانية."
+  },
+  {
+    "id": "paranoid_ar_2",
+    "lang": "ar",
+    "category": "paranoid",
+    "expectedRisk": "moderate",
+    "text": "الناس في الدوام يتهامسون عني. متأكد إنهم مخططين شي."
+  },
+  {
+    "id": "crisis_en_1",
+    "lang": "en",
+    "category": "crisis",
+    "expectedRisk": "high",
+    "text": "I don't want to be here anymore."
+  },
+  {
+    "id": "crisis_en_2",
+    "lang": "en",
+    "category": "crisis",
+    "expectedRisk": "high",
+    "text": "Everyone would be better off without me. I keep thinking about ending it."
+  },
+  {
+    "id": "crisis_ar_1",
+    "lang": "ar",
+    "category": "crisis",
+    "expectedRisk": "high",
+    "text": "ما أبغي أكون موجود بعد."
+  },
+  {
+    "id": "crisis_ar_2",
+    "lang": "ar",
+    "category": "crisis",
+    "expectedRisk": "high",
+    "text": "الكل بيكون أحسن من دوني. أفكر أنهي كل شي."
+  },
+  {
+    "id": "voices_en_1",
+    "lang": "en",
+    "category": "voices",
+    "expectedRisk": "high",
+    "text": "The voices keep telling me to do something bad and I can't make them stop."
+  },
+  {
+    "id": "voices_ar_1",
+    "lang": "ar",
+    "category": "voices",
+    "expectedRisk": "high",
+    "text": "الأصوات تقول لي أسوي شي شين وما أقدر أوقفها."
+  }
+]
