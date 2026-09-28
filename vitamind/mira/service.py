@@ -1,35 +1,30 @@
-"""Session lifecycle boundary for HTTP adapters."""
-
-from threading import Lock
-
-from .agent import MiraAgent, MiraSession
-
+"""Process-local demo sessions with per-session capability tokens and locking."""
+from threading import RLock
+import secrets
+from .agent import MiraAgent
 
 class MiraSessionService:
-    def __init__(self, agent: MiraAgent | None = None):
-        self.agent = agent or MiraAgent()
-        self._sessions: dict[str, MiraSession] = {}
-        self._lock = Lock()
-
-    def start(self, language: str = "en"):
-        if language not in {"en", "ar"}:
-            raise ValueError("language must be 'en' or 'ar'")
-        session, reply = self.agent.create_session(language=language)
+    def __init__(self,agent=None):
+        self.agent=agent or MiraAgent()
+        self._sessions={}
+        self._lock=RLock()
+    def start(self,language='en'):
         with self._lock:
-            self._sessions[session.session_id] = session
-        return session, reply
-
-    def get(self, session_id: str) -> MiraSession:
+            session,reply=self.agent.create_session(language=language)
+            self._sessions[session.session_id]=session
+            return session,reply
+    def get(self,session_id,token=None):
         with self._lock:
-            session = self._sessions.get(session_id)
-        if session is None:
-            raise KeyError(session_id)
-        return session
-
-    def message(self, session_id: str, text: str):
-        session = self.get(session_id)
-        return session, self.agent.respond(session, text)
-
-    def delete(self, session_id: str) -> bool:
+            session=self._sessions.get(session_id)
+            if session is None: raise KeyError(session_id)
+            if not token or not secrets.compare_digest(token,session.session_token): raise PermissionError('Invalid session token')
+            return session
+    def message(self,session_id,text,token=None):
         with self._lock:
-            return self._sessions.pop(session_id, None) is not None
+            session=self.get(session_id,token)
+            return session,self.agent.respond(session,text)
+    def delete(self,session_id,token=None):
+        with self._lock:
+            self.get(session_id,token)
+            del self._sessions[session_id]
+            return True

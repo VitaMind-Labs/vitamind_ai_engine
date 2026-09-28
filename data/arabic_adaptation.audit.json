@@ -1,0 +1,48 @@
+{
+  "source_url": "https://zenodo.org/records/20568736",
+  "source_archive_sha256": "ff4a6d0d286038141723825912a4f02a0088ad8863e02c183fcf0f4332891569",
+  "csv_md5": {
+    "train.csv": "548e0f29ad32c05548b5d50631bdcdc1",
+    "validation.csv": "0c2674177c22043defe6c51f4ef8b061",
+    "test.csv": "a710c2db8b2b7e8cc817113bd1c025c3"
+  },
+  "matches_published_files": true,
+  "source_rows": {
+    "train": 21780,
+    "validation": 3844,
+    "test": 4522
+  },
+  "rejected": {
+    "train": {
+      "chatbot_question_or_invalid_flag": 1188,
+      "invalid_dialect_or_embedded_header": 215,
+      "empty_short_long_or_non_arabic": 59,
+      "contact_identifier_pattern": 3
+    },
+    "validation": {
+      "chatbot_question_or_invalid_flag": 229,
+      "invalid_dialect_or_embedded_header": 38,
+      "empty_short_long_or_non_arabic": 7
+    },
+    "test": {
+      "chatbot_question_or_invalid_flag": 246,
+      "empty_short_long_or_non_arabic": 13,
+      "invalid_dialect_or_embedded_header": 42
+    }
+  },
+  "duplicate_train_openings_removed": 1550,
+  "train_openings_overlapping_heldout_removed": 1359,
+  "vocabulary_training_openings": 17406,
+  "fit_partition": "train only; validation/test consulted only for overlap exclusion",
+  "supervised_source_labels_used": false,
+  "numeric_label_mapping": "unverified",
+  "speaker_roles": "first turn assumed patient; source has no explicit role annotations",
+  "assistant_responses_used": false,
+  "data_sha256": "1de77d9d40bc8892c7d0cc7585c4d5a8fbada36ed65bad4ed4ddc2f571566f7e",
+  "limitations": [
+    "Source categories do not supply verified ADHD/bipolar/psychosis targets.",
+    "Only vocabulary/IDF adaptation, not supervised diagnostic learning from this source.",
+    "Duplicate filtering is exact normalized opening matching, not a patient-level or near-duplicate guarantee.",
+    "Simple identifier-pattern filtering is not certified anonymization."
+  ]
+}

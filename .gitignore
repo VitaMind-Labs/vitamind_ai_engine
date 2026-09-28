@@ -29,6 +29,10 @@ pip-wheel-metadata/
 
 # IDE and OS files
 .idea/
-.vscode/
 .DS_Store
 Thumbs.db
+# Local training experiments and backups
+models/*backup*.joblib
+models/mira_before_*.joblib
+models/mira_experiment*.joblib
+models/*.tmp

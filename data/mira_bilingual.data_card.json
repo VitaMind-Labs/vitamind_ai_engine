@@ -1,0 +1,77 @@
+{
+  "input_type": "patient_text_bilingual_v1",
+  "languages": [
+    "en",
+    "ar"
+  ],
+  "seed": 42,
+  "records": 8102,
+  "synthetic": true,
+  "clinician_reviewed": false,
+  "source_projection_sha256": "3c8041392dea055a5ec0e6ec1a921f186d60dcf5cad5e00c4aec9959844c53f6",
+  "data_sha256": "aa6cade0168b0a2d710f85cd2f7b80679a4ab9c1bb6687544816595c06d8bff9",
+  "counts": {
+    "train": {
+      "en": {
+        "BIPOLAR": 560,
+        "PSYCHOSIS": 560,
+        "OTHER": 559,
+        "ADHD": 560,
+        "AMBIGUOUS": 560,
+        "HEALTHY": 34
+      },
+      "ar": {
+        "PSYCHOSIS": 560,
+        "ADHD": 560,
+        "BIPOLAR": 560,
+        "AMBIGUOUS": 560,
+        "OTHER": 558,
+        "HEALTHY": 34
+      }
+    },
+    "validation": {
+      "en": {
+        "BIPOLAR": 120,
+        "PSYCHOSIS": 120,
+        "AMBIGUOUS": 120,
+        "ADHD": 120,
+        "OTHER": 119,
+        "HEALTHY": 10
+      },
+      "ar": {
+        "BIPOLAR": 120,
+        "AMBIGUOUS": 120,
+        "PSYCHOSIS": 120,
+        "ADHD": 120,
+        "HEALTHY": 10,
+        "OTHER": 120
+      }
+    },
+    "test": {
+      "en": {
+        "OTHER": 120,
+        "PSYCHOSIS": 120,
+        "AMBIGUOUS": 120,
+        "ADHD": 120,
+        "BIPOLAR": 120,
+        "HEALTHY": 8
+      },
+      "ar": {
+        "OTHER": 120,
+        "ADHD": 120,
+        "AMBIGUOUS": 120,
+        "PSYCHOSIS": 120,
+        "BIPOLAR": 120,
+        "HEALTHY": 10
+      }
+    }
+  },
+  "split_policy": "All English/Arabic views inherit their source scenario-family partition.",
+  "clinical_validation": false,
+  "limitations": [
+    "Author-defined synthetic routing policy, not reviewed diagnostic ground truth.",
+    "The legacy HEALTHY label means sparse evidence, not a confirmed healthy patient.",
+    "Template vocabulary is shared across partitions; metrics are not real-world language validation.",
+    "These examples train classification, not response generation or crisis recognition."
+  ]
+}

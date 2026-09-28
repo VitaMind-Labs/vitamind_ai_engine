@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "records": 8102,
+  "languages": {
+    "ar": 4052,
+    "en": 4050
+  },
+  "splits": {
+    "train": 5665,
+    "validation": 1219,
+    "test": 1218
+  },
+  "groups_crossing_splits": 0,
+  "translations_crossing_splits": 0,
+  "normalized_duplicate_texts": 0,
+  "arabic_corpus": {
+    "records": 17406,
+    "excluded_duplicate_or_heldout": 0,
+    "sha256": "1de77d9d40bc8892c7d0cc7585c4d5a8fbada36ed65bad4ed4ddc2f571566f7e",
+    "usage": "unsupervised vocabulary and IDF fitting only",
+    "supervised_labels_used": false
+  },
+  "clinical_validation": false
+}

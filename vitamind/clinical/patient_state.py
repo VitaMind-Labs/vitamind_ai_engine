@@ -47,6 +47,7 @@ class Observation:
     chapter: str | None = None
     message_id: str | None = None
     created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    superseded: bool = False
 
 
 class PatientState:
@@ -68,7 +69,7 @@ class PatientState:
         return observation
 
     def get_status(self, domain: str, feature: str) -> FeatureStatus:
-        values = {item.polarity for item in self.observations if item.domain == domain and item.feature == feature}
+        values = {item.polarity for item in self.observations if item.domain == domain and item.feature == feature and not item.superseded}
         if not values:
             return FeatureStatus.UNKNOWN
         if len(values) > 1:
@@ -77,6 +78,15 @@ class PatientState:
 
     def unknown_features(self, required: list[tuple[str, str]]) -> list[tuple[str, str]]:
         return [(domain, feature) for domain, feature in required if self.get_status(domain, feature) == FeatureStatus.UNKNOWN]
+
+    def resolve_feature(self, domain, feature, polarity, excerpt, message_id=None):
+        """Explicit clarification supersedes prior evidence without deleting its audit trail."""
+        if domain == 'safety':
+            raise ValueError('Safety concerns cannot be cleared by symptom clarification.')
+        for item in self.observations:
+            if item.domain == domain and item.feature == feature:
+                item.superseded = True
+        return self.add_observation(domain, feature, polarity, 1, excerpt, 'CLARIFICATION', message_id)
 
     def safety_snapshot(self) -> dict[str, Any]:
         urgent_features = {"suicidal_intent", "homicidal_intent", "immediate_danger", "command_hallucination"}

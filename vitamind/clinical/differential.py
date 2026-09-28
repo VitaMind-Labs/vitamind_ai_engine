@@ -1,21 +1,26 @@
-"""Non-diagnostic differential checks kept separate from target conditions."""
-
+"""Record reported possible confounders; do not invent alternative diagnoses."""
+import re
 from dataclasses import dataclass, field
-
-from .assessment.assessment_engine import AssessmentResult
-from .patient_state import PatientState
-
+from .language import patient_clauses, negated_before
 
 @dataclass
 class DifferentialResult:
-    alternatives: list[str] = field(default_factory=list)
-    notes: list[str] = field(default_factory=list)
-
+    alternatives: list = field(default_factory=list)
+    notes: list = field(default_factory=list)
 
 class DifferentialEngine:
-    def analyze(self, state: PatientState, assessment: AssessmentResult) -> DifferentialResult:
-        alternatives = ["anxiety", "depression", "sleep_deprivation", "substances_or_medications", "medical_or_neurologic"]
-        notes = []
-        if state.get_status("sleep", "reduced_sleep").value == "present" and state.get_status("sleep", "decreased_need_for_sleep").value != "present":
-            notes.append("Reduced sleep with fatigue may explain concentration or mood changes.")
-        return DifferentialResult(alternatives, notes)
+    def analyze(self,state,assessment=None):
+        found=set()
+        patterns={'medication_context':r'\b(?:medicine|medication|prescription|stimulant)\b|(?:دواء|ادوية)',
+                  'substance_context':r'\b(?:alcohol|cannabis|caffeine|drugs)\b|(?:كحول|مخدر|كافيين)',
+                  'medical_context':r'\b(?:thyroid|illness|medical condition)\b|(?:الغدة|مرض جسدي)'}
+        for obs in state.observations:
+            if obs.domain!='context' or obs.superseded: continue
+            for clause,own in patient_clauses(obs.evidence_excerpt):
+                if not own: continue
+                for label,pattern in patterns.items():
+                    if any(not negated_before(clause,m.start()) for m in re.finditer(pattern,clause)):
+                        found.add(label)
+        if state.get_status('sleep','reduced_sleep').value=='present' and state.get_status('sleep','decreased_need_for_sleep').value=='absent':
+            found.add('sleep_loss_with_fatigue')
+        return DifferentialResult(sorted(found),['Possible contributing context reported; clinician interpretation needed.'] if found else [])

@@ -1,0 +1,358 @@
+{
+  "clinical_validation": false,
+  "input_type": "patient_text_bilingual_v1",
+  "seed": 42,
+  "languages": [
+    "ar",
+    "en"
+  ],
+  "model_version": "mira-native-bilingual-v1",
+  "dataset_sha256": "aa6cade0168b0a2d710f85cd2f7b80679a4ab9c1bb6687544816595c06d8bff9",
+  "records": {
+    "train": 5665,
+    "validation": 1219,
+    "test": 1218
+  },
+  "supervised_training_by_language": {
+    "ar": 2832,
+    "en": 2833
+  },
+  "supervised_training_label_sources": {
+    "author_defined_fixture_policy_v1": 5665
+  },
+  "arabic_corpus": {
+    "records": 17406,
+    "excluded_duplicate_or_heldout": 0,
+    "sha256": "1de77d9d40bc8892c7d0cc7585c4d5a8fbada36ed65bad4ed4ddc2f571566f7e",
+    "usage": "unsupervised vocabulary and IDF fitting only",
+    "supervised_labels_used": false
+  },
+  "vocabulary": {
+    "word": {
+      "total": 40000,
+      "arabic_terms": 37451,
+      "latin_terms": 2454
+    },
+    "char": {
+      "total": 60000,
+      "arabic_terms": 56722,
+      "latin_terms": 2855
+    }
+  },
+  "split_policy": "Disjoint supplied scenario/translation groups; normalized text deduplication; vocabulary fits train only.",
+  "safety_model_trained": false,
+  "evaluation": {
+    "validation": {
+      "ADHD": {
+        "precision": 0.8272058823529411,
+        "recall": 0.9375,
+        "f1-score": 0.87890625,
+        "support": 240.0
+      },
+      "AMBIGUOUS": {
+        "precision": 0.81875,
+        "recall": 0.5458333333333333,
+        "f1-score": 0.655,
+        "support": 240.0
+      },
+      "BIPOLAR": {
+        "precision": 0.898876404494382,
+        "recall": 1.0,
+        "f1-score": 0.9467455621301775,
+        "support": 240.0
+      },
+      "HEALTHY": {
+        "precision": 0.5757575757575758,
+        "recall": 0.95,
+        "f1-score": 0.7169811320754716,
+        "support": 20.0
+      },
+      "OTHER": {
+        "precision": 0.8755760368663594,
+        "recall": 0.7949790794979079,
+        "f1-score": 0.8333333333333334,
+        "support": 239.0
+      },
+      "PSYCHOSIS": {
+        "precision": 0.8666666666666667,
+        "recall": 0.975,
+        "f1-score": 0.9176470588235294,
+        "support": 240.0
+      },
+      "accuracy": 0.85233798195242,
+      "macro avg": {
+        "precision": 0.8104720943563208,
+        "recall": 0.8672187354718736,
+        "f1-score": 0.824768889393752,
+        "support": 1219.0
+      },
+      "weighted avg": {
+        "precision": 0.8527789771694577,
+        "recall": 0.85233798195242,
+        "f1-score": 0.8442149453134257,
+        "support": 1219.0
+      }
+    },
+    "test": {
+      "ADHD": {
+        "precision": 0.8598484848484849,
+        "recall": 0.9458333333333333,
+        "f1-score": 0.9007936507936508,
+        "support": 240.0
+      },
+      "AMBIGUOUS": {
+        "precision": 0.8947368421052632,
+        "recall": 0.6375,
+        "f1-score": 0.7445255474452555,
+        "support": 240.0
+      },
+      "BIPOLAR": {
+        "precision": 0.8791208791208791,
+        "recall": 1.0,
+        "f1-score": 0.935672514619883,
+        "support": 240.0
+      },
+      "HEALTHY": {
+        "precision": 0.5862068965517241,
+        "recall": 0.9444444444444444,
+        "f1-score": 0.723404255319149,
+        "support": 18.0
+      },
+      "OTHER": {
+        "precision": 0.8701298701298701,
+        "recall": 0.8375,
+        "f1-score": 0.8535031847133758,
+        "support": 240.0
+      },
+      "PSYCHOSIS": {
+        "precision": 0.936,
+        "recall": 0.975,
+        "f1-score": 0.9551020408163265,
+        "support": 240.0
+      },
+      "accuracy": 0.8801313628899836,
+      "macro avg": {
+        "precision": 0.8376738287927036,
+        "recall": 0.8900462962962963,
+        "f1-score": 0.8521668656179401,
+        "support": 1218.0
+      },
+      "weighted avg": {
+        "precision": 0.8835077031420447,
+        "recall": 0.8801313628899836,
+        "f1-score": 0.8756359128152567,
+        "support": 1218.0
+      }
+    }
+  },
+  "evaluation_by_language": {
+    "validation": {
+      "en": {
+        "ADHD": {
+          "precision": 0.8285714285714286,
+          "recall": 0.9666666666666667,
+          "f1-score": 0.8923076923076924,
+          "support": 120.0
+        },
+        "AMBIGUOUS": {
+          "precision": 0.8311688311688312,
+          "recall": 0.5333333333333333,
+          "f1-score": 0.649746192893401,
+          "support": 120.0
+        },
+        "BIPOLAR": {
+          "precision": 0.9090909090909091,
+          "recall": 1.0,
+          "f1-score": 0.9523809523809523,
+          "support": 120.0
+        },
+        "HEALTHY": {
+          "precision": 0.5294117647058824,
+          "recall": 0.9,
+          "f1-score": 0.6666666666666666,
+          "support": 10.0
+        },
+        "OTHER": {
+          "precision": 0.8857142857142857,
+          "recall": 0.7815126050420168,
+          "f1-score": 0.8303571428571429,
+          "support": 119.0
+        },
+        "PSYCHOSIS": {
+          "precision": 0.8623188405797102,
+          "recall": 0.9916666666666667,
+          "f1-score": 0.9224806201550387,
+          "support": 120.0
+        },
+        "accuracy": 0.8555008210180624,
+        "macro avg": {
+          "precision": 0.8077126766385079,
+          "recall": 0.8621965452847805,
+          "f1-score": 0.8189898778768155,
+          "support": 609.0
+        },
+        "weighted avg": {
+          "precision": 0.8578524117838494,
+          "recall": 0.8555008210180624,
+          "f1-score": 0.8464844361167764,
+          "support": 609.0
+        }
+      },
+      "ar": {
+        "ADHD": {
+          "precision": 0.8257575757575758,
+          "recall": 0.9083333333333333,
+          "f1-score": 0.8650793650793651,
+          "support": 120.0
+        },
+        "AMBIGUOUS": {
+          "precision": 0.8072289156626506,
+          "recall": 0.5583333333333333,
+          "f1-score": 0.6600985221674877,
+          "support": 120.0
+        },
+        "BIPOLAR": {
+          "precision": 0.8888888888888888,
+          "recall": 1.0,
+          "f1-score": 0.9411764705882353,
+          "support": 120.0
+        },
+        "HEALTHY": {
+          "precision": 0.625,
+          "recall": 1.0,
+          "f1-score": 0.7692307692307693,
+          "support": 10.0
+        },
+        "OTHER": {
+          "precision": 0.8660714285714286,
+          "recall": 0.8083333333333333,
+          "f1-score": 0.8362068965517241,
+          "support": 120.0
+        },
+        "PSYCHOSIS": {
+          "precision": 0.8712121212121212,
+          "recall": 0.9583333333333334,
+          "f1-score": 0.9126984126984127,
+          "support": 120.0
+        },
+        "accuracy": 0.8491803278688524,
+        "macro avg": {
+          "precision": 0.8140264883487776,
+          "recall": 0.8722222222222222,
+          "f1-score": 0.8307484060526656,
+          "support": 610.0
+        },
+        "weighted avg": {
+          "precision": 0.8481132321493767,
+          "recall": 0.8491803278688524,
+          "f1-score": 0.8418417503975978,
+          "support": 610.0
+        }
+      }
+    },
+    "test": {
+      "en": {
+        "ADHD": {
+          "precision": 0.8518518518518519,
+          "recall": 0.9583333333333334,
+          "f1-score": 0.9019607843137255,
+          "support": 120.0
+        },
+        "AMBIGUOUS": {
+          "precision": 0.8735632183908046,
+          "recall": 0.6333333333333333,
+          "f1-score": 0.7342995169082126,
+          "support": 120.0
+        },
+        "BIPOLAR": {
+          "precision": 0.8823529411764706,
+          "recall": 1.0,
+          "f1-score": 0.9375,
+          "support": 120.0
+        },
+        "HEALTHY": {
+          "precision": 0.5384615384615384,
+          "recall": 0.875,
+          "f1-score": 0.6666666666666666,
+          "support": 8.0
+        },
+        "OTHER": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1-score": 0.8421052631578947,
+          "support": 120.0
+        },
+        "PSYCHOSIS": {
+          "precision": 0.9224806201550387,
+          "recall": 0.9916666666666667,
+          "f1-score": 0.9558232931726908,
+          "support": 120.0
+        },
+        "accuracy": 0.8766447368421053,
+        "macro avg": {
+          "precision": 0.8262665098207655,
+          "recall": 0.8763888888888888,
+          "f1-score": 0.8397259207031985,
+          "support": 608.0
+        },
+        "weighted avg": {
+          "precision": 0.8792832150711495,
+          "recall": 0.8766447368421053,
+          "f1-score": 0.8716052569730857,
+          "support": 608.0
+        }
+      },
+      "ar": {
+        "ADHD": {
+          "precision": 0.8682170542635659,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.8995983935742972,
+          "support": 120.0
+        },
+        "AMBIGUOUS": {
+          "precision": 0.9166666666666666,
+          "recall": 0.6416666666666667,
+          "f1-score": 0.7549019607843137,
+          "support": 120.0
+        },
+        "BIPOLAR": {
+          "precision": 0.8759124087591241,
+          "recall": 1.0,
+          "f1-score": 0.933852140077821,
+          "support": 120.0
+        },
+        "HEALTHY": {
+          "precision": 0.625,
+          "recall": 1.0,
+          "f1-score": 0.7692307692307693,
+          "support": 10.0
+        },
+        "OTHER": {
+          "precision": 0.8536585365853658,
+          "recall": 0.875,
+          "f1-score": 0.8641975308641975,
+          "support": 120.0
+        },
+        "PSYCHOSIS": {
+          "precision": 0.9504132231404959,
+          "recall": 0.9583333333333334,
+          "f1-score": 0.9543568464730291,
+          "support": 120.0
+        },
+        "accuracy": 0.8836065573770492,
+        "macro avg": {
+          "precision": 0.8483113149025363,
+          "recall": 0.9013888888888889,
+          "f1-score": 0.8626896068340714,
+          "support": 610.0
+        },
+        "weighted avg": {
+          "precision": 0.8885805684095512,
+          "recall": 0.8836065573770492,
+          "f1-score": 0.8795428398445028,
+          "support": 610.0
+        }
+      }
+    }
+  }
+}
