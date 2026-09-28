@@ -1,0 +1,211 @@
+{
+  "source_zip": "Mira_Integrated_Assessment_Report_Fix.zip",
+  "source_sha256": "e4ae94a8a76b1800dcee20675716259373ea45a57ce23040d7aa6e450392629a",
+  "source_files": 75,
+  "removed_or_replaced": [
+    {
+      "path": "archive/README.md",
+      "bytes": 421,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/reports/MIRA_REPORT_INTERPRETATION.md",
+      "bytes": 2877,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/reports/mira_v5_synthetic_evaluation.json",
+      "bytes": 4400,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/reports/RAPPORT_FINAL.md",
+      "bytes": 15397,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/reports/TACHE0_RESULTAT_MULTI_TOURS.md",
+      "bytes": 4206,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/reports/TACHE1_RAPPORT_ANALYSE_DONNEES.md",
+      "bytes": 14031,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_adhd_regression.py",
+      "bytes": 4381,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_api.py",
+      "bytes": 2291,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_bipolar_regression.py",
+      "bytes": 6129,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_classifier.py",
+      "bytes": 416,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_en_baseline.py",
+      "bytes": 1709,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_interview_rotation.py",
+      "bytes": 2750,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_patient_state.py",
+      "bytes": 3827,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_psychosis_regression.py",
+      "bytes": 4857,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_safety_ar_en.py",
+      "bytes": 2847,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_steps2_8.py",
+      "bytes": 3051,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_tache0_bipolar_multitour.py",
+      "bytes": 5888,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_tache2_bilingual_bank.py",
+      "bytes": 8762,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_tache3_arabic_extraction.py",
+      "bytes": 7801,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "archive/tests/test_tache4_orientation.py",
+      "bytes": 8195,
+      "reason": "Obsolete tests/reports for superseded behavior; the original ZIP remains the archive."
+    },
+    {
+      "path": "BASELINE_TEST_RESULTS.txt",
+      "bytes": 716,
+      "reason": "Superseded historical run output; a fresh result is recorded in docs/."
+    },
+    {
+      "path": "data/arabic_raw/test.csv",
+      "bytes": 9873437,
+      "reason": "Unused legacy data: raw Arabic labels have no verified target mapping; the old training CSV is a Git LFS placeholder; the old bank and dictionary are not read by the current agent."
+    },
+    {
+      "path": "data/arabic_raw/train.csv",
+      "bytes": 47630904,
+      "reason": "Unused legacy data: raw Arabic labels have no verified target mapping; the old training CSV is a Git LFS placeholder; the old bank and dictionary are not read by the current agent."
+    },
+    {
+      "path": "data/arabic_raw/validation.csv",
+      "bytes": 8369452,
+      "reason": "Unused legacy data: raw Arabic labels have no verified target mapping; the old training CSV is a Git LFS placeholder; the old bank and dictionary are not read by the current agent."
+    },
+    {
+      "path": "data/Mira_Bilingual_Dynamic_Question_Bank.json",
+      "bytes": 33383,
+      "reason": "Unused legacy data: raw Arabic labels have no verified target mapping; the old training CSV is a Git LFS placeholder; the old bank and dictionary are not read by the current agent."
+    },
+    {
+      "path": "data/Mira_V1_Data_Dictionary.csv",
+      "bytes": 12804,
+      "reason": "Unused legacy data: raw Arabic labels have no verified target mapping; the old training CSV is a Git LFS placeholder; the old bank and dictionary are not read by the current agent."
+    },
+    {
+      "path": "data/Mira_V1_Synthetic_Training_Dataset.csv",
+      "bytes": 134,
+      "reason": "Unused legacy data: raw Arabic labels have no verified target mapping; the old training CSV is a Git LFS placeholder; the old bank and dictionary are not read by the current agent."
+    },
+    {
+      "path": "predict_demo.py",
+      "bytes": 143,
+      "reason": "Redundant alias; run_mira.py --demo is the supported demonstration command."
+    },
+    {
+      "path": "README.md",
+      "bytes": 10243,
+      "reason": "Replaced with one current quick-start guide."
+    },
+    {
+      "path": "REPORT_FIX.md",
+      "bytes": 2293,
+      "reason": "Current report behavior is consolidated in README and architecture documentation."
+    },
+    {
+      "path": "TEST_RESULTS.txt",
+      "bytes": 1704,
+      "reason": "Superseded historical run output; a fresh result is recorded in docs/."
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 4340,
+      "reason": "Replaced by validation results for this exact cleaned project."
+    },
+    {
+      "path": "vitamind/clinical/assessment/adhd.py",
+      "bytes": 85,
+      "reason": "Unused re-export shim; active code uses assessment_engine.py."
+    },
+    {
+      "path": "vitamind/clinical/assessment/bipolar.py",
+      "bytes": 85,
+      "reason": "Unused re-export shim; active code uses assessment_engine.py."
+    },
+    {
+      "path": "vitamind/clinical/assessment/psychosis.py",
+      "bytes": 85,
+      "reason": "Unused re-export shim; active code uses assessment_engine.py."
+    },
+    {
+      "path": "vitamind/clinical/uncertainty.py",
+      "bytes": 749,
+      "reason": "Unused legacy decision helper; live report uncertainty is computed by the agent."
+    },
+    {
+      "path": "vitamind/mira/question_bank.py",
+      "bytes": 3240,
+      "reason": "Unused legacy loader; the live interview reads questions.py."
+    },
+    {
+      "path": "FILE_CHECKSUMS.json",
+      "bytes": 7730,
+      "reason": "Recomputed for the clean deliverable."
+    }
+  ],
+  "removed_or_replaced_count": 38,
+  "removed_or_replaced_uncompressed_bytes": 66055763,
+  "live_model_changed": false,
+  "added": [
+    "compatible synthetic dataset and data card",
+    "dataset generator and validator",
+    "consolidated documentation and fresh validation results"
+  ],
+  "code_cleanup": [
+    "unused feature-extractor negation helper/imports",
+    "unused extension helper/limit/imports in interview planner",
+    "training launcher usage example"
+  ],
+  "original_upload_modified": false
+}

@@ -1,101 +1,122 @@
-# VitaMind Mira V5 — Steps 1 to 8
+# Mira — English and Arabic assessment agent
 
-This package now contains the core non-frontend AI architecture for Mira.
+This project now includes a **trained native English/Arabic routing model**.
+Arabic patient text reaches the model in Arabic. It is no longer translated into
+fixed English phrases before prediction. The model is integrated into Mira's
+question selection and reports, and runs locally without an API key.
 
-## Architecture
+## Open and run in VS Code
 
-The service is split into four boundaries:
+Extract the ZIP and open **Mira_Clean_Project**, the folder containing
+`run_mira.py`. Use Python 3.10–3.12 and open **Terminal > New Terminal**:
 
-- `vitamind/clinical`: patient state, extraction, assessments, differential, and uncertainty
-- `vitamind/safety`: independent urgent-safety detection
-- `vitamind/mira`: session application service and interview planning
-- `app.py`: FastAPI adapter only; it owns HTTP validation and session lifecycle wiring
-- `vitamind/ml`: lazy adapter for the optional persisted sklearn ensemble
+```sh
+python -m pip install -r requirements.txt
+python run_mira.py --language ar
+```
 
-The HTTP contract is:
+For English:
+
+```sh
+python run_mira.py --language en
+```
+
+The trained weights are included. You do not need to retrain before trying it.
+Startup displays the loaded model's languages: `ar, en`. If Windows recognizes
+`py` instead of `python`, use `py` consistently in these commands.
+
+Try describing an experience such as:
 
 ```text
-GET    /health
-POST   /api/v1/mira/session
-POST   /api/v1/mira/session/{session_id}/message
-GET    /api/v1/mira/session/{session_id}
-DELETE /api/v1/mira/session/{session_id}
+أنا مشتت منذ الطفولة وأنسى المواعيد وأضيع أغراضي
 ```
 
-## Implemented
+| Action | English | Arabic |
+| --- | --- | --- |
+| Request a report | `report` / `summary` | `تقرير` / `ملخص` / `أريد تقرير` |
+| Explain the question | `why` | `لماذا` |
+| Skip a question | `skip` | `تخطي` |
+| Explain Mira's capabilities | `what can you do` | `ماذا يمكنك أن تفعل` |
+| Quit | `exit` | `خروج` |
 
-### Step 1 — Patient State
-`vitamind/clinical/patient_state.py`
+Reports appear after at most 10 assessment answers, or immediately when requested.
+Missing information is reported explicitly. Corrections update the report.
+Crisis support keeps input open and does not claim that someone was contacted.
 
-Canonical clinical memory.
+To run fictional English and Arabic demonstrations:
 
-### Step 2 — Feature Extractor
-`vitamind/clinical/feature_extractor.py`
+```sh
+python run_mira.py --demo
+python run_mira.py --language ar --demo
+```
 
-Converts user language into structured clinical observations and writes them
-to PatientState. Includes explicit negation and cross-feature logic.
+## What was trained
 
-### Step 3 — Condition Assessments
+| Data | Role |
+| --- | --- |
+| 8,102 labeled synthetic examples: 4,050 English and 4,052 Arabic | Supervised routing training and separate held-out evaluation |
+| 17,406 filtered Arabic openings from your uploaded training CSV | Vocabulary and inverse-document-frequency fitting only; source numeric labels are not used |
 
-- `vitamind/clinical/assessment/adhd.py`
-- `vitamind/clinical/assessment/bipolar.py`
-- `vitamind/clinical/assessment/psychosis.py`
+The supervised split has 5,665 training, 1,219 validation and 1,218 test records.
+English/Arabic versions of a scenario stay in the same split. Only training
+records fit model parameters. Evaluation is reported separately for both languages.
 
-Each produces:
-- supporting evidence
-- contradictory evidence
-- missing information
-- prototype raw score
+Your ZIP matches the files from the [Arabic Mental Health Dataset on Zenodo](https://zenodo.org/records/20568736).
+Its published description covers anxiety, OCD, depression and suicidality, rather
+than verified labels for Mira's ADHD/bipolar/psychosis targets. The files contain
+numbers 0–5 without their mapping. We did not guess that mapping. Bot replies,
+invalid rows and duplicate/held-out-overlapping openings are excluded from
+vocabulary adaptation. See [how your Arabic data is used](docs/ARABIC_DATA.md).
 
-### Step 4 — Assessment Engine
-`vitamind/clinical/assessment/assessment_engine.py`
+The new model has learned Arabic and English text features. This is still a
+**screening classifier with a guided conversation**, not a generative language
+model or clinically validated diagnostic system. The supervised labels are
+author-defined synthetic fixtures, not confirmed patient diagnoses. More
+vocabulary does not by itself demonstrate better clinical accuracy.
 
-Runs all three target assessments together and identifies the current leading
-target condition.
+## Retrain the connected model
 
-### Step 5 — Adaptive Interview Planner
-`vitamind/mira/interview.py`
+Back up `models/mira_bilingual.joblib` if you want to retain the delivered weights.
+Stop the running agent, then run:
 
-Chooses the next clinically useful question based on missing information and
-competing target conditions.
+```sh
+python tools/validate_bilingual_dataset.py
+python train_mira.py
+python run_mira.py --language ar
+```
 
-### Step 6 — Safety Detector
-`vitamind/safety/detector.py`
+Training automatically reads the included bilingual dataset and Arabic vocabulary
+corpus, writes `models/mira_bilingual.joblib`, and creates an evaluation JSON
+beside it. Restarting Mira loads that file. See [training details](docs/TRAINING.md).
 
-Runs independently from diagnosis logic and can flag urgent safety content.
+## Files and development
 
-### Step 7 — Differential Engine
-`vitamind/clinical/differential.py`
+```text
+run_mira.py                 Start Mira in English or Arabic
+train_mira.py               Retrain the integrated bilingual model
+app.py                     Optional local HTTP API
+data/mira_bilingual.jsonl   Labeled bilingual synthetic examples
+data/arabic_adaptation.jsonl Filtered source Arabic openings, without labels
+models/mira_bilingual.joblib Trained model used by the agent
+vitamind/ml/                Training, native text inputs and model loading
+vitamind/mira/              Conversation, questions and reports
+vitamind/clinical/          Evidence extraction, memory and screening logic
+vitamind/safety/            Independent safety-support rules
+tools/                     Data preparation, generation and validation
+tests/                     Active regression and bilingual integration checks
+docs/                      Architecture, API, data provenance and validation
+```
 
-Checks anxiety, depression, sleep deprivation, substances, medications, and
-medical/neurologic explanations.
+The English projection JSONL remains a **generator blueprint** for the new
+synthetic examples; it is not the native model's training input. Historical
+weights, duplicate nested project and obsolete reports are excluded from this ZIP.
 
-### Step 8 — Uncertainty Engine
-`vitamind/clinical/uncertainty.py`
-
-Allows Mira to abstain instead of forcing ADHD/Bipolar/Psychosis when evidence
-is weak, conflicting, incomplete, or better explained elsewhere.
-
-## Run tests
-
-```powershell
-cd apps/ai-service
-python -m pip install -e ".[test]"
+```sh
+python -m pip install -r requirements-dev.txt
 python -m pytest -q
+python -m uvicorn app:app --host 127.0.0.1 --port 8000
 ```
 
-## Run the service
-
-```powershell
-cd apps/ai-service
-python -m uvicorn app:app --host 0.0.0.0 --port 8000
-```
-
-## Important
-
-These scores are prototype engineering signals only.
-They are not calibrated medical probabilities and must not be used as a
-clinically validated diagnosis.
-
-The persisted model was trained with scikit-learn 1.7.2. Install the optional
-`ml` extra with that version when reproducible model inference is required.
+See [architecture](docs/ARCHITECTURE.md), [API usage](docs/API.md), and
+[executed checks](docs/VALIDATION.md). The API is a local development service
+with process-local sessions and per-session capability tokens.

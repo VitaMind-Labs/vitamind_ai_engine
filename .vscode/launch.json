@@ -1,0 +1,7 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {"name": "Mira English", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/run_mira.py", "console": "integratedTerminal", "args": ["--language", "en"]},
+    {"name": "Mira Arabic", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/run_mira.py", "console": "integratedTerminal", "args": ["--language", "ar"]}
+  ]
+}

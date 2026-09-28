@@ -1,0 +1,111 @@
+{
+  "authored_flow_checks": [
+    {
+      "language": "en",
+      "authored_case": "attention",
+      "model_status": "available",
+      "routing_label": "ADHD",
+      "suggested_condition": "ADHD",
+      "input_type": "patient_text_bilingual_v1",
+      "native_arabic_model": true,
+      "next_question": "duration",
+      "report_ready": true,
+      "candidate_patterns": [
+        "ADHD"
+      ]
+    },
+    {
+      "language": "ar",
+      "authored_case": "attention",
+      "model_status": "available",
+      "routing_label": "ADHD",
+      "suggested_condition": "ADHD",
+      "input_type": "patient_text_bilingual_v1",
+      "native_arabic_model": true,
+      "next_question": "duration",
+      "report_ready": true,
+      "candidate_patterns": [
+        "ADHD"
+      ]
+    },
+    {
+      "language": "en",
+      "authored_case": "activation",
+      "model_status": "available",
+      "routing_label": "BIPOLAR",
+      "suggested_condition": null,
+      "input_type": "patient_text_bilingual_v1",
+      "native_arabic_model": true,
+      "next_question": "sleep_need",
+      "report_ready": true,
+      "candidate_patterns": [
+        "BIPOLAR_SPECTRUM"
+      ]
+    },
+    {
+      "language": "ar",
+      "authored_case": "activation",
+      "model_status": "available",
+      "routing_label": "BIPOLAR",
+      "suggested_condition": "BIPOLAR_SPECTRUM",
+      "input_type": "patient_text_bilingual_v1",
+      "native_arabic_model": true,
+      "next_question": "energy",
+      "report_ready": true,
+      "candidate_patterns": [
+        "BIPOLAR_SPECTRUM"
+      ]
+    },
+    {
+      "language": "en",
+      "authored_case": "perception",
+      "model_status": "available",
+      "routing_label": "PSYCHOSIS",
+      "suggested_condition": "PSYCHOSIS_SPECTRUM",
+      "input_type": "patient_text_bilingual_v1",
+      "native_arabic_model": true,
+      "next_question": "duration",
+      "report_ready": true,
+      "candidate_patterns": [
+        "PSYCHOSIS_SPECTRUM"
+      ]
+    },
+    {
+      "language": "ar",
+      "authored_case": "perception",
+      "model_status": "available",
+      "routing_label": "PSYCHOSIS",
+      "suggested_condition": "PSYCHOSIS_SPECTRUM",
+      "input_type": "patient_text_bilingual_v1",
+      "native_arabic_model": true,
+      "next_question": "duration",
+      "report_ready": true,
+      "candidate_patterns": [
+        "PSYCHOSIS_SPECTRUM"
+      ]
+    }
+  ],
+  "synthetic_metrics_only": {
+    "validation": {
+      "en": {
+        "accuracy": 0.8555008210180624,
+        "macro_f1": 0.8189898778768155
+      },
+      "ar": {
+        "accuracy": 0.8491803278688524,
+        "macro_f1": 0.8307484060526656
+      }
+    },
+    "test": {
+      "en": {
+        "accuracy": 0.8766447368421053,
+        "macro_f1": 0.8397259207031985
+      },
+      "ar": {
+        "accuracy": 0.8836065573770492,
+        "macro_f1": 0.8626896068340714
+      }
+    }
+  },
+  "clinical_validation": false
+}

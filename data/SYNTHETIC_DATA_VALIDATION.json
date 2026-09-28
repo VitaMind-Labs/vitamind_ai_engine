@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "records": 2028,
+  "live_projection_checks": 4056,
+  "splits": {
+    "train": 1418,
+    "test": 305,
+    "validation": 305
+  },
+  "duplicate_texts": 0,
+  "groups_crossing_partitions": 0,
+  "clinician_reviewed": false,
+  "clinical_validation": false,
+  "checks": [
+    "trainer schema",
+    "record IDs",
+    "checksum",
+    "fixture-label consistency",
+    "group isolation including secondary-feature variations",
+    "all six labels in every split",
+    "exact live en/ar state-to-model projection",
+    "absent/conflicting evidence exclusion",
+    "empty-evidence bypass"
+  ],
+  "does_not_test": [
+    "real language understanding",
+    "clinical validity",
+    "model training quality"
+  ],
+  "seed_reproduction_identical": true
+}

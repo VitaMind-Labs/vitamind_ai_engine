@@ -10,7 +10,7 @@ from pathlib import Path
 class PredictionResult:
     routing_label: str
     pathway: str
-    crisis_flag: bool
+    crisis_flag: bool | None
     top_score_internal: float
     second_label: str
     second_score_internal: float
@@ -20,7 +20,7 @@ class PredictionResult:
 
 class MiraMLClassifier:
     def __init__(self, model_path: str | Path | None = None):
-        self.model_path = Path(model_path) if model_path else Path(__file__).resolve().parents[2] / "models" / "mira_v5_synthetic_ensemble.joblib"
+        self.model_path = Path(model_path) if model_path else Path(__file__).resolve().parents[2] / "models" / "mira_bilingual.joblib"
         self._bundle = None
 
     def _load(self):
@@ -39,7 +39,14 @@ class MiraMLClassifier:
         ordered = sorted(scores.items(), key=lambda item: item[1], reverse=True)
         top_label, top_score = ordered[0]
         second_label, second_score = ordered[1]
-        safety_models = bundle["safety"]
-        safety_scores = [model.predict_proba([text])[0][1] for model in (safety_models["word_model"], safety_models["char_model"])]
-        crisis = sum(weight * score for weight, score in zip(safety_models["weights"], safety_scores)) >= safety_models["threshold"]
-        return PredictionResult(top_label, bundle["pathway_map"].get(top_label, "clinical_review"), bool(crisis), top_score, second_label, second_score, top_score - second_score, scores)
+        # Old artifacts retain this historical score for compatibility only.
+        # The live agent never uses it: the reviewed artifact failed basic probes.
+        crisis = None
+        if bundle.get("safety"):
+            safety_models = bundle["safety"]
+            safety_scores = [model.predict_proba([text])[0][1] for model in (safety_models["word_model"], safety_models["char_model"])]
+            crisis = bool(sum(weight * score for weight, score in zip(safety_models["weights"], safety_scores)) >= safety_models["threshold"])
+        return PredictionResult(top_label, bundle["pathway_map"].get(top_label, "clinical_review"), crisis, top_score, second_label, second_score, top_score - second_score, scores)
+
+    def model_info(self):
+        return self._load().get('metadata', {})

@@ -1,0 +1,77 @@
+{
+  "dataset": "Mira synthetic evidence-projection training fixtures v1",
+  "seed": 42,
+  "records": 2028,
+  "synthetic": true,
+  "clinician_reviewed": false,
+  "clinical_validation": false,
+  "sha256": "3c8041392dea055a5ec0e6ec1a921f186d60dcf5cad5e00c4aec9959844c53f6",
+  "feature_inventory_sha256": "5a3e43142ee41d68366a6665981a516a0ee6d780c470da2bcdd561c1f09fc784",
+  "splits": {
+    "train": 1418,
+    "test": 305,
+    "validation": 305
+  },
+  "labels": {
+    "AMBIGUOUS": 400,
+    "OTHER": 400,
+    "HEALTHY": 28,
+    "ADHD": 400,
+    "BIPOLAR": 400,
+    "PSYCHOSIS": 400
+  },
+  "labels_by_split": {
+    "train": {
+      "AMBIGUOUS": 280,
+      "OTHER": 280,
+      "ADHD": 280,
+      "BIPOLAR": 280,
+      "PSYCHOSIS": 280,
+      "HEALTHY": 18
+    },
+    "validation": {
+      "OTHER": 60,
+      "BIPOLAR": 60,
+      "PSYCHOSIS": 60,
+      "HEALTHY": 5,
+      "ADHD": 60,
+      "AMBIGUOUS": 60
+    },
+    "test": {
+      "HEALTHY": 5,
+      "AMBIGUOUS": 60,
+      "PSYCHOSIS": 60,
+      "BIPOLAR": 60,
+      "ADHD": 60,
+      "OTHER": 60
+    }
+  },
+  "groups_by_split": {
+    "train": 1063,
+    "validation": 223,
+    "test": 230
+  },
+  "split_policy": "Hash core signature 70/15/15, with whole sparse families allocated 18/5/5 for legacy HEALTHY coverage; cap other categories per split.",
+  "label_meanings": {
+    "ADHD": "synthetic_attention_history_followup",
+    "BIPOLAR": "synthetic_episodic_activation_followup",
+    "PSYCHOSIS": "synthetic_perceptual_or_belief_followup",
+    "AMBIGUOUS": "overlapping_or_incomplete_synthetic_pattern",
+    "OTHER": "nonspecific_features_without_selected_target_pattern",
+    "HEALTHY": "legacy_compatibility_only_sparse_evidence_not_confirmed_health"
+  },
+  "model_text_language": "fixed English evidence projection used by both en/ar sessions",
+  "safety_examples_included": false,
+  "limitations": [
+    "Synthetic routing fixtures, not clinical histories or diagnostic ground truth.",
+    "Only text and label enter model fitting. Metadata is not a model feature.",
+    "Train/validation/test share a generator and label policy; scores measure fixture-policy fit only.",
+    "No empty projection is representable in the current trainer. Mira bypasses inference when no positive evidence exists.",
+    "HEALTHY is a required legacy compatibility category for sparse evidence, never proof of health.",
+    "OTHER does not identify an alternative diagnosis.",
+    "Duration, impairment, absent/conflicting evidence and context are not passed to this classifier.",
+    "These fixtures do not teach Arabic extraction, negation, crisis recognition, conversation or report writing.",
+    "The same underlying signature with secondary-feature variations stays in one partition.",
+    "The word reviewed in the requested filename does not mean clinician review has occurred."
+  ]
+}

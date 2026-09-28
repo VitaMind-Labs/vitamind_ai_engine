@@ -1,0 +1,19 @@
+{
+  "tests_passed": 109,
+  "model_file": "models/mira_bilingual.joblib",
+  "supervised_training": {
+    "ar": 2832,
+    "en": 2833
+  },
+  "supervised_split_sizes": {
+    "train": 5665,
+    "validation": 1219,
+    "test": 1218
+  },
+  "arabic_source_vocabulary_records": 17406,
+  "source_numeric_labels_used": false,
+  "native_arabic_inference": true,
+  "clinical_validation": false,
+  "data_sha256": "aa6cade0168b0a2d710f85cd2f7b80679a4ab9c1bb6687544816595c06d8bff9",
+  "model_sha256": "be0ddb6a06b234564e2b8fd5e1a3ff5cc39f1683b519b5d24fde704bd7e61f23"
+}
