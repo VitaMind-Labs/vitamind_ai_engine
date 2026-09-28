@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vitamind-lumina"
+version = "0.1.0"
+description = "Lumina local patient-support intelligence: from-scratch models, no external inference API"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
+[tool.setuptools.packages.find]
+include = ["lumina*", "data_prep*", "training*", "evaluation*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+norecursedirs = [".git", ".venv", "data", "VitaMind_Journal_AI", "artifacts", "datasets"]

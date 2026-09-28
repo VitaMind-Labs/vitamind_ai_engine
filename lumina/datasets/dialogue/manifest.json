@@ -1,0 +1,134 @@
+{
+ "dataset": "dialogue",
+ "purpose": "emotion and communication-act understanding",
+ "built_by": "data_prep/build_dialogue.py",
+ "seed": 42,
+ "heads": [
+  "emotion",
+  "act"
+ ],
+ "source": {
+  "name": "DailyDialog",
+  "citation": "Li et al., IJCNLP 2017 (I17-1099)",
+  "local_path": "data\\I17-1099.Datasets\\EMNLP_dataset",
+  "license": "CC BY-NC-SA 4.0",
+  "commercial_use": "restricted - non-commercial licence, see TECH_DEBT",
+  "sha256": {
+   "train/train/dialogues_train.txt": "71633bd5fdb0b09dd82215b131b56432cf7329a0fe50bc8adec168713d350d1a",
+   "train/train/dialogues_emotion_train.txt": "5c94e57c6e6c6641f4b1386513085f9d9b934229e732a556424ca7dfae4b6c77",
+   "train/train/dialogues_act_train.txt": "e910d5cfedc500d03dbedd3bcf8661ae8cf0e44d029e56a291f49a7b67042adf",
+   "validation/validation/dialogues_validation.txt": "2ad64701fe3a4449e7a6ee7cdc6c2a71c80f77b8a34f708ac0532395f499081c",
+   "validation/validation/dialogues_emotion_validation.txt": "3d4094299a995e998bbc3492ce1755c9abc1e7f56500c840e83b12dd16580596",
+   "validation/validation/dialogues_act_validation.txt": "fbeee7a1b2927c9cb33d6fdc384bb3ea55abf040928d2de4dcea57ab4a669682",
+   "test/test/dialogues_test.txt": "3c323651cdfb09f7b529f850eddf96a638fc6cc9b43330b77956ab248484a1a8",
+   "test/test/dialogues_emotion_test.txt": "482b7235f91a1441055a09241b2d2709bb1702f4a08d7316c27fa807cba7d3c9",
+   "test/test/dialogues_act_test.txt": "566649e92babfa528a77757b161deeee91e9c91fe0db71760063747e132d3f4c"
+  }
+ },
+ "split_policy": "DailyDialog official partition; whole dialogues never span splits; train rows duplicating any val/test utterance are removed",
+ "train_rows_removed_as_leakage": 3391,
+ "label_mapping": {
+  "emotion": {
+   "0": "NEUTRAL",
+   "1": "ANGRY",
+   "2": "IRRITABLE",
+   "3": "FEARFUL",
+   "4": "CONTENT",
+   "5": "SAD",
+   "6": "CONFUSED"
+  },
+  "act": {
+   "1": "INFORM",
+   "2": "QUESTION",
+   "3": "DIRECTIVE",
+   "4": "COMMISSIVE"
+  }
+ },
+ "lossy_mappings": {
+  "2 disgust -> IRRITABLE": "no disgust member in the Lumina vocabulary; nearest affective neighbour",
+  "6 surprise -> CONFUSED": "no surprise member; surprise is kept as the disorientation it produces, not as valence"
+ },
+ "clinical_validity": "not_clinical",
+ "excluded_rows": {
+  "train": {
+   "too_short": 3,
+   "misaligned_dialogue": 1,
+   "conflicting_dropped": 10275,
+   "duplicates_dropped": 8920
+  },
+  "val": {
+   "conflicting_dropped": 339,
+   "duplicates_dropped": 156
+  },
+  "test": {
+   "conflicting_dropped": 234,
+   "duplicates_dropped": 135
+  }
+ },
+ "distribution": {
+  "train": {
+   "rows": 64570,
+   "emotion": {
+    "NEUTRAL": 54465,
+    "CONTENT": 7574,
+    "CONFUSED": 1020,
+    "FEARFUL": 87,
+    "IRRITABLE": 201,
+    "SAD": 675,
+    "ANGRY": 548
+   },
+   "act": {
+    "DIRECTIVE": 11581,
+    "COMMISSIVE": 5391,
+    "QUESTION": 17883,
+    "INFORM": 29715
+   }
+  },
+  "val": {
+   "rows": 7574,
+   "emotion": {
+    "NEUTRAL": 6738,
+    "ANGRY": 73,
+    "SAD": 79,
+    "CONFUSED": 99,
+    "CONTENT": 573,
+    "FEARFUL": 9,
+    "IRRITABLE": 3
+   },
+   "act": {
+    "QUESTION": 2134,
+    "INFORM": 2917,
+    "DIRECTIVE": 1725,
+    "COMMISSIVE": 798
+   }
+  },
+  "test": {
+   "rows": 7371,
+   "emotion": {
+    "NEUTRAL": 6052,
+    "FEARFUL": 16,
+    "CONTENT": 950,
+    "SAD": 95,
+    "CONFUSED": 106,
+    "ANGRY": 106,
+    "IRRITABLE": 46
+   },
+   "act": {
+    "DIRECTIVE": 1266,
+    "COMMISSIVE": 632,
+    "QUESTION": 2115,
+    "INFORM": 3358
+   }
+  }
+ },
+ "rows": {
+  "train": 64570,
+  "val": 7574,
+  "test": 7371
+ },
+ "files_sha256": {
+  "train.jsonl": "178f65867652d667198ec60a85e70a1854aa0d8c18ca3f592b6400c1e9976f88",
+  "val.jsonl": "c62c0a4c9e5c986f7bfd268539c8e1b726d26e87e22e8880a1d91c25e1fea1b9",
+  "test.jsonl": "5247d419da19e186f9515ab1a4b6e0bc8f6309b5418ab24e8cb6f006c930d24c"
+ }
+}

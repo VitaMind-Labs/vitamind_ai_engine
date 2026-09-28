@@ -1,0 +1,149 @@
+{
+ "dataset": "safety",
+ "purpose": "safety triage signal (NORMAL / ELEVATED / HIGH / CRISIS)",
+ "built_by": "data_prep/build_safety.py",
+ "seed": 42,
+ "heads": [
+  "safety_signal"
+ ],
+ "audit_label": "safety",
+ "not_a_diagnosis": "Condition names in the source labels are collapsed to ELEVATED. This model rates language risk, never a person.",
+ "model_is_a_signal_not_a_gate": "Deterministic lexicon rules remain the authority on crisis handling; this head raises, never lowers, the fused level.",
+ "why_no_learned_crisis_class": "All CRISIS rows come from the curated journal set, which holds only ten distinct crisis meanings; a held-out split contains one or two. The learned head is therefore trained on safety_signal (3 levels) and CRISIS is decided by deterministic rules.",
+ "sources": {
+  "combined_mental_health_statements": {
+   "path": "data\\Combined Data.csv\\Combined Data.csv",
+   "sha256": "67274f52dec3b0155aec4d7d1ff31d2a92b0e9b383ab917614591cd168cc2474",
+   "source_type": "weak_supervision",
+   "label_mapping": {
+    "Normal": "NORMAL",
+    "Anxiety": "ELEVATED",
+    "Stress": "ELEVATED",
+    "Depression": "ELEVATED",
+    "Bipolar": "ELEVATED",
+    "Personality disorder": "ELEVATED",
+    "Suicidal": "HIGH"
+   },
+   "caveat": "labels reflect the community a statement came from",
+   "excluded": {
+    "empty_or_too_short": 568,
+    "too_long": 451
+   }
+  },
+  "vitamind_journal_ai_curated": {
+   "path": "VitaMind_Journal_AI\\data\\prepared",
+   "source_type": "human_reviewed",
+   "label_mapping": {
+    "none": "NORMAL",
+    "low": "ELEVATED",
+    "moderate": "ELEVATED",
+    "moderate_flagged": "HIGH",
+    "high": "CRISIS"
+   },
+   "note": "only source of CRISIS examples and of Arabic coverage",
+   "excluded": {}
+  },
+  "therapy_adverse_outcomes": {
+   "path": "data\\adverse_outcomes.csv",
+   "sha256": "e714aaf00312ef5c48220dcf60da53b16de3f1f5dc1538d8f0c8eaafa2d60964",
+   "source_type": "research_dataset",
+   "self_harm_events": [
+    "death_by_suicide",
+    "intensification_suicidal_ideation",
+    "non_suicidal_self_injury",
+    "suicide_attempt"
+   ],
+   "excluded": {
+    "no_event": 1895
+   }
+  }
+ },
+ "rows_by_source": {
+  "combined_mental_health_statements": 50441,
+  "vitamind_journal_ai_curated": 4014,
+  "therapy_adverse_outcomes": 1795
+ },
+ "split_policy": "grouped split stratified by rarest safety level: journal meaning-families, adverse-outcome pairings and normalized statement text are each kept whole within one split, and every level reaches every split",
+ "deduplication": {
+  "conflicting_dropped": 23,
+  "duplicates_dropped": 1560
+ },
+ "clinical_validity": "not_clinical",
+ "requires_human_review": true,
+ "distribution": {
+  "train": {
+   "rows": 45142,
+   "safety": {
+    "ELEVATED": 22353,
+    "NORMAL": 13562,
+    "HIGH": 8619,
+    "CRISIS": 608
+   },
+   "safety_signal": {
+    "ELEVATED": 22353,
+    "NORMAL": 13562,
+    "HIGH": 9227
+   }
+  },
+  "val": {
+   "rows": 5415,
+   "safety": {
+    "ELEVATED": 2501,
+    "NORMAL": 1759,
+    "HIGH": 1068,
+    "CRISIS": 87
+   },
+   "safety_signal": {
+    "ELEVATED": 2501,
+    "NORMAL": 1759,
+    "HIGH": 1155
+   }
+  },
+  "test": {
+   "rows": 5693,
+   "safety": {
+    "ELEVATED": 2787,
+    "NORMAL": 1760,
+    "HIGH": 1072,
+    "CRISIS": 74
+   },
+   "safety_signal": {
+    "ELEVATED": 2787,
+    "NORMAL": 1760,
+    "HIGH": 1146
+   }
+  }
+ },
+ "crisis_meaning_groups": {
+  "train": 8,
+  "val": 1,
+  "test": 1
+ },
+ "language_distribution": {
+  "train": {
+   "en": 43302,
+   "mixed": 645,
+   "ar": 1195
+  },
+  "val": {
+   "en": 5259,
+   "mixed": 59,
+   "ar": 97
+  },
+  "test": {
+   "en": 5416,
+   "mixed": 91,
+   "ar": 186
+  }
+ },
+ "rows": {
+  "train": 45142,
+  "val": 5415,
+  "test": 5693
+ },
+ "files_sha256": {
+  "train.jsonl": "a78225d44aff5daaca2dfa31c1c1186b8857b75ddfda6871f245770b6bddd0cd",
+  "val.jsonl": "c7da693b3a96f0809fd79ea1aab3914d2c08290919effb8eccb89ccdcd15024d",
+  "test.jsonl": "b05115c9237a395b32d691a0f453bcf6c33b89257a1550db1f2cb7518cba130e"
+ }
+}

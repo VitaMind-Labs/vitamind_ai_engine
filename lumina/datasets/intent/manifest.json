@@ -1,0 +1,144 @@
+{
+ "dataset": "intent",
+ "purpose": "Lumina intent understanding",
+ "built_by": "data_prep/build_intent.py",
+ "seed": 42,
+ "heads": [
+  "intent"
+ ],
+ "source": {
+  "name": "authored seed set",
+  "path": "data_prep/intent_seed.py",
+  "source_type": "authored_seed",
+  "note": "No corpus in data/ carries Lumina intent labels. These sentences were written for the purpose and are not real patient language."
+ },
+ "honest_limits": [
+  "A few hundred authored sentences is a seed, not a corpus.",
+  "Scores measure generalisation to unseen phrasings within an authored set - not to real patient language.",
+  "Several intents have only one or two meaning-families, so their held-out score rests on one or two sentences.",
+  "The model stays `candidate` until retrained on reviewed real data."
+ ],
+ "excluded_intents": {
+  "intents": [
+   "SAFETY",
+   "CRISIS",
+   "UNKNOWN"
+  ],
+  "reason": "Safety routing is owned by lumina/safety.py (deterministic rules + a calibrated distress head). A second uncalibrated path to a crisis decision would be a liability, not a feature."
+ },
+ "families_per_intent": {
+  "CHECK_IN": 3,
+  "JOURNAL": 3,
+  "EMOTIONAL_SUPPORT": 3,
+  "TASK_SUPPORT": 3,
+  "SLEEP": 3,
+  "ENERGY": 3,
+  "FOCUS": 3,
+  "ROUTINE": 3,
+  "STRESS": 3,
+  "SOCIAL": 2,
+  "EXERCISE": 3,
+  "GOAL": 3,
+  "PROGRESS": 3,
+  "MEDICATION_MENTION": 3,
+  "CLINICIAN_MENTION": 3,
+  "QUESTION": 3,
+  "GENERAL_CONVERSATION": 3
+ },
+ "split_policy": "grouped by meaning-family, stratified by intent; no family spans two splits",
+ "deduplication": {
+  "conflicting_dropped": 0,
+  "duplicates_dropped": 0
+ },
+ "clinical_validity": "not_clinical",
+ "distribution": {
+  "train": {
+   "rows": 88,
+   "intent": {
+    "JOURNAL": 6,
+    "TASK_SUPPORT": 6,
+    "STRESS": 6,
+    "SOCIAL": 10,
+    "EXERCISE": 6,
+    "PROGRESS": 6,
+    "CLINICIAN_MENTION": 6,
+    "CHECK_IN": 6,
+    "EMOTIONAL_SUPPORT": 4,
+    "SLEEP": 4,
+    "ENERGY": 4,
+    "FOCUS": 4,
+    "ROUTINE": 4,
+    "GOAL": 4,
+    "MEDICATION_MENTION": 4,
+    "QUESTION": 4,
+    "GENERAL_CONVERSATION": 4
+   }
+  },
+  "val": {
+   "rows": 91,
+   "intent": {
+    "CHECK_IN": 6,
+    "EMOTIONAL_SUPPORT": 7,
+    "TASK_SUPPORT": 7,
+    "SLEEP": 7,
+    "FOCUS": 6,
+    "ROUTINE": 6,
+    "GOAL": 6,
+    "MEDICATION_MENTION": 6,
+    "QUESTION": 6,
+    "GENERAL_CONVERSATION": 8,
+    "JOURNAL": 6,
+    "ENERGY": 4,
+    "STRESS": 4,
+    "EXERCISE": 4,
+    "PROGRESS": 4,
+    "CLINICIAN_MENTION": 4
+   }
+  },
+  "test": {
+   "rows": 71,
+   "intent": {
+    "CHECK_IN": 7,
+    "ENERGY": 6,
+    "JOURNAL": 4,
+    "EMOTIONAL_SUPPORT": 6,
+    "TASK_SUPPORT": 4,
+    "SLEEP": 4,
+    "FOCUS": 4,
+    "ROUTINE": 4,
+    "STRESS": 4,
+    "EXERCISE": 4,
+    "GOAL": 4,
+    "PROGRESS": 4,
+    "MEDICATION_MENTION": 4,
+    "CLINICIAN_MENTION": 4,
+    "QUESTION": 4,
+    "GENERAL_CONVERSATION": 4
+   }
+  }
+ },
+ "language_distribution": {
+  "train": {
+   "en": 44,
+   "ar": 44
+  },
+  "val": {
+   "en": 47,
+   "ar": 44
+  },
+  "test": {
+   "en": 36,
+   "ar": 35
+  }
+ },
+ "rows": {
+  "train": 88,
+  "val": 91,
+  "test": 71
+ },
+ "files_sha256": {
+  "train.jsonl": "93a82b9ffe170120b093997da3a63bb2833c5195f9fe16a12e1409805ffc8484",
+  "val.jsonl": "a385ebc77b7896919d53828df7c075a542fc72de79c5cc44254a3a422f2a1a21",
+  "test.jsonl": "e4def54d4c28cb66f6ed2724ec11d4183beb1de2414036d78ca6338ad7e714e0"
+ }
+}
