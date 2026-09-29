@@ -5,7 +5,7 @@ separable and honestly labelled rather than blended into a single confident pile
 
 Three sources, three very different evidentiary weights:
 
-* VitaMind_Journal_AI curated tiers - human-authored, bilingual EN/AR, and the
+* journal_ai curated tiers - human-authored, bilingual EN/AR, and the
   only source containing genuine CRISIS-level language. Highest weight.
 * "Combined Data" statements - labelled by the community a post came from, not by
   a clinician. That makes it *weak supervision*: it says "this text reads like
@@ -36,7 +36,7 @@ csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
 
 COMBINED = RAW / "Combined Data.csv" / "Combined Data.csv"
 ADVERSE = RAW / "adverse_outcomes.csv"
-JOURNAL = ROOT / "VitaMind_Journal_AI" / "data" / "prepared"
+JOURNAL = ROOT / "journal_ai" / "data" / "prepared"
 
 # Community label -> safety level. Everything that is a *condition* name becomes
 # ELEVATED; none of them imply a level of their own.

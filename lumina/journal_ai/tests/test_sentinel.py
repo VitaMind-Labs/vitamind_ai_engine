@@ -10,7 +10,7 @@ from journal_ai.normalize import normalize, contains_phrase
 from journal_ai.signature import signature_summary
 from journal_ai.reporting import weekly_report
 from journal_ai.model import LocalModel
-from training.prepare import read_jsonl, ROOT, family
+from journal_ai.training.prepare import read_jsonl, ROOT, family
 
 NOW=datetime(2026,9,27,12,tzinfo=timezone.utc)
 

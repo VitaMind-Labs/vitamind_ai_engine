@@ -91,7 +91,7 @@ Mapping corrigé selon les *actions* du journal :
 
 ## Journal AI — à l'intérieur de l'agent
 
-`VitaMind_Journal_AI` est un **analyseur**, pas un second assistant (§44). Il
+`journal_ai` est un **analyseur**, pas un second assistant (§44). Il
 n'écrit rien, ne répond jamais au patient, ne décide rien. `lumina/journal.py` est
 la frontière qui l'y contraint.
 

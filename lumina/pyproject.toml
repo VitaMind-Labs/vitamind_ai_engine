@@ -13,9 +13,12 @@ dependencies = ["numpy>=1.26,<3"]
 test = ["pytest>=8,<9"]
 
 [tool.setuptools.packages.find]
-include = ["lumina*", "data_prep*", "training*", "evaluation*"]
+include = ["lumina*", "journal_ai*", "data_prep*", "training*", "evaluation*"]
+
+[tool.setuptools.package-data]
+journal_ai = ["models/journal-linear/*.json", "models/journal-linear/*.npz"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "journal_ai/tests"]
 pythonpath = ["."]
-norecursedirs = [".git", ".venv", "data", "VitaMind_Journal_AI", "artifacts", "datasets"]
+norecursedirs = [".git", ".venv", "data", "artifacts", "datasets"]

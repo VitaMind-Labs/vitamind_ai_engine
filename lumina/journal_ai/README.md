@@ -1,19 +1,19 @@
 # VitaMind Journal Sentinel — AI only
 
-A standalone English–Arabic journal analyzer, completely separate from Mira.
+An English–Arabic journal analyzer, completely separate from Mira. It is a component of the Lumina agent (`lumina/journal_ai/`): Lumina calls it through `lumina/journal.py` and it never talks to the patient or writes anywhere on its own.
 It includes a model **trained from scratch** on your supplied data. There are no pretrained weights, fine-tuning steps, API keys, remote inference calls, or graphical interface.
 
 This is a working development baseline. It is not a general-purpose chatbot or a clinically validated crisis detector. Read the measured results in `MODEL_CARD.md` before interpreting its output.
 
 ## Try it in the VS Code terminal
 
-1. Extract the ZIP and open the **VitaMind_Journal_AI** folder in VS Code.
+1. Open the **lumina** folder in VS Code.
 2. Open **Terminal → New Terminal**. Use Python 3.10 or newer.
 3. Run:
 
 ```text
-python -m pip install -r requirements.txt
-python run.py interactive
+python -m pip install -e .
+python -m journal_ai interactive
 ```
 
 Write a journal entry in English or Arabic. Type `/exit` to stop.
@@ -23,10 +23,10 @@ NumPy is the only runtime dependency. Installation can require internet access; 
 For full JSON output:
 
 ```text
-python run.py analyze --text "I feel anxious and overwhelmed today" --lang en
-python run.py analyze --file examples/journal_ar.txt --lang ar --audit
-python run.py batch examples/requests.jsonl
-python examples/integration.py
+python -m journal_ai analyze --text "I feel anxious and overwhelmed today" --lang en
+python -m journal_ai analyze --file journal_ai/examples/journal_ar.txt --lang ar --audit
+python -m journal_ai batch journal_ai/examples/requests.jsonl
+python journal_ai/examples/integration.py
 ```
 
 Arabic UTF-8 files are useful if your terminal keyboard or encoding is inconvenient.
@@ -59,14 +59,14 @@ print(result["review"])
 ```
 
 Use `lang="ar"` for Arabic response templates. Mixed-language input is accepted. If `lang` is omitted, script proportions choose the response language; callers can override it.
-Use this example from the project directory, or install in editable mode with `python -m pip install -e .`.
+Use this example from the `lumina/` folder, or install Lumina in editable mode with `python -m pip install -e .`.
 
 ## Train your model again, from scratch
 
 ```text
-python -m training.train
-python -m training.evaluate --strict
-python -m unittest discover -s tests -v
+python -m journal_ai.training.train
+python -m journal_ai.training.evaluate --strict
+python -m pytest journal_ai/tests -q
 ```
 
 Training starts with zero weights each time. It does not fine-tune any existing model.
@@ -84,8 +84,9 @@ For reproducible runs, the default seed is 42. Exact numeric reproducibility can
 
 | Folder/file | Purpose |
 |---|---|
-| `journal_ai/` | Normalization, trained inference, rules, fusion, signatures, responses and reports |
-| `journal_ai/models/journal-linear/` | Actual trained model and feature configuration |
+| `*.py` (package root) | Normalization, trained inference, rules, fusion, signatures, responses and reports |
+| `__main__.py`, `cli.py` | Terminal entry point: `python -m journal_ai …` |
+| `models/journal-linear/` | Actual trained model and feature configuration |
 | `training/` | Data preparation, from-scratch training and evaluation |
 | `data/source/` | Your three uploaded datasets, copied unchanged |
 | `data/prepared/` | Deduplicated, meaning-separated training/validation/test partitions |
@@ -102,7 +103,7 @@ For reproducible runs, the default seed is 42. Exact numeric reproducibility can
 Call `journal_ai.reporting.weekly_report(analyses, lang="en")`, or put a JSON array of analysis results in a UTF-8 file and run:
 
 ```text
-python run.py report saved-analyses.json --lang en
+python -m journal_ai report saved-analyses.json --lang en
 ```
 
 The report has five fixed, data-derived bullets, numeric counts and text markers. It does not need raw journal text or a language-generation model. Give each journal a stable `entry_id`; repeated analyses of the same entry are deduplicated. The caller owns persistence and access control.

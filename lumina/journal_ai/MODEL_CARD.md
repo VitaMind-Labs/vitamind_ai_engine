@@ -63,7 +63,7 @@ The uploaded high-tier regression gate currently passes **6/6** cases. Rules wer
 
 ## Retraining and reproducibility
 
-Run `python -m training.train`, then `python -m training.evaluate --strict` and `python -m unittest discover -s tests -v`. Every training run starts from zero and overwrites the model artifact. Preserve your current folder first if you want to compare versions. Recreate `JournalSentinel` or restart the process after training.
+From the `lumina/` folder, run `python -m journal_ai.training.train`, then `python -m journal_ai.training.evaluate --strict` and `python -m pytest journal_ai/tests -q`. Every training run starts from zero and overwrites the model artifact. Preserve your current folder first if you want to compare versions. Recreate `JournalSentinel` or restart the process after training.
 
 Prepared partitions are regenerated deterministically from source files and the seed. Model results may vary slightly by NumPy/platform version. Source hashes and partition membership are stored in `reports/data-audit.json`.
 

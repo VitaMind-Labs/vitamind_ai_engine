@@ -5,7 +5,7 @@ any response is produced, and generation must never overrule it. This module is
 where that ordering is enforced, and it is built on two independent detectors so
 that neither one failing can silently produce a NORMAL verdict:
 
-* Rules - the complete VitaMind_Journal_AI analyzer: its cue lexicon, its own
+* Rules - the complete journal_ai analyzer: its cue lexicon, its own
   small classifier, and its clause-scoped fusion policy. The scoping is the point:
   "my brother said he wanted to die" and "a few years ago I felt that way" are
   not treated as present first-person risk, and "this traffic is killing me" is
@@ -31,15 +31,9 @@ output rather than swallowed.
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 from .taxonomy import SAFETY_LEVELS, SAFETY_ORDER
-
-# The journal analyzer is a sibling project rather than an installed dependency.
-_JOURNAL_ROOT = Path(__file__).resolve().parents[1] / "VitaMind_Journal_AI"
-if str(_JOURNAL_ROOT) not in sys.path:
-    sys.path.insert(0, str(_JOURNAL_ROOT))
 
 # Journal tier -> Lumina safety level, following the journal's own *action*
 # semantics rather than the ordering of its tier names:

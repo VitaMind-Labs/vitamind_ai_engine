@@ -4,7 +4,7 @@
 
 ```bash
 cp .env.example .env    # puis renseigner LUMINA_SERVICE_SECRET
-make dev                # == python -m scripts.run_all
+python run.py           # == make dev == python -m scripts.run_all
 ```
 
 ```
@@ -164,7 +164,15 @@ Mira n'a aujourd'hui **aucune authentification service-à-service** ; Lumina en 
 Factoriser `/health`, `/ready`, `/version`, la vérification HMAC et le request-id,
 puis les appliquer à Mira. C'est un durcissement, pas un refactor cosmétique.
 
-### Étape 4 — remonter `journal_ai/` d'un niveau
+### Étape 4 — remonter `journal_ai/` d'un niveau — DONE
+
+> **Status (2026-09-29):** done. The package now lives at `lumina/journal_ai/`
+> (code, `training/`, `tests/`, `data/`, `reports/`, `examples/`), the
+> `sys.path` hacks in `lumina/journal.py` and `lumina/safety.py` are gone, its
+> tests run in Lumina's pytest suite, and `MANIFEST.json` was regenerated. It
+> still has its own normalizer until step 1 lands. The checksum failure was
+> caused by CRLF checkouts (`core.autocrlf=true`), now prevented by the root
+> `.gitattributes`.
 
 `lumina/VitaMind_Journal_AI/` est un dépôt vendored avec son propre `pyproject`,
 son propre normaliseur et un test de checksum `MANIFEST` **actuellement en échec**
@@ -205,7 +213,8 @@ Le launcher reste l'outil de développement ; compose est la cible de déploieme
 1. **Trois normaliseurs** — étape 1 ci-dessus. C'est la dette la plus coûteuse.
 2. **Mira sans auth service-à-service** — étape 3.
 3. **22 tests Mira en échec** (préexistants, inchangés par ce travail).
-4. **Checksum `MANIFEST` du journal en échec** après le déplacement des fichiers.
+4. ~~**Checksum `MANIFEST` du journal en échec** après le déplacement des fichiers.~~
+   Resolved — see step 4.
 5. **DailyDialog est CC BY-NC-SA 4.0** : le modèle `understanding` n'est pas
    expédiable commercialement en l'état.
 6. **Aucune validation clinique.** Les 12 interventions sont

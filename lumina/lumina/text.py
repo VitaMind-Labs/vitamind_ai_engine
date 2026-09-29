@@ -1,6 +1,6 @@
 """Shared, versioned EN/AR normalization for training, inference and matching.
 
-Deliberately identical in behaviour to VitaMind_Journal_AI's normalizer so that a
+Deliberately identical in behaviour to journal_ai's normalizer so that a
 phrase indexed by the journal analyzer and the same phrase seen by Lumina's own
 models are tokenized the same way. The version string is stored in every model
 config; a mismatch refuses to load rather than silently degrading.

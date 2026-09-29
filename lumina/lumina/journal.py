@@ -1,6 +1,6 @@
 """Journal AI as a module inside the Lumina agent.
 
-VitaMind_Journal_AI is an *analyzer*, not a second assistant (spec s44): entry
+`journal_ai` is an *analyzer*, not a second assistant (spec s44): entry
 text in, structured signals out. It never persists, never replies to the patient
 and never decides anything. This module is the boundary that holds it to that,
 and the contract Lumina core consumes.
@@ -25,16 +25,10 @@ classified; no part of it is interpreted as an instruction to the system.
 from __future__ import annotations
 
 import datetime as dt
-import sys
 from dataclasses import asdict, dataclass, field
-from pathlib import Path
 
 from .state import SCALE_MAX
 from .taxonomy import SAFETY_ORDER
-
-_JOURNAL_ROOT = Path(__file__).resolve().parents[1] / "VitaMind_Journal_AI"
-if str(_JOURNAL_ROOT) not in sys.path:
-    sys.path.insert(0, str(_JOURNAL_ROOT))
 
 ANALYSIS_VERSION = "lumina-journal-analysis-v1"
 
@@ -131,7 +125,7 @@ class JournalAnalysisResult:
 
 
 class JournalAnalyzer:
-    """Wraps VitaMind_Journal_AI behind the Lumina contract."""
+    """Wraps journal_ai behind the Lumina contract."""
 
     def __init__(self, sentinel=None, emotion_model=None):
         if sentinel is None:
