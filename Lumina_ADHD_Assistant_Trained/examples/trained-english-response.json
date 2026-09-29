@@ -1,0 +1,116 @@
+{
+  "requestId": "c44c6bca-6e38-4de6-bfe7-24520dbbd307",
+  "module": "ADHD_EXECUTIVE_FUNCTION",
+  "version": "1.1.0",
+  "language": "EN",
+  "intent": "ORGANIZE_DAY",
+  "friction": [
+    "UNKNOWN"
+  ],
+  "capacity": "NORMAL",
+  "analysis": {
+    "taskCount": 1,
+    "needsClarification": false,
+    "dataQuality": "MODERATE",
+    "uncertainty": [
+      "DURATION_NOT_PROVIDED",
+      "TASK_DURATION_UNKNOWN_STARTER_ONLY"
+    ],
+    "clarification": null,
+    "capacityEvidence": [
+      "CONSERVATIVE_DEFAULT_NOT_MEASURED"
+    ],
+    "intentSource": "LOCAL_TRAINED_CLASSIFIER",
+    "intentConfidence": null,
+    "frictionSource": "LOCAL_TRAINED_CLASSIFIER",
+    "languagesObserved": [
+      "EN"
+    ]
+  },
+  "plan": {
+    "strategy": "SHORT_DAY_PLAN",
+    "primaryTask": {
+      "temporaryId": "report",
+      "title": "write the report",
+      "scheduledDate": null,
+      "startTime": null,
+      "deadline": null,
+      "durationMinutes": null,
+      "importance": "UNKNOWN",
+      "consequence": "UNKNOWN",
+      "energyRequirement": "UNKNOWN",
+      "startupDifficulty": "UNKNOWN",
+      "cognitiveLoad": "UNKNOWN",
+      "dependencies": [],
+      "postponedCount": 0,
+      "location": null,
+      "status": "TODO",
+      "source": "PROVIDED"
+    },
+    "nextAction": {
+      "text": "Open the document for: write the report.",
+      "estimatedMinutes": null,
+      "source": "TEMPLATE",
+      "templateId": "document.open"
+    },
+    "secondaryTasks": [],
+    "rankedTasks": [
+      {
+        "task": {
+          "temporaryId": "report",
+          "title": "write the report",
+          "scheduledDate": null,
+          "startTime": null,
+          "deadline": null,
+          "durationMinutes": null,
+          "importance": "UNKNOWN",
+          "consequence": "UNKNOWN",
+          "energyRequirement": "UNKNOWN",
+          "startupDifficulty": "UNKNOWN",
+          "cognitiveLoad": "UNKNOWN",
+          "dependencies": [],
+          "postponedCount": 0,
+          "location": null,
+          "status": "TODO",
+          "source": "PROVIDED"
+        },
+        "score": 0,
+        "factors": [],
+        "blocked": false,
+        "bucket": "PRIMARY"
+      }
+    ],
+    "day": "2026-09-29"
+  },
+  "focusSession": {
+    "recommended": true,
+    "minutes": 10,
+    "successCondition": "Open the document for: write the report.",
+    "basis": "capacity-aware starting block, not a duration estimate",
+    "estimateOfTaskDuration": false
+  },
+  "response": {
+    "text": "Start here: Open the document for: write the report.",
+    "tone": "CALM",
+    "length": "SHORT",
+    "templateId": "en-ar-v1.EN.start.1"
+  },
+  "taskOperations": [],
+  "memoryCandidates": [],
+  "patternCandidates": [],
+  "followUp": {
+    "type": "AFTER_ACTION",
+    "recommendedAfterMinutes": 10
+  },
+  "safety": {
+    "level": "NORMAL",
+    "flags": [],
+    "source": "local_journal_model_and_rules",
+    "deliveryStatus": "NOT_SENT",
+    "inputRemainsEditable": true
+  },
+  "performance": {
+    "processingTimeMs": 15.595
+  },
+  "tokenUsage": null
+}

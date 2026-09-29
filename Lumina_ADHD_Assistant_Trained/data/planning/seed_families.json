@@ -1,0 +1,317 @@
+{
+  "description": "AI-authored synthetic semantic families. Not human-reviewed, not patient observations. Each paired English/Arabic meaning and all object substitutions share a split.",
+  "intent": {
+    "ADD_TASK": [
+      ["I need to {task} tomorrow.", "أحتاج أن {task} غدا."],
+      ["Please add {task} to my task list.", "أضف {task} إلى قائمة مهامي."],
+      ["Remind me to {task} today.", "ذكرني أن {task} اليوم."],
+      ["Put {task} on my calendar for tomorrow.", "ضع {task} في تقويمي ليوم غد."],
+      ["A new task for me: {task}.", "مهمة جديدة عندي: {task}."],
+      ["I want to schedule time to {task}.", "أريد تحديد وقت لكي {task}."],
+      ["Could you note down that I have to {task}?", "هل يمكنك تسجيل أن علي أن {task}؟"],
+      ["Don't let me forget to {task} tomorrow.", "لا تدعني أنسى أن {task} غدا."],
+      ["The calendar needs an entry for {task}.", "يحتاج التقويم إلى إضافة مهمة {task}."],
+      ["Record {task} as something I need to do.", "سجل {task} ضمن الأشياء التي علي فعلها."]
+    ],
+    "ORGANIZE_DAY": [
+      ["Help me organize my day.", "ساعدني على تنظيم يومي."],
+      ["Can you build a simple plan for today?", "هل يمكنك إعداد خطة بسيطة لليوم؟"],
+      ["What is on my calendar today?", "ما الموجود في تقويمي اليوم؟"],
+      ["Show the tasks I have tomorrow.", "اعرض المهام التي لدي غدا."],
+      ["I have twenty minutes; plan what I can do.", "عندي عشرون دقيقة؛ خطط لما يمكنني فعله."],
+      ["Arrange today's activities into a manageable list.", "رتب أنشطة اليوم في قائمة يمكنني تنفيذها."],
+      ["Give me an overview of today's commitments.", "أعطني نظرة عامة على التزامات اليوم."],
+      ["How should the rest of my day be structured?", "كيف أنظم ما تبقى من يومي؟"],
+      ["Let us map out tomorrow's agenda.", "دعنا نضع جدول أعمال الغد."],
+      ["Make a short daily routine from my saved tasks.", "اصنع روتينا يوميا قصيرا من مهامي المحفوظة."]
+    ],
+    "PRIORITIZE": [
+      ["Which task should I do first?", "أي مهمة يجب أن أفعلها أولا؟"],
+      ["Help me prioritize my schedule for today.", "ساعدني على ترتيب أولويات جدول اليوم."],
+      ["Rank my tasks by importance.", "رتب مهامي حسب الأهمية."],
+      ["Pick the most urgent item from my list.", "اختر البند الأكثر إلحاحا من قائمتي."],
+      ["What deserves my attention before everything else?", "ما الذي يستحق انتباهي قبل كل شيء؟"],
+      ["I need an order for these jobs.", "أحتاج ترتيبا لتنفيذ هذه الأعمال."],
+      ["Which commitment matters most right now?", "أي التزام هو الأهم الآن؟"],
+      ["Decide what can wait and what comes first.", "حدد ما يمكن تأجيله وما يأتي أولا."],
+      ["Sort the pending work from essential to optional.", "صنف العمل المتبقي من الضروري إلى الاختياري."],
+      ["Of the saved tasks, select the highest priority.", "من المهام المحفوظة اختر الأعلى أولوية."]
+    ],
+    "BREAK_DOWN_TASK": [
+      ["Break {task} into smaller steps.", "قسم مهمة {task} إلى خطوات أصغر."],
+      ["The step for {task} is too big; shrink it.", "خطوة {task} كبيرة جدا؛ صغرها."],
+      ["Give me a checklist for {task}.", "أعطني قائمة خطوات لمهمة {task}."],
+      ["Split {task} into tiny actions.", "جزئ مهمة {task} إلى إجراءات صغيرة."],
+      ["Show the pieces involved in {task}.", "وضح الأجزاء اللازمة لمهمة {task}."],
+      ["Can {task} be divided into manageable chunks?", "هل يمكن تقسيم {task} إلى أجزاء يسهل تنفيذها؟"],
+      ["Turn {task} into a sequence of simple moves.", "حول {task} إلى سلسلة خطوات بسيطة."],
+      ["Make each stage of {task} much smaller.", "اجعل كل مرحلة من {task} أصغر بكثير."],
+      ["Walk through {task} one piece at a time.", "اشرح {task} جزءا واحدا في كل مرة."],
+      ["I need bite-sized instructions for {task}.", "أحتاج تعليمات قصيرة ومتدرجة لمهمة {task}."]
+    ],
+    "START_TASK": [
+      ["Help me start {task}.", "ساعدني أن أبدأ مهمة {task}."],
+      ["I can't begin {task}; give me the first action.", "لا أستطيع بدء {task}؛ أعطني أول خطوة."],
+      ["What is the smallest way to begin {task}?", "ما أصغر خطوة أبدأ بها {task}؟"],
+      ["I am stuck at the beginning of {task}.", "أنا عالق عند بداية مهمة {task}."],
+      ["Get me going on {task}.", "ساعدني على الانطلاق في مهمة {task}."],
+      ["I know I need to do {task}, but cannot get started.", "أعرف أن علي تنفيذ {task} لكنني لا أقدر أن أبدأ."],
+      ["Give me a starting point for {task}.", "أعطني نقطة بداية لمهمة {task}."],
+      ["I need a gentle nudge to begin {task}.", "أحتاج دفعة لطيفة للبدء في {task}."],
+      ["How do I take the first step on {task}?", "كيف آخذ الخطوة الأولى في {task}؟"],
+      ["Help me get past the blank start of {task}.", "ساعدني على تجاوز التوقف في بداية {task}."]
+    ],
+    "CONTINUE_TASK": [
+      ["Continue working on {task} with me.", "واصل معي العمل على {task}."],
+      ["I am ready for the next step in {task}.", "أنا مستعد للخطوة التالية في {task}."],
+      ["We started {task}; let us keep going.", "بدأنا {task}؛ فلنكمل."],
+      ["Resume the task I paused deliberately.", "استأنف المهمة التي أوقفتها مؤقتا باختياري."],
+      ["I took a break and am ready to carry on.", "أخذت استراحة وأنا مستعد لمتابعة العمل."],
+      ["Move me to the following part of {task}.", "انتقل معي إلى الجزء التالي من {task}."],
+      ["I know where I stopped; help me proceed.", "أعرف أين توقفت؛ ساعدني أن أواصل."],
+      ["Let us pick up the planned next step.", "دعنا نكمل الخطوة التالية التي خططنا لها."],
+      ["I'm back and want to carry the work forward.", "عدت وأريد متابعة العمل إلى الأمام."],
+      ["What comes after the stage we just did?", "ما المرحلة التي تأتي بعد الجزء الذي نفذناه؟"]
+    ],
+    "FOCUS_HELP": [
+      ["Help me focus on {task}.", "ساعدني على التركيز في {task}."],
+      ["I keep getting distracted while working.", "يتشتت انتباهي باستمرار أثناء العمل."],
+      ["Set up a short focus session.", "جهز لي جلسة تركيز قصيرة."],
+      ["Can we do a five-minute work sprint?", "هل نجرب جلسة عمل لخمس دقائق؟"],
+      ["I need help staying with one task.", "أحتاج مساعدة للبقاء مع مهمة واحدة."],
+      ["My attention keeps drifting away from my work.", "ينتقل انتباهي بعيدا عن عملي باستمرار."],
+      ["Suggest a work block without distractions.", "اقترح فترة عمل دون مشتتات."],
+      ["How can I stay on track for a few minutes?", "كيف أبقى ملتزما بالمهمة لبضع دقائق؟"],
+      ["Keep me on this activity for one short interval.", "ساعدني أن أبقى مع هذا النشاط لفترة قصيرة."],
+      ["I switch between tabs instead of concentrating.", "أتنقل بين النوافذ بدلا من التركيز."]
+    ],
+    "INTERRUPTION_RECOVERY": [
+      ["I forgot what I was doing.", "نسيت ماذا كنت أفعل."],
+      ["Where was I before that interruption?", "أين توقفت قبل تلك المقاطعة؟"],
+      ["Someone interrupted me and I lost my place.", "قاطعني شخص ونسيت أين وصلت."],
+      ["Bring me back to the step before the phone call.", "أعدني إلى الخطوة التي سبقت المكالمة."],
+      ["The doorbell broke my train of thought.", "جرس الباب قطع تسلسل أفكاري."],
+      ["I returned to my desk but cannot remember the task.", "عدت إلى مكتبي لكنني لا أتذكر المهمة."],
+      ["I was pulled away; remind me where to resume.", "انشغلت فجأة؛ ذكرني من أين أستأنف."],
+      ["After that distraction I lost the next action.", "بعد ذلك التشتيت نسيت الإجراء التالي."],
+      ["What was the work I had open before I left?", "ما العمل الذي كان أمامي قبل أن أغادر؟"],
+      ["I lost the thread when a message arrived.", "فقدت تسلسل المهمة عندما وصلت رسالة."]
+    ],
+    "TIME_ESTIMATION": [
+      ["How long will {task} take?", "كم تستغرق مهمة {task}؟"],
+      ["Estimate the time needed for {task}.", "قدر الوقت اللازم لمهمة {task}."],
+      ["How many minutes should I reserve for this?", "كم دقيقة ينبغي أن أخصص لهذا؟"],
+      ["Could {task} fit into twenty minutes?", "هل يمكن أن أنجز {task} في عشرين دقيقة؟"],
+      ["What is a realistic duration for this task?", "ما المدة الواقعية لهذه المهمة؟"],
+      ["I need a time budget for {task}.", "أحتاج تقديرا زمنيا لمهمة {task}."],
+      ["Tell me how much of the afternoon to set aside.", "أخبرني كم من وقت بعد الظهر أخصص لهذا."],
+      ["Can you help judge the length of this job?", "هل تساعدني في تقدير طول هذا العمل؟"],
+      ["Is this a quick activity or a longer one?", "هل هذا نشاط قصير أم يحتاج وقتا أطول؟"],
+      ["Work out how much time this might need.", "ساعدني في حساب الوقت الذي قد يحتاجه هذا."]
+    ],
+    "OVERWHELMED_WITH_TASKS": [
+      ["I have too many tasks and feel overwhelmed.", "عندي مهام كثيرة وأشعر بالإرهاق منها."],
+      ["Everything on my list feels like too much.", "كل شيء في قائمتي يبدو أكثر من قدرتي."],
+      ["I don't know where to start with this mountain of work.", "لا أعرف من أين أبدأ مع هذا الكم من العمل."],
+      ["My responsibilities are piling up and I feel overloaded.", "تتراكم مسؤولياتي وأشعر بأن الحمل كبير."],
+      ["There are more things to do than I can handle today.", "عندي أشياء أكثر مما أستطيع تنفيذه اليوم."],
+      ["Looking at my whole task list shuts me down.", "النظر إلى قائمة مهامي كاملة يجعلني أتوقف."],
+      ["All these commitments at once are too much for me.", "كل هذه الالتزامات معا أصبحت فوق طاقتي."],
+      ["My head is crowded with unfinished chores.", "رأسي مزدحم بالأعمال غير المنتهية."],
+      ["The amount of pending work is swamping me.", "كمية العمل المتبقي تغمرني وتربكني."],
+      ["I need the load reduced to something manageable.", "أحتاج تخفيف الحمل إلى شيء أستطيع التعامل معه."]
+    ],
+    "PROCRASTINATION": [
+      ["I keep putting off {task}.", "أظل أؤجل مهمة {task}."],
+      ["I am procrastinating on {task} again.", "أعود للتسويف في مهمة {task}."],
+      ["I avoid {task} by doing easier things.", "أتجنب {task} بفعل أشياء أسهل."],
+      ["I keep saying I will do it later.", "أكرر أنني سأفعلها لاحقا."],
+      ["Every day I push {task} aside.", "كل يوم أضع {task} جانبا."],
+      ["I find excuses instead of dealing with this task.", "أجد الأعذار بدلا من التعامل مع هذه المهمة."],
+      ["I am delaying the work even though I have time.", "أؤخر العمل رغم أن عندي وقتا."],
+      ["I open other apps to escape this task.", "أفتح تطبيقات أخرى للهرب من هذه المهمة."],
+      ["I spend time preparing but never begin the real work.", "أقضي الوقت في الاستعداد ولا أبدأ العمل الفعلي."],
+      ["Help me stop postponing this responsibility.", "ساعدني على التوقف عن تأجيل هذه المسؤولية."]
+    ],
+    "TASK_COMPLETED": [
+      ["I finished the task.", "انتهيت من المهمة."],
+      ["Done with the step you gave me.", "خلصت الخطوة التي أعطيتني إياها."],
+      ["I completed it successfully.", "أكملتها بنجاح."],
+      ["That item is checked off now.", "تم إنجاز ذلك البند الآن."],
+      ["The work is all wrapped up.", "انتهى العمل بالكامل."],
+      ["I got through the whole thing.", "أنجزت الأمر كله."],
+      ["You can mark this task as done.", "يمكنك وضع علامة إنجاز على هذه المهمة."],
+      ["I reached the end of the activity.", "وصلت إلى نهاية النشاط."],
+      ["The action we planned is finished.", "الإجراء الذي خططنا له انتهى."],
+      ["Success, I managed to do it.", "نجحت وتمكنت من تنفيذها."]
+    ],
+    "TASK_FAILED": [
+      ["I didn't do the task.", "لم أنفذ المهمة."],
+      ["I could not finish that step.", "لم أستطع إكمال تلك الخطوة."],
+      ["The work session ended without progress.", "انتهت جلسة العمل دون تقدم."],
+      ["I tried but did not get it done.", "حاولت لكنني لم أنجزها."],
+      ["I never started the planned activity.", "لم أبدأ النشاط الذي خططنا له."],
+      ["That attempt did not work out.", "تلك المحاولة لم تنجح."],
+      ["The task is still unfinished after my attempt.", "المهمة ما زالت غير مكتملة بعد محاولتي."],
+      ["I only got halfway and stopped.", "وصلت إلى المنتصف فقط وتوقفت."],
+      ["I missed the action I committed to.", "لم أنفذ الإجراء الذي التزمت به."],
+      ["I wasn't able to follow through this time.", "لم أتمكن من المتابعة حتى النهاية هذه المرة."]
+    ],
+    "RESCHEDULE": [
+      ["Reschedule {task} to tomorrow.", "أعد جدولة {task} إلى الغد."],
+      ["Move {task} to Friday.", "انقل {task} إلى الجمعة."],
+      ["Postpone {task} until next Monday.", "أجل {task} إلى الاثنين القادم."],
+      ["Change the date of {task} to tomorrow.", "غير تاريخ {task} إلى الغد."],
+      ["Shift my existing task to another day.", "انقل مهمتي الحالية إلى يوم آخر."],
+      ["The appointment time needs to be moved.", "موعد النشاط يحتاج إلى تغيير."],
+      ["Can we push this task back by two days?", "هل يمكننا تأخير هذه المهمة يومين؟"],
+      ["Bring {task} forward to today.", "قدم {task} إلى اليوم."],
+      ["Use a later slot for the task already in my calendar.", "اختر وقتا لاحقا للمهمة الموجودة في تقويمي."],
+      ["Rebook the saved activity for the following day.", "أعد حجز النشاط المحفوظ في اليوم التالي."]
+    ],
+    "UNKNOWN": [
+      ["What is the weather forecast?", "ما توقعات الطقس؟"],
+      ["Play some music for me.", "شغل بعض الموسيقى لي."],
+      ["Who invented the telephone?", "من اخترع الهاتف؟"],
+      ["Do not add {task} to my list.", "لا تضف {task} إلى قائمتي."],
+      ["I am quoting someone saying finish the report.", "أنا أقتبس شخصا يقول أكمل التقرير."],
+      ["What does the word prioritize mean?", "ما معنى كلمة ترتيب الأولويات؟"],
+      ["Tell me a joke about calendars.", "أخبرني نكتة عن التقويم."],
+      ["I haven't decided whether I want a new task.", "لم أقرر إن كنت أريد إضافة مهمة جديدة."],
+      ["The word done is printed on the button.", "كلمة انتهى مطبوعة على الزر."],
+      ["Convert ten dollars to euros.", "حول عشرة دولارات إلى يورو."]
+    ]
+  },
+  "friction": {
+    "TOO_BIG": [
+      ["This task is too big to tackle at once.", "هذه المهمة كبيرة جدا لتنفيذها دفعة واحدة."],
+      ["The project feels enormous.", "المشروع يبدو ضخما."],
+      ["There are too many stages inside this one task.", "توجد مراحل كثيرة داخل هذه المهمة الواحدة."],
+      ["This assignment needs to be much smaller.", "هذا التكليف يحتاج أن يصير أصغر بكثير."],
+      ["The size of the job is stopping me.", "حجم العمل يمنعني من التحرك."],
+      ["I cannot face the whole project in one go.", "لا أستطيع مواجهة المشروع كله دفعة واحدة."],
+      ["One item on my list contains a mountain of work.", "بند واحد في قائمتي يحتوي على كم هائل من العمل."],
+      ["It is a giant task rather than a small action.", "إنها مهمة عملاقة وليست خطوة صغيرة."]
+    ],
+    "UNCLEAR": [
+      ["The instructions are unclear.", "التعليمات غير واضحة."],
+      ["I don't understand what this task asks for.", "لا أفهم ما تطلبه هذه المهمة."],
+      ["I cannot tell what the finished result should be.", "لا أعرف كيف يجب أن تبدو النتيجة النهائية."],
+      ["The goal of this assignment is vague.", "هدف هذا التكليف غامض."],
+      ["I need the requirements explained.", "أحتاج إلى شرح المتطلبات."],
+      ["What counts as success here is not defined.", "ما يعتبر نجاحا هنا غير محدد."],
+      ["I am unsure what they actually want from me.", "لست متأكدا مما يريدونه مني فعلا."],
+      ["The task description leaves me confused.", "وصف المهمة يجعلني محتارا."]
+    ],
+    "BORING": [
+      ["This work is boring.", "هذا العمل ممل."],
+      ["The repetitive steps do not hold my interest.", "الخطوات المتكررة لا تجذب اهتمامي."],
+      ["I feel bored by this routine task.", "أشعر بالملل من هذه المهمة الروتينية."],
+      ["There is nothing engaging about this activity.", "لا يوجد شيء مشوق في هذا النشاط."],
+      ["The work feels dull and monotonous.", "العمل يبدو مملا ورتيبا."],
+      ["Doing the same thing again is tedious.", "فعل الشيء نفسه مرة أخرى مضجر."],
+      ["I cannot find anything interesting in this chore.", "لا أجد شيئا مثيرا للاهتمام في هذا العمل."],
+      ["The activity gives me no sense of novelty.", "النشاط لا يعطيني أي إحساس بالتجديد."]
+    ],
+    "ANXIETY": [
+      ["I feel anxious about making this call.", "أشعر بالقلق من إجراء هذه المكالمة."],
+      ["I am worried about how this task will go.", "أنا قلق بشأن كيف ستسير هذه المهمة."],
+      ["Thinking about the meeting makes me nervous.", "التفكير في الاجتماع يجعلني متوترا."],
+      ["I fear getting a negative reaction at work.", "أخاف من تلقي رد سلبي في العمل."],
+      ["The presentation feels intimidating.", "العرض التقديمي يشعرني بالرهبة."],
+      ["I have butterflies about contacting the client.", "أشعر بتوتر عند التفكير في التواصل مع العميل."],
+      ["Anticipating this conversation makes me tense.", "انتظار هذه المحادثة يجعلني مشدود الأعصاب."],
+      ["I worry that people will judge my work.", "أقلق من أن يحكم الناس على عملي."]
+    ],
+    "PERFECTIONISM": [
+      ["I want this to be perfect before I submit it.", "أريد أن يكون هذا مثاليا قبل تسليمه."],
+      ["I keep correcting tiny details instead of finishing.", "أواصل تصحيح تفاصيل صغيرة بدلا من الإنهاء."],
+      ["A small mistake makes me redo the whole thing.", "خطأ صغير يجعلني أعيد العمل كله."],
+      ["Good enough never feels acceptable to me.", "النتيجة الجيدة بما يكفي لا تبدو مقبولة لي."],
+      ["I cannot stop polishing the same paragraph.", "لا أستطيع التوقف عن تنقيح الفقرة نفسها."],
+      ["I keep restarting because the result is not flawless.", "أكرر البدء لأن النتيجة ليست خالية من العيوب."],
+      ["My standards stop me from sending the draft.", "معاييري تمنعني من إرسال المسودة."],
+      ["I am stuck endlessly refining something already usable.", "أنا عالق في تحسين شيء صالح للاستخدام بلا نهاية."]
+    ],
+    "LOW_ENERGY": [
+      ["I feel tired and have low energy today.", "أشعر بالتعب وطاقتي منخفضة اليوم."],
+      ["I barely slept and feel exhausted.", "نمت قليلا جدا وأشعر بالإرهاق."],
+      ["My mental battery feels empty.", "أشعر أن طاقتي الذهنية نفدت."],
+      ["I have very little stamina for work right now.", "قدرتي على تحمل العمل قليلة جدا الآن."],
+      ["Even a small chore feels draining today.", "حتى العمل الصغير يستنزفني اليوم."],
+      ["I am worn out after a long day.", "أنا منهك بعد يوم طويل."],
+      ["I need a gentler workload because I am fatigued.", "أحتاج حملا أخف لأنني متعب."],
+      ["There is hardly any energy left for tasks.", "لم تبق طاقة تكاد تكفي للمهام."]
+    ],
+    "NO_CLEAR_START": [
+      ["I can't start even though I know the goal.", "لا أقدر أن أبدأ رغم أنني أعرف الهدف."],
+      ["I do not know what the first action is.", "لا أعرف ما الإجراء الأول."],
+      ["Beginning is the part where I get stuck.", "البداية هي الجزء الذي أعلق عنده."],
+      ["I need a clear starting point.", "أحتاج نقطة انطلاق واضحة."],
+      ["I sit down to work but cannot take the first step.", "أجلس للعمل لكنني لا آخذ الخطوة الأولى."],
+      ["I understand the assignment but cannot get going.", "أفهم التكليف لكنني لا أستطيع الانطلاق."],
+      ["Getting into the task is the difficult part.", "الدخول في المهمة هو الجزء الصعب."],
+      ["The first move is missing from my plan.", "الخطوة الأولى مفقودة من خطتي."]
+    ],
+    "TOO_MANY_CHOICES": [
+      ["There are too many choices and I cannot pick one.", "توجد خيارات كثيرة ولا أقدر على اختيار واحد."],
+      ["Several options seem equally good.", "تبدو عدة خيارات جيدة بالقدر نفسه."],
+      ["I keep comparing alternatives without deciding.", "أقارن البدائل باستمرار دون أن أقرر."],
+      ["Choosing between these tasks is blocking me.", "الاختيار بين هذه المهام يعطلني."],
+      ["I need the options narrowed down.", "أحتاج إلى تقليل عدد الخيارات."],
+      ["Every possible starting task seems reasonable.", "كل مهمة يمكن البدء بها تبدو مناسبة."],
+      ["I am stuck weighing one option against another.", "أنا عالق في الموازنة بين خيار وآخر."],
+      ["Making the decision is harder than doing the task.", "اتخاذ القرار أصعب من تنفيذ المهمة."]
+    ],
+    "TIME_BLINDNESS": [
+      ["I lost track of time while working.", "فقدت الإحساس بالوقت أثناء العمل."],
+      ["I thought five minutes passed but it was an hour.", "ظننت أن خمس دقائق مرت لكنها كانت ساعة."],
+      ["I keep underestimating how long chores take.", "أقلل باستمرار من الوقت الذي تحتاجه الأعمال."],
+      ["Time disappears without me noticing.", "يمر الوقت دون أن أشعر به."],
+      ["I cannot sense how much time is left.", "لا أشعر بكمية الوقت المتبقي."],
+      ["My time estimates are always far from reality.", "تقديراتي الزمنية بعيدة دائما عن الواقع."],
+      ["I looked up and the entire afternoon had gone.", "رفعت رأسي فوجدت أن فترة بعد الظهر انتهت."],
+      ["I have trouble noticing the passage of minutes.", "أجد صعوبة في ملاحظة مرور الدقائق."]
+    ],
+    "DISTRACTION": [
+      ["Notifications keep distracting me.", "الإشعارات تشتتني باستمرار."],
+      ["I cannot keep my attention on the task.", "لا أستطيع إبقاء انتباهي على المهمة."],
+      ["I jump from one browser tab to another.", "أقفز من نافذة متصفح إلى أخرى."],
+      ["Background noise pulls me away from work.", "ضوضاء الخلفية تصرفني عن العمل."],
+      ["I keep checking my phone instead of reading.", "أفحص هاتفي باستمرار بدلا من القراءة."],
+      ["My attention wanders whenever I try to study.", "يشرد انتباهي كلما حاولت الدراسة."],
+      ["Other things in the room keep catching my eye.", "أشياء أخرى في الغرفة تجذب نظري باستمرار."],
+      ["I drift into unrelated websites during the task.", "أنجرف إلى مواقع لا علاقة لها بالمهمة."]
+    ],
+    "INTERRUPTION": [
+      ["A phone call interrupted my work.", "قاطعت مكالمة هاتفي عملي."],
+      ["Someone asked a question and I lost my place.", "سألني شخص سؤالا ونسيت أين وصلت."],
+      ["The doorbell stopped the step I was doing.", "جرس الباب أوقف الخطوة التي كنت أنفذها."],
+      ["A sudden message broke my train of thought.", "رسالة مفاجئة قطعت تسلسل أفكاري."],
+      ["I had to leave the desk in the middle of the task.", "اضطررت لترك المكتب في منتصف المهمة."],
+      ["An unexpected interruption made me forget the next step.", "مقاطعة غير متوقعة جعلتني أنسى الخطوة التالية."],
+      ["I was pulled into another conversation mid-task.", "انجذبت إلى محادثة أخرى وسط المهمة."],
+      ["Something urgent broke the flow of my work.", "أمر عاجل قطع تسلسل عملي."]
+    ],
+    "AVOIDANCE": [
+      ["I keep avoiding this task.", "أواصل تجنب هذه المهمة."],
+      ["I put the work off again and again.", "أؤجل العمل مرة بعد مرة."],
+      ["I do other chores to escape the important one.", "أنفذ أعمالا أخرى للتهرب من العمل المهم."],
+      ["I tell myself I will deal with it later.", "أقول لنفسي إنني سأتعامل معه لاحقا."],
+      ["I make excuses whenever this task comes up.", "أختلق الأعذار كلما ظهرت هذه المهمة."],
+      ["I push the task away whenever I remember it.", "أبعد المهمة عني كلما تذكرتها."],
+      ["I choose easy busywork instead of facing this.", "أختار أعمالا سهلة تشغلني بدلا من مواجهة هذا."],
+      ["I am delaying it on purpose even with free time.", "أؤخرها عمدا رغم وجود وقت فراغ."]
+    ],
+    "OVERWHELM": [
+      ["I am overwhelmed by the number of tasks.", "أشعر بالإرهاق من عدد المهام."],
+      ["Too many demands are piling up at once.", "تتراكم مطالب كثيرة في الوقت نفسه."],
+      ["My list feels beyond what I can handle.", "قائمتي تبدو فوق ما أستطيع التعامل معه."],
+      ["There is too much work coming from every direction.", "يأتيني عمل كثير من كل اتجاه."],
+      ["The total workload leaves me frozen.", "إجمالي العمل يجعلني عاجزا عن التحرك."],
+      ["I feel overloaded by all my commitments.", "أشعر بحمل زائد من كل التزاماتي."],
+      ["I cannot manage this many responsibilities together.", "لا أستطيع إدارة كل هذه المسؤوليات معا."],
+      ["I need fewer demands in front of me right now.", "أحتاج مطالب أقل أمامي في الوقت الحالي."]
+    ]
+  }
+}

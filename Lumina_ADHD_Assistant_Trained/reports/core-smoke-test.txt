@@ -1,0 +1,18 @@
+test_ambiguous_day (__main__.CoreSmokeTests.test_ambiguous_day) ... ok
+test_arabic_task_difficulty_separated (__main__.CoreSmokeTests.test_arabic_task_difficulty_separated) ... ok
+test_arabic_time (__main__.CoreSmokeTests.test_arabic_time) ... ok
+test_benign_recovery (__main__.CoreSmokeTests.test_benign_recovery) ... ok
+test_bilingual_examples (__main__.CoreSmokeTests.test_bilingual_examples) ... ok
+test_calendar_workflow (__main__.CoreSmokeTests.test_calendar_workflow) ... ok
+test_crisis_overrides (__main__.CoreSmokeTests.test_crisis_overrides) ... ok
+test_future_outcome_rejected (__main__.CoreSmokeTests.test_future_outcome_rejected) ... ok
+test_no_fabricated_metadata (__main__.CoreSmokeTests.test_no_fabricated_metadata) ... ok
+test_prior_day_dependency (__main__.CoreSmokeTests.test_prior_day_dependency) ... ok
+test_reduced_capacity (__main__.CoreSmokeTests.test_reduced_capacity) ... ok
+test_report_metrics (__main__.CoreSmokeTests.test_report_metrics) ... ok
+test_unsafe_recovery (__main__.CoreSmokeTests.test_unsafe_recovery) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.692s
+
+OK

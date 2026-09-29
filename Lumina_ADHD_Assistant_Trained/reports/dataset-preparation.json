@@ -1,0 +1,26 @@
+{
+  "sourceSha256": "7ddec51027ba48f3868501f915eff3f24bcadbc703a8abf3a4f7b69ac5d4905b",
+  "encoding": "cp1252",
+  "rawRows": 10271,
+  "validReferenceRows": 10265,
+  "quarantinedRows": 6,
+  "rowsBySplit": {
+    "train": 7185,
+    "validation": 1527,
+    "test": 1553
+  },
+  "nearDuplicateGrouping": {
+    "method": "exact normalized questions plus character-TFIDF nearest-neighbor graph",
+    "cosineSimilarityMinimum": 0.94,
+    "neighborsPerQuestion": 8,
+    "links": 564,
+    "groups": 9593,
+    "limitation": "Approximate lexical grouping; not proof that all semantic paraphrases are separated."
+  },
+  "intentLabels": 0,
+  "frictionLabels": 0,
+  "taskAnnotations": 0,
+  "arabicRows": 0,
+  "planningModelTraining": "BLOCKED_MISSING_LABELS",
+  "splitUsage": "QA reference/audit only. Not a held-out planning benchmark. No FAQ answers are returned at runtime."
+}

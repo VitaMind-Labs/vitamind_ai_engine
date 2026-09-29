@@ -1,0 +1,37 @@
+{
+  "seed": 42,
+  "records": 7844,
+  "bySource": {
+    "MASSIVE_1.1": 5134,
+    "SYNTHETIC": 2710
+  },
+  "byLanguage": {
+    "AR": 3803,
+    "EN": 3948,
+    "MIXED": 93
+  },
+  "bySplit": {
+    "train": 5259,
+    "test": 1415,
+    "validation": 1170
+  },
+  "intentLabeled": 6140,
+  "frictionLabeled": 2114,
+  "templateOrPublicUtteranceFamilies": 2965,
+  "quarantinedCrossSplitDuplicateRows": 122,
+  "nearDuplicateAudit": {
+    "similarityMinimum": 0.96,
+    "nearestNeighbors": 5,
+    "crossSplitPairsBeforeQuarantine": 25,
+    "method": "Character TF-IDF; remove entire lower-priority families; audit uses text only, never test labels. Not proof of semantic independence."
+  },
+  "familyLeakage": false,
+  "humanReviewed": false,
+  "publicIntentMapping": {
+    "calendar_set": "ADD_TASK",
+    "calendar_query": "ORGANIZE_DAY",
+    "selected_nonplanning_intents": "UNKNOWN"
+  },
+  "noFrictionLabelsGuessedForMassive": true,
+  "warning": "Synthetic holdouts measure template-family generalization only; not patient or clinical validation. Calendar mapping is coarse and does not imply full slot/date understanding."
+}

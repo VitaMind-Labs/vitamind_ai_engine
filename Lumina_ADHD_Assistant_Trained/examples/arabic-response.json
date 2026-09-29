@@ -1,0 +1,233 @@
+{
+  "requestId": "de469a42-fb69-4555-bbdb-7d3f1ad432b8",
+  "module": "ADHD_EXECUTIVE_FUNCTION",
+  "version": "1.1.0",
+  "language": "AR",
+  "intent": "ADD_TASK",
+  "friction": [
+    "UNKNOWN"
+  ],
+  "capacity": "REDUCED",
+  "analysis": {
+    "taskCount": 3,
+    "needsClarification": false,
+    "dataQuality": "MODERATE",
+    "uncertainty": [
+      "DURATION_NOT_PROVIDED"
+    ],
+    "clarification": null,
+    "capacityEvidence": [
+      "EXPLICIT_CAPACITY"
+    ],
+    "intentSource": "LOCAL_TRAINED_CLASSIFIER",
+    "intentConfidence": null,
+    "frictionSource": "LOCAL_TRAINED_CLASSIFIER",
+    "languagesObserved": [
+      "AR"
+    ]
+  },
+  "plan": {
+    "strategy": "ONE_NEXT_ACTION",
+    "primaryTask": {
+      "temporaryId": "task_c7621e96875358d1",
+      "title": "اكلم البنك",
+      "scheduledDate": null,
+      "startTime": null,
+      "deadline": null,
+      "durationMinutes": null,
+      "importance": "UNKNOWN",
+      "consequence": "UNKNOWN",
+      "energyRequirement": "UNKNOWN",
+      "startupDifficulty": "UNKNOWN",
+      "cognitiveLoad": "UNKNOWN",
+      "dependencies": [],
+      "postponedCount": 0,
+      "location": null,
+      "status": "TODO",
+      "source": "MESSAGE"
+    },
+    "nextAction": {
+      "text": "ابحث عن بيانات الاتصال للمهمة: اكلم البنك.",
+      "estimatedMinutes": null,
+      "source": "TEMPLATE",
+      "templateId": "call.contact"
+    },
+    "secondaryTasks": [],
+    "rankedTasks": [
+      {
+        "task": {
+          "temporaryId": "task_c7621e96875358d1",
+          "title": "اكلم البنك",
+          "scheduledDate": null,
+          "startTime": null,
+          "deadline": null,
+          "durationMinutes": null,
+          "importance": "UNKNOWN",
+          "consequence": "UNKNOWN",
+          "energyRequirement": "UNKNOWN",
+          "startupDifficulty": "UNKNOWN",
+          "cognitiveLoad": "UNKNOWN",
+          "dependencies": [],
+          "postponedCount": 0,
+          "location": null,
+          "status": "TODO",
+          "source": "MESSAGE"
+        },
+        "score": 0,
+        "factors": [],
+        "blocked": false,
+        "bucket": "PRIMARY"
+      },
+      {
+        "task": {
+          "temporaryId": "task_beef98e25cc35cd2",
+          "title": "اخلص التقرير",
+          "scheduledDate": null,
+          "startTime": null,
+          "deadline": null,
+          "durationMinutes": null,
+          "importance": "UNKNOWN",
+          "consequence": "UNKNOWN",
+          "energyRequirement": "UNKNOWN",
+          "startupDifficulty": "UNKNOWN",
+          "cognitiveLoad": "UNKNOWN",
+          "dependencies": [],
+          "postponedCount": 0,
+          "location": null,
+          "status": "TODO",
+          "source": "MESSAGE"
+        },
+        "score": 0,
+        "factors": [],
+        "blocked": false,
+        "bucket": "OPTIONAL"
+      },
+      {
+        "task": {
+          "temporaryId": "task_e1ae559899475d8c",
+          "title": "اشتري اغراض",
+          "scheduledDate": null,
+          "startTime": null,
+          "deadline": null,
+          "durationMinutes": null,
+          "importance": "UNKNOWN",
+          "consequence": "UNKNOWN",
+          "energyRequirement": "UNKNOWN",
+          "startupDifficulty": "UNKNOWN",
+          "cognitiveLoad": "UNKNOWN",
+          "dependencies": [],
+          "postponedCount": 0,
+          "location": null,
+          "status": "TODO",
+          "source": "MESSAGE"
+        },
+        "score": 0,
+        "factors": [],
+        "blocked": false,
+        "bucket": "OPTIONAL"
+      }
+    ],
+    "day": "2026-09-29"
+  },
+  "focusSession": {
+    "recommended": true,
+    "minutes": 5,
+    "successCondition": "ابحث عن بيانات الاتصال للمهمة: اكلم البنك.",
+    "basis": "capacity-aware starting block, not a duration estimate",
+    "estimateOfTaskDuration": false
+  },
+  "response": {
+    "text": "شيء واحد الآن. ابحث عن بيانات الاتصال للمهمة: اكلم البنك.",
+    "tone": "CALM",
+    "length": "SHORT",
+    "templateId": "en-ar-v1.AR.one_start.0"
+  },
+  "taskOperations": [
+    {
+      "operation": "ADD",
+      "task": {
+        "temporaryId": "task_c7621e96875358d1",
+        "title": "اكلم البنك",
+        "scheduledDate": null,
+        "startTime": null,
+        "deadline": null,
+        "durationMinutes": null,
+        "importance": "UNKNOWN",
+        "consequence": "UNKNOWN",
+        "energyRequirement": "UNKNOWN",
+        "startupDifficulty": "UNKNOWN",
+        "cognitiveLoad": "UNKNOWN",
+        "dependencies": [],
+        "postponedCount": 0,
+        "location": null,
+        "status": "TODO",
+        "source": "MESSAGE"
+      },
+      "taskId": "task_c7621e96875358d1",
+      "status": "PROPOSED"
+    },
+    {
+      "operation": "ADD",
+      "task": {
+        "temporaryId": "task_beef98e25cc35cd2",
+        "title": "اخلص التقرير",
+        "scheduledDate": null,
+        "startTime": null,
+        "deadline": null,
+        "durationMinutes": null,
+        "importance": "UNKNOWN",
+        "consequence": "UNKNOWN",
+        "energyRequirement": "UNKNOWN",
+        "startupDifficulty": "UNKNOWN",
+        "cognitiveLoad": "UNKNOWN",
+        "dependencies": [],
+        "postponedCount": 0,
+        "location": null,
+        "status": "TODO",
+        "source": "MESSAGE"
+      },
+      "taskId": "task_beef98e25cc35cd2",
+      "status": "PROPOSED"
+    },
+    {
+      "operation": "ADD",
+      "task": {
+        "temporaryId": "task_e1ae559899475d8c",
+        "title": "اشتري اغراض",
+        "scheduledDate": null,
+        "startTime": null,
+        "deadline": null,
+        "durationMinutes": null,
+        "importance": "UNKNOWN",
+        "consequence": "UNKNOWN",
+        "energyRequirement": "UNKNOWN",
+        "startupDifficulty": "UNKNOWN",
+        "cognitiveLoad": "UNKNOWN",
+        "dependencies": [],
+        "postponedCount": 0,
+        "location": null,
+        "status": "TODO",
+        "source": "MESSAGE"
+      },
+      "taskId": "task_e1ae559899475d8c",
+      "status": "PROPOSED"
+    }
+  ],
+  "memoryCandidates": [],
+  "patternCandidates": [],
+  "followUp": {
+    "type": "AFTER_ACTION",
+    "recommendedAfterMinutes": 5
+  },
+  "safety": {
+    "level": "NORMAL",
+    "flags": [],
+    "source": "local_journal_model_and_rules",
+    "deliveryStatus": "NOT_SENT",
+    "inputRemainsEditable": true
+  },
+  "performance": {
+    "processingTimeMs": 10.773
+  },
+  "tokenUsage": null
+}

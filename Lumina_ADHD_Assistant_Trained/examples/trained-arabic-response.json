@@ -1,0 +1,115 @@
+{
+  "requestId": "0f3e42d0-4854-4ac9-9f42-111d81069744",
+  "module": "ADHD_EXECUTIVE_FUNCTION",
+  "version": "1.1.0",
+  "language": "AR",
+  "intent": "START_TASK",
+  "friction": [
+    "NO_CLEAR_START"
+  ],
+  "capacity": "NORMAL",
+  "analysis": {
+    "taskCount": 1,
+    "needsClarification": false,
+    "dataQuality": "MODERATE",
+    "uncertainty": [
+      "DURATION_NOT_PROVIDED"
+    ],
+    "clarification": null,
+    "capacityEvidence": [
+      "CONSERVATIVE_DEFAULT_NOT_MEASURED"
+    ],
+    "intentSource": "LOCAL_TRAINED_CLASSIFIER",
+    "intentConfidence": null,
+    "frictionSource": "LOCAL_TRAINED_CLASSIFIER",
+    "languagesObserved": [
+      "AR"
+    ]
+  },
+  "plan": {
+    "strategy": "ONE_NEXT_ACTION",
+    "primaryTask": {
+      "temporaryId": "report",
+      "title": "كتابة التقرير",
+      "scheduledDate": null,
+      "startTime": null,
+      "deadline": null,
+      "durationMinutes": null,
+      "importance": "UNKNOWN",
+      "consequence": "UNKNOWN",
+      "energyRequirement": "UNKNOWN",
+      "startupDifficulty": "UNKNOWN",
+      "cognitiveLoad": "UNKNOWN",
+      "dependencies": [],
+      "postponedCount": 0,
+      "location": null,
+      "status": "TODO",
+      "source": "PROVIDED"
+    },
+    "nextAction": {
+      "text": "افتح الملف الخاص بالمهمة: كتابة التقرير.",
+      "estimatedMinutes": null,
+      "source": "TEMPLATE",
+      "templateId": "document.open"
+    },
+    "secondaryTasks": [],
+    "rankedTasks": [
+      {
+        "task": {
+          "temporaryId": "report",
+          "title": "كتابة التقرير",
+          "scheduledDate": null,
+          "startTime": null,
+          "deadline": null,
+          "durationMinutes": null,
+          "importance": "UNKNOWN",
+          "consequence": "UNKNOWN",
+          "energyRequirement": "UNKNOWN",
+          "startupDifficulty": "UNKNOWN",
+          "cognitiveLoad": "UNKNOWN",
+          "dependencies": [],
+          "postponedCount": 0,
+          "location": null,
+          "status": "TODO",
+          "source": "PROVIDED"
+        },
+        "score": 0,
+        "factors": [],
+        "blocked": false,
+        "bucket": "PRIMARY"
+      }
+    ],
+    "day": "2026-09-29"
+  },
+  "focusSession": {
+    "recommended": true,
+    "minutes": 10,
+    "successCondition": "افتح الملف الخاص بالمهمة: كتابة التقرير.",
+    "basis": "capacity-aware starting block, not a duration estimate",
+    "estimateOfTaskDuration": false
+  },
+  "response": {
+    "text": "ابدا من هنا: افتح الملف الخاص بالمهمة: كتابة التقرير.",
+    "tone": "CALM",
+    "length": "SHORT",
+    "templateId": "en-ar-v1.AR.start.0"
+  },
+  "taskOperations": [],
+  "memoryCandidates": [],
+  "patternCandidates": [],
+  "followUp": {
+    "type": "AFTER_ACTION",
+    "recommendedAfterMinutes": 10
+  },
+  "safety": {
+    "level": "NORMAL",
+    "flags": [],
+    "source": "local_journal_model_and_rules",
+    "deliveryStatus": "NOT_SENT",
+    "inputRemainsEditable": true
+  },
+  "performance": {
+    "processingTimeMs": 12.95
+  },
+  "tokenUsage": null
+}

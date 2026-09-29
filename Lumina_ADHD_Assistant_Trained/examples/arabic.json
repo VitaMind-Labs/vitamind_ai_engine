@@ -1,0 +1,7 @@
+{
+  "requestId": "de469a42-fb69-4555-bbdb-7d3f1ad432b8",
+  "patient": {"id": "ae3e23cc-5b26-468f-a8df-708519a4a144", "language": "AR"},
+  "message": {"text": "لازم أكلم البنك وأخلص التقرير وأشتري أغراض"},
+  "currentState": {"capacity": "REDUCED"},
+  "timeContext": {"referenceDate": "2026-09-29", "availableMinutes": 20}
+}

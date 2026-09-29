@@ -1,0 +1,134 @@
+{
+  "requestId": "2ce44215-b1fc-4e96-a355-ebc9c84748e8",
+  "module": "ADHD_EXECUTIVE_FUNCTION",
+  "version": "1.1.0",
+  "language": "EN",
+  "intent": "ADD_TASK",
+  "friction": [
+    "UNKNOWN"
+  ],
+  "capacity": "REDUCED",
+  "analysis": {
+    "taskCount": 1,
+    "needsClarification": false,
+    "dataQuality": "MODERATE",
+    "uncertainty": [
+      "DURATION_NOT_PROVIDED"
+    ],
+    "clarification": null,
+    "capacityEvidence": [
+      "LOW_ENERGY",
+      "STRESS_OR_OVERWHELM"
+    ],
+    "intentSource": "LOCAL_TRAINED_CLASSIFIER",
+    "intentConfidence": null,
+    "frictionSource": "LOCAL_TRAINED_CLASSIFIER",
+    "languagesObserved": [
+      "EN"
+    ]
+  },
+  "plan": {
+    "strategy": "ONE_NEXT_ACTION",
+    "primaryTask": {
+      "temporaryId": "task_766f38cb2bac5b57",
+      "title": "email James",
+      "scheduledDate": "2026-09-30",
+      "startTime": null,
+      "deadline": null,
+      "durationMinutes": null,
+      "importance": "UNKNOWN",
+      "consequence": "UNKNOWN",
+      "energyRequirement": "UNKNOWN",
+      "startupDifficulty": "UNKNOWN",
+      "cognitiveLoad": "UNKNOWN",
+      "dependencies": [],
+      "postponedCount": 0,
+      "location": null,
+      "status": "TODO",
+      "source": "MESSAGE"
+    },
+    "nextAction": {
+      "text": "Open a draft for: email James.",
+      "estimatedMinutes": null,
+      "source": "TEMPLATE",
+      "templateId": "message.draft"
+    },
+    "secondaryTasks": [],
+    "rankedTasks": [
+      {
+        "task": {
+          "temporaryId": "task_766f38cb2bac5b57",
+          "title": "email James",
+          "scheduledDate": "2026-09-30",
+          "startTime": null,
+          "deadline": null,
+          "durationMinutes": null,
+          "importance": "UNKNOWN",
+          "consequence": "UNKNOWN",
+          "energyRequirement": "UNKNOWN",
+          "startupDifficulty": "UNKNOWN",
+          "cognitiveLoad": "UNKNOWN",
+          "dependencies": [],
+          "postponedCount": 0,
+          "location": null,
+          "status": "TODO",
+          "source": "MESSAGE"
+        },
+        "score": 0,
+        "factors": [],
+        "blocked": false,
+        "bucket": "PRIMARY"
+      }
+    ],
+    "day": "2026-09-30"
+  },
+  "focusSession": null,
+  "response": {
+    "text": "Proposed for 2026-09-30. When you start: Open a draft for: email James.",
+    "tone": "CALM",
+    "length": "SHORT",
+    "templateId": "en-ar-v1.EN.future_task.0"
+  },
+  "taskOperations": [
+    {
+      "operation": "ADD",
+      "task": {
+        "temporaryId": "task_766f38cb2bac5b57",
+        "title": "email James",
+        "scheduledDate": "2026-09-30",
+        "startTime": null,
+        "deadline": null,
+        "durationMinutes": null,
+        "importance": "UNKNOWN",
+        "consequence": "UNKNOWN",
+        "energyRequirement": "UNKNOWN",
+        "startupDifficulty": "UNKNOWN",
+        "cognitiveLoad": "UNKNOWN",
+        "dependencies": [],
+        "postponedCount": 0,
+        "location": null,
+        "status": "TODO",
+        "source": "MESSAGE"
+      },
+      "taskId": "task_766f38cb2bac5b57",
+      "status": "PROPOSED"
+    }
+  ],
+  "memoryCandidates": [],
+  "patternCandidates": [],
+  "followUp": {
+    "type": "NONE",
+    "recommendedAfterMinutes": null
+  },
+  "safety": {
+    "level": "NORMAL",
+    "flags": [],
+    "source": "local_journal_model_and_rules",
+    "deliveryStatus": "NOT_SENT",
+    "inputRemainsEditable": true
+  },
+  "performance": {
+    "processingTimeMs": 13.488
+  },
+  "tokenUsage": null
+}

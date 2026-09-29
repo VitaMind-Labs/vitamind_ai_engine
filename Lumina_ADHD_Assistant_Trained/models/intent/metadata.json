@@ -1,0 +1,769 @@
+{
+  "modelVersion": "intent-planning-2.0.0",
+  "datasetVersion": "8c51c928a2108ef7f4a282677f67f19d9d5172f208ee39204b24d7ca2c19826d",
+  "trainingDate": "2026-09-29T17:05:34.498515+00:00",
+  "languageCoverage": [
+    "EN",
+    "AR"
+  ],
+  "languagesInDataset": [
+    "AR",
+    "EN",
+    "MIXED"
+  ],
+  "featureMethod": "TF-IDF word unigrams/bigrams and within-word character 3-5 grams",
+  "metrics": {
+    "selected": "linear_svm",
+    "features": 16000,
+    "trainingRows": 4227,
+    "validationRows": 834,
+    "candidateValidation": {
+      "rules": {
+        "count": 834,
+        "accuracy": 0.407673860911271,
+        "macroF1": 0.19908732843209542,
+        "perClass": {
+          "ADD_TASK": {
+            "precision": 0.8068181818181818,
+            "recall": 0.25539568345323743,
+            "f1-score": 0.3879781420765027,
+            "support": 278.0
+          },
+          "BREAK_DOWN_TASK": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 24.0
+          },
+          "CONTINUE_TASK": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "FOCUS_HELP": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "INTERRUPTION_RECOVERY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "ORGANIZE_DAY": {
+            "precision": 0.7777777777777778,
+            "recall": 0.03431372549019608,
+            "f1-score": 0.06572769953051644,
+            "support": 204.0
+          },
+          "OVERWHELMED_WITH_TASKS": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "PRIORITIZE": {
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1-score": 0.4444444444444444,
+            "support": 4.0
+          },
+          "PROCRASTINATION": {
+            "precision": 1.0,
+            "recall": 0.8571428571428571,
+            "f1-score": 0.9230769230769231,
+            "support": 14.0
+          },
+          "RESCHEDULE": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 14.0
+          },
+          "START_TASK": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1-score": 0.6666666666666666,
+            "support": 24.0
+          },
+          "TASK_COMPLETED": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "TASK_FAILED": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "TIME_ESTIMATION": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "UNKNOWN": {
+            "precision": 0.3357041251778094,
+            "recall": 0.9672131147540983,
+            "f1-score": 0.498416050686378,
+            "support": 244.0
+          },
+          "accuracy": 0.407673860911271,
+          "macro avg": {
+            "precision": 0.2880200056515846,
+            "recall": 0.20760435872269262,
+            "f1-score": 0.19908732843209542,
+            "support": 834.0
+          },
+          "weighted avg": {
+            "precision": 0.6048848054622382,
+            "recall": 0.407673860911271,
+            "f1-score": 0.32803446675038855,
+            "support": 834.0
+          }
+        }
+      },
+      "logistic_regression": {
+        "count": 834,
+        "accuracy": 0.8369304556354916,
+        "macroF1": 0.5564790159526555,
+        "perClass": {
+          "ADD_TASK": {
+            "precision": 0.8741258741258742,
+            "recall": 0.8992805755395683,
+            "f1-score": 0.8865248226950354,
+            "support": 278.0
+          },
+          "BREAK_DOWN_TASK": {
+            "precision": 0.9230769230769231,
+            "recall": 0.5,
+            "f1-score": 0.6486486486486487,
+            "support": 24.0
+          },
+          "CONTINUE_TASK": {
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1-score": 0.4,
+            "support": 4.0
+          },
+          "FOCUS_HELP": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5,
+            "f1-score": 0.5714285714285714,
+            "support": 4.0
+          },
+          "INTERRUPTION_RECOVERY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "ORGANIZE_DAY": {
+            "precision": 0.86,
+            "recall": 0.8431372549019608,
+            "f1-score": 0.8514851485148515,
+            "support": 204.0
+          },
+          "OVERWHELMED_WITH_TASKS": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5,
+            "f1-score": 0.5714285714285714,
+            "support": 4.0
+          },
+          "PRIORITIZE": {
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1-score": 0.4444444444444444,
+            "support": 4.0
+          },
+          "PROCRASTINATION": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 14.0
+          },
+          "RESCHEDULE": {
+            "precision": 0.6666666666666666,
+            "recall": 0.42857142857142855,
+            "f1-score": 0.5217391304347826,
+            "support": 14.0
+          },
+          "START_TASK": {
+            "precision": 0.46153846153846156,
+            "recall": 1.0,
+            "f1-score": 0.631578947368421,
+            "support": 24.0
+          },
+          "TASK_COMPLETED": {
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1-score": 0.8571428571428571,
+            "support": 4.0
+          },
+          "TASK_FAILED": {
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1-score": 0.8888888888888888,
+            "support": 4.0
+          },
+          "TIME_ESTIMATION": {
+            "precision": 0.14285714285714285,
+            "recall": 0.25,
+            "f1-score": 0.18181818181818182,
+            "support": 4.0
+          },
+          "UNKNOWN": {
+            "precision": 0.8866396761133604,
+            "recall": 0.8975409836065574,
+            "f1-score": 0.8920570264765784,
+            "support": 244.0
+          },
+          "accuracy": 0.8369304556354916,
+          "macro avg": {
+            "precision": 0.6232158718474508,
+            "recall": 0.554568682841301,
+            "f1-score": 0.5564790159526555,
+            "support": 834.0
+          },
+          "weighted avg": {
+            "precision": 0.8345994465797569,
+            "recall": 0.8369304556354916,
+            "f1-score": 0.8291477238101166,
+            "support": 834.0
+          }
+        }
+      },
+      "linear_svm": {
+        "count": 834,
+        "accuracy": 0.8489208633093526,
+        "macroF1": 0.5809808226751932,
+        "perClass": {
+          "ADD_TASK": {
+            "precision": 0.8767123287671232,
+            "recall": 0.920863309352518,
+            "f1-score": 0.8982456140350877,
+            "support": 278.0
+          },
+          "BREAK_DOWN_TASK": {
+            "precision": 0.9473684210526315,
+            "recall": 0.75,
+            "f1-score": 0.8372093023255814,
+            "support": 24.0
+          },
+          "CONTINUE_TASK": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5,
+            "f1-score": 0.5714285714285714,
+            "support": 4.0
+          },
+          "FOCUS_HELP": {
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1-score": 0.4444444444444444,
+            "support": 4.0
+          },
+          "INTERRUPTION_RECOVERY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "ORGANIZE_DAY": {
+            "precision": 0.8606965174129353,
+            "recall": 0.8480392156862745,
+            "f1-score": 0.854320987654321,
+            "support": 204.0
+          },
+          "OVERWHELMED_WITH_TASKS": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5,
+            "f1-score": 0.5714285714285714,
+            "support": 4.0
+          },
+          "PRIORITIZE": {
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1-score": 0.5,
+            "support": 4.0
+          },
+          "PROCRASTINATION": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 14.0
+          },
+          "RESCHEDULE": {
+            "precision": 0.5454545454545454,
+            "recall": 0.42857142857142855,
+            "f1-score": 0.48,
+            "support": 14.0
+          },
+          "START_TASK": {
+            "precision": 0.4444444444444444,
+            "recall": 1.0,
+            "f1-score": 0.6153846153846154,
+            "support": 24.0
+          },
+          "TASK_COMPLETED": {
+            "precision": 0.75,
+            "recall": 0.75,
+            "f1-score": 0.75,
+            "support": 4.0
+          },
+          "TASK_FAILED": {
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1-score": 0.8888888888888888,
+            "support": 4.0
+          },
+          "TIME_ESTIMATION": {
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1-score": 0.4,
+            "support": 4.0
+          },
+          "UNKNOWN": {
+            "precision": 0.9267241379310345,
+            "recall": 0.8811475409836066,
+            "f1-score": 0.9033613445378151,
+            "support": 244.0
+          },
+          "accuracy": 0.8489208633093526,
+          "macro avg": {
+            "precision": 0.6256489152264032,
+            "recall": 0.5885747663062552,
+            "f1-score": 0.5809808226751932,
+            "support": 834.0
+          },
+          "weighted avg": {
+            "precision": 0.8460455783528756,
+            "recall": 0.8489208633093526,
+            "f1-score": 0.8423272735974454,
+            "support": 834.0
+          }
+        }
+      },
+      "naive_bayes": {
+        "count": 834,
+        "accuracy": 0.7829736211031175,
+        "macroF1": 0.34704925834858674,
+        "perClass": {
+          "ADD_TASK": {
+            "precision": 0.7987421383647799,
+            "recall": 0.9136690647482014,
+            "f1-score": 0.8523489932885906,
+            "support": 278.0
+          },
+          "BREAK_DOWN_TASK": {
+            "precision": 0.8333333333333334,
+            "recall": 0.625,
+            "f1-score": 0.7142857142857143,
+            "support": 24.0
+          },
+          "CONTINUE_TASK": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "FOCUS_HELP": {
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1-score": 0.4,
+            "support": 4.0
+          },
+          "INTERRUPTION_RECOVERY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "ORGANIZE_DAY": {
+            "precision": 0.7932692307692307,
+            "recall": 0.8088235294117647,
+            "f1-score": 0.8009708737864077,
+            "support": 204.0
+          },
+          "OVERWHELMED_WITH_TASKS": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "PRIORITIZE": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1-score": 0.6666666666666666,
+            "support": 4.0
+          },
+          "PROCRASTINATION": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 14.0
+          },
+          "RESCHEDULE": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 14.0
+          },
+          "START_TASK": {
+            "precision": 0.38095238095238093,
+            "recall": 1.0,
+            "f1-score": 0.5517241379310345,
+            "support": 24.0
+          },
+          "TASK_COMPLETED": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "TASK_FAILED": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "TIME_ESTIMATION": {
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1-score": 0.4,
+            "support": 4.0
+          },
+          "UNKNOWN": {
+            "precision": 0.8603603603603603,
+            "recall": 0.7827868852459017,
+            "f1-score": 0.8197424892703863,
+            "support": 244.0
+          },
+          "accuracy": 0.7829736211031175,
+          "macro avg": {
+            "precision": 0.444443829585339,
+            "recall": 0.3420186319603912,
+            "f1-score": 0.34704925834858674,
+            "support": 834.0
+          },
+          "weighted avg": {
+            "precision": 0.7613285642843128,
+            "recall": 0.7829736211031175,
+            "f1-score": 0.7633323128159452,
+            "support": 834.0
+          }
+        }
+      }
+    },
+    "frictionGlobalThresholds": {},
+    "languageValidation": {
+      "EN": {
+        "trainCount": 2131,
+        "validationCount": 422,
+        "rulesMacroF1": 0.1970805462682043,
+        "candidateMacroF1": 0.555167530196072
+      },
+      "AR": {
+        "trainCount": 2031,
+        "validationCount": 394,
+        "rulesMacroF1": 0.20670325726183417,
+        "candidateMacroF1": 0.5827124946420549
+      },
+      "MIXED": {
+        "trainCount": 65,
+        "validationCount": 18,
+        "rulesMacroF1": 0.34722222222222215,
+        "candidateMacroF1": 1.0
+      }
+    },
+    "deployedValidation": {
+      "count": 834,
+      "accuracy": 0.8369304556354916,
+      "macroF1": 0.5781369087782235,
+      "perClass": {
+        "ADD_TASK": {
+          "precision": 0.8745644599303136,
+          "recall": 0.9028776978417267,
+          "f1-score": 0.8884955752212389,
+          "support": 278.0
+        },
+        "BREAK_DOWN_TASK": {
+          "precision": 0.9473684210526315,
+          "recall": 0.75,
+          "f1-score": 0.8372093023255814,
+          "support": 24.0
+        },
+        "CONTINUE_TASK": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5,
+          "f1-score": 0.5714285714285714,
+          "support": 4.0
+        },
+        "FOCUS_HELP": {
+          "precision": 0.4,
+          "recall": 0.5,
+          "f1-score": 0.4444444444444444,
+          "support": 4.0
+        },
+        "INTERRUPTION_RECOVERY": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 4.0
+        },
+        "ORGANIZE_DAY": {
+          "precision": 0.8571428571428571,
+          "recall": 0.8235294117647058,
+          "f1-score": 0.84,
+          "support": 204.0
+        },
+        "OVERWHELMED_WITH_TASKS": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5,
+          "f1-score": 0.5714285714285714,
+          "support": 4.0
+        },
+        "PRIORITIZE": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1-score": 0.5,
+          "support": 4.0
+        },
+        "PROCRASTINATION": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 14.0
+        },
+        "RESCHEDULE": {
+          "precision": 0.5454545454545454,
+          "recall": 0.42857142857142855,
+          "f1-score": 0.48,
+          "support": 14.0
+        },
+        "START_TASK": {
+          "precision": 0.4444444444444444,
+          "recall": 1.0,
+          "f1-score": 0.6153846153846154,
+          "support": 24.0
+        },
+        "TASK_COMPLETED": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1-score": 0.75,
+          "support": 4.0
+        },
+        "TASK_FAILED": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1-score": 0.8888888888888888,
+          "support": 4.0
+        },
+        "TIME_ESTIMATION": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1-score": 0.4,
+          "support": 4.0
+        },
+        "UNKNOWN": {
+          "precision": 0.8884297520661157,
+          "recall": 0.8811475409836066,
+          "f1-score": 0.8847736625514403,
+          "support": 244.0
+        },
+        "accuracy": 0.8369304556354916,
+        "macro avg": {
+          "precision": 0.6227158542282827,
+          "recall": 0.5857417386107645,
+          "f1-score": 0.5781369087782235,
+          "support": 834.0
+        },
+        "weighted avg": {
+          "precision": 0.8332567481577088,
+          "recall": 0.8369304556354916,
+          "f1-score": 0.8301361624746553,
+          "support": 834.0
+        }
+      }
+    },
+    "validationBySource": {
+      "MASSIVE_1.1": {
+        "count": 694,
+        "accuracy": 0.877521613832853,
+        "macroF1": 0.43854351818530396,
+        "perClass": {
+          "ADD_TASK": {
+            "precision": 0.8754716981132076,
+            "recall": 0.9133858267716536,
+            "f1-score": 0.8940269749518305,
+            "support": 254.0
+          },
+          "FOCUS_HELP": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "ORGANIZE_DAY": {
+            "precision": 0.8645833333333334,
+            "recall": 0.83,
+            "f1-score": 0.8469387755102041,
+            "support": 200.0
+          },
+          "OVERWHELMED_WITH_TASKS": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "START_TASK": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "UNKNOWN": {
+            "precision": 0.9017094017094017,
+            "recall": 0.8791666666666667,
+            "f1-score": 0.890295358649789,
+            "support": 240.0
+          },
+          "accuracy": 0.877521613832853,
+          "macro avg": {
+            "precision": 0.4402940721926571,
+            "recall": 0.43709208223972,
+            "f1-score": 0.43854351818530396,
+            "support": 694.0
+          },
+          "weighted avg": {
+            "precision": 0.8814073982675472,
+            "recall": 0.877521613832853,
+            "f1-score": 0.8791664161610304,
+            "support": 694.0
+          }
+        }
+      },
+      "SYNTHETIC": {
+        "count": 140,
+        "accuracy": 0.6357142857142857,
+        "macroF1": 0.5473549117249825,
+        "perClass": {
+          "ADD_TASK": {
+            "precision": 0.8636363636363636,
+            "recall": 0.7916666666666666,
+            "f1-score": 0.8260869565217391,
+            "support": 24.0
+          },
+          "BREAK_DOWN_TASK": {
+            "precision": 0.9473684210526315,
+            "recall": 0.75,
+            "f1-score": 0.8372093023255814,
+            "support": 24.0
+          },
+          "CONTINUE_TASK": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5,
+            "f1-score": 0.5714285714285714,
+            "support": 4.0
+          },
+          "FOCUS_HELP": {
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1-score": 0.5,
+            "support": 4.0
+          },
+          "INTERRUPTION_RECOVERY": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 4.0
+          },
+          "ORGANIZE_DAY": {
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1-score": 0.5,
+            "support": 4.0
+          },
+          "OVERWHELMED_WITH_TASKS": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1-score": 0.6666666666666666,
+            "support": 4.0
+          },
+          "PRIORITIZE": {
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1-score": 0.5,
+            "support": 4.0
+          },
+          "PROCRASTINATION": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 14.0
+          },
+          "RESCHEDULE": {
+            "precision": 0.5454545454545454,
+            "recall": 0.42857142857142855,
+            "f1-score": 0.48,
+            "support": 14.0
+          },
+          "START_TASK": {
+            "precision": 0.4528301886792453,
+            "recall": 1.0,
+            "f1-score": 0.6233766233766234,
+            "support": 24.0
+          },
+          "TASK_COMPLETED": {
+            "precision": 0.75,
+            "recall": 0.75,
+            "f1-score": 0.75,
+            "support": 4.0
+          },
+          "TASK_FAILED": {
+            "precision": 0.8,
+            "recall": 1.0,
+            "f1-score": 0.8888888888888888,
+            "support": 4.0
+          },
+          "TIME_ESTIMATION": {
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1-score": 0.4,
+            "support": 4.0
+          },
+          "UNKNOWN": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1-score": 0.6666666666666666,
+            "support": 4.0
+          },
+          "accuracy": 0.6357142857142857,
+          "macro avg": {
+            "precision": 0.6017304123659635,
+            "recall": 0.5646825396825397,
+            "f1-score": 0.5473549117249825,
+            "support": 140.0
+          },
+          "weighted avg": {
+            "precision": 0.6202504975990576,
+            "recall": 0.6357142857142857,
+            "f1-score": 0.5955339453426988,
+            "support": 140.0
+          }
+        }
+      }
+    },
+    "testStatus": "NOT_READ_DURING_SELECTION",
+    "selection": "Best validation macro F1; per-language deployment requires improvement over rules and at least 20 train/validation examples. Otherwise rule fallback. This is not statistical or clinical validation."
+  },
+  "checksum": "9e935b3575307584d42a2c47f51933353fecfa133ff56881ed366e494cc3af1c",
+  "status": "TRAINED_ON_PUBLIC_AND_SYNTHETIC",
+  "humanReviewed": false,
+  "clinicalValidation": false,
+  "testMetricsFile": "reports/planning-heldout.json"
+}
