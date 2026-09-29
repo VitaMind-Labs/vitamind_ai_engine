@@ -395,7 +395,8 @@ def main():
     environment = load_dotenv(Path(args.env_file))
     # LUMINA_ALLOW_UNSIGNED is the documented escape hatch; honour it here too so
     # the launcher's own validation agrees with the service's.
-    if (environment.get("LUMINA_ALLOW_UNSIGNED")
+    # Compare the value, not its presence: .env.example ships "false".
+    if (environment.get("LUMINA_ALLOW_UNSIGNED", "").lower() == "true"
             or os.environ.get("LUMINA_ALLOW_UNSIGNED", "").lower() == "true"):
         SERVICES["lumina"].required_env = ()
 
