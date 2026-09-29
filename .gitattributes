@@ -1,0 +1,9 @@
+# Datasets, reports and MANIFEST.json files carry SHA-256 checksums of exact file
+# bytes. A CRLF checkout (core.autocrlf=true on Windows) silently breaks them, so
+# every text file is checked out with LF on every OS.
+* text=auto eol=lf
+
+*.npz binary
+*.joblib binary
+*.pkl binary
+*.png binary
