@@ -5,7 +5,9 @@ from pydantic import BaseModel,Field
 from vitamind.mira.service import MiraSessionService
 from vitamind.mira.reporting import reply_payload as payload,session_payload
 
-app=FastAPI(title='Mira integrated assessment prototype',version='2.0.0')
+CONTRACT_VERSION='mira-contract-1'
+
+app=FastAPI(title='Mira orientation agent',version='2.0.0')
 sessions=MiraSessionService()
 
 class StartSessionRequest(BaseModel):
@@ -22,6 +24,24 @@ def lookup(session_id,token):
 
 @app.get('/health')
 def health(): return {'status':'ok','service':'mira','version':app.version,'clinical_validation':False}
+
+# /ready checks only Mira's own dependencies. It must never probe Lumina: the two
+# agents run as separate processes and one being down must not mark the other
+# unready.
+@app.get('/ready')
+def ready():
+    from vitamind.ml.integrated import IntegratedModel
+    model=getattr(sessions.agent,'model',None)
+    available=bool(model is not None and getattr(model,'available',True))
+    return {'status':'ready','service':'mira','model_available':available,
+            'active_sessions':len(sessions._sessions),'session_token_required':True,
+            'languages':['en','ar'],'clinical_validation':False}
+
+@app.get('/version')
+def version():
+    return {'service':'mira','agent_version':app.version,'contract_version':CONTRACT_VERSION,
+            'session_token_header':'X-Mira-Session-Token','languages':['en','ar'],
+            'no_external_inference_api':True,'clinical_validation':False}
 
 @app.post('/api/v1/mira/session')
 def start(request:StartSessionRequest):

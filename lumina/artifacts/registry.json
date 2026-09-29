@@ -1,0 +1,234 @@
+{
+ "generated_at": "2026-09-28T22:09:11.979446+00:00",
+ "models": {
+  "intent": {
+   "version": "intent-seed42-v1",
+   "status": "candidate",
+   "created_at": "2026-09-28T22:07:46.986793+00:00",
+   "architecture": "multi_head_sparse_linear_softmax",
+   "trained_from": "random_initialisation",
+   "parameters": 19998,
+   "features": 1111,
+   "normalization": "nfkc-ar-en-v1",
+   "heads": {
+    "intent": {
+     "labels": [
+      "CHECK_IN",
+      "JOURNAL",
+      "EMOTIONAL_SUPPORT",
+      "TASK_SUPPORT",
+      "SLEEP",
+      "ENERGY",
+      "FOCUS",
+      "ROUTINE",
+      "STRESS",
+      "SOCIAL",
+      "EXERCISE",
+      "GOAL",
+      "PROGRESS",
+      "MEDICATION_MENTION",
+      "CLINICIAN_MENTION",
+      "QUESTION",
+      "GENERAL_CONVERSATION",
+      "UNKNOWN"
+     ],
+     "temperature": 1.25,
+     "abstain_below": 0.95
+    }
+   },
+   "dataset": {
+    "name": "intent",
+    "rows": {
+     "train": 88,
+     "val": 91,
+     "test": 71
+    },
+    "files_sha256": {
+     "train.jsonl": "93a82b9ffe170120b093997da3a63bb2833c5195f9fe16a12e1409805ffc8484",
+     "val.jsonl": "a385ebc77b7896919d53828df7c075a542fc72de79c5cc44254a3a422f2a1a21",
+     "test.jsonl": "e4def54d4c28cb66f6ed2724ec11d4183beb1de2414036d78ca6338ad7e714e0"
+    },
+    "clinical_validity": "not_clinical"
+   },
+   "training": {
+    "seed": 42,
+    "epochs": 40,
+    "rows": 88,
+    "learning_rate": 0.2,
+    "l2": 0.0001,
+    "class_weight_cap": 4.0,
+    "emphasis": {}
+   },
+   "test_metrics": {
+    "intent": {
+     "macro_f1": 0.1732,
+     "accuracy": 0.1831,
+     "expected_calibration_error": 0.0552
+    }
+   },
+   "weights_sha256": "d55f15a30eadbd10b6bb1fcd626f2c9cd3b9deacc919d7a00082b8fa98c4a1fc",
+   "not_clinically_validated": true,
+   "no_pretrained_weights": true,
+   "no_external_inference_api": true,
+   "notes": [
+    "Trained on an authored seed set, not on real patient language.",
+    "Safety and crisis intents are deliberately not modelled here; lumina/safety.py owns that decision.",
+    "Candidate only. Retrain on reviewed real data before relying on it."
+   ]
+  },
+  "safety": {
+   "version": "safety-seed42-v1",
+   "status": "candidate",
+   "created_at": "2026-09-28T21:54:53.926189+00:00",
+   "architecture": "multi_head_sparse_linear_softmax",
+   "trained_from": "random_initialisation",
+   "parameters": 120000,
+   "features": 30000,
+   "normalization": "nfkc-ar-en-v1",
+   "heads": {
+    "safety_signal": {
+     "labels": [
+      "NORMAL",
+      "ELEVATED",
+      "HIGH",
+      "UNKNOWN"
+     ],
+     "temperature": 1.0,
+     "abstain_below": 0.55
+    }
+   },
+   "dataset": {
+    "name": "safety",
+    "rows": {
+     "train": 45142,
+     "val": 5415,
+     "test": 5693
+    },
+    "files_sha256": {
+     "train.jsonl": "a78225d44aff5daaca2dfa31c1c1186b8857b75ddfda6871f245770b6bddd0cd",
+     "val.jsonl": "c7da693b3a96f0809fd79ea1aab3914d2c08290919effb8eccb89ccdcd15024d",
+     "test.jsonl": "b05115c9237a395b32d691a0f453bcf6c33b89257a1550db1f2cb7518cba130e"
+    },
+    "clinical_validity": "not_clinical"
+   },
+   "training": {
+    "seed": 42,
+    "epochs": 14,
+    "rows": 53222,
+    "learning_rate": 0.2,
+    "l2": 0.0001,
+    "class_weight_cap": 4.0,
+    "emphasis": {
+     "safety_signal": {
+      "HIGH": 1.6
+     }
+    }
+   },
+   "test_metrics": {
+    "safety_signal": {
+     "macro_f1": 0.7931,
+     "accuracy": 0.8038,
+     "expected_calibration_error": 0.0361
+    }
+   },
+   "weights_sha256": "6db14fb0397aac1029e357fa54d9b6ae18839359dd22b7babc9bc6f6f7c21cb3",
+   "not_clinically_validated": true,
+   "no_pretrained_weights": true,
+   "no_external_inference_api": true,
+   "notes": [
+    "Signal only: deterministic rules decide crisis handling.",
+    "No learned CRISIS class: the corpus holds ten distinct crisis meanings, too few to train or score one.",
+    "UNKNOWN must be treated as at least ELEVATED downstream.",
+    "Labels are community-derived or curated, never clinician risk ratings.",
+    "Not clinically validated."
+   ]
+  },
+  "understanding": {
+   "version": "understanding-seed42-v1",
+   "status": "candidate",
+   "created_at": "2026-09-28T22:07:38.062149+00:00",
+   "architecture": "multi_head_sparse_linear_softmax",
+   "trained_from": "random_initialisation",
+   "parameters": 360000,
+   "features": 30000,
+   "normalization": "nfkc-ar-en-v1",
+   "heads": {
+    "emotion": {
+     "labels": [
+      "NEUTRAL",
+      "CONTENT",
+      "SAD",
+      "ANGRY",
+      "IRRITABLE",
+      "FEARFUL",
+      "CONFUSED",
+      "UNKNOWN"
+     ],
+     "temperature": 0.75,
+     "abstain_below": 0.3
+    },
+    "act": {
+     "labels": [
+      "INFORM",
+      "QUESTION",
+      "DIRECTIVE",
+      "COMMISSIVE"
+     ],
+     "temperature": 1.0,
+     "abstain_below": 0.0
+    }
+   },
+   "dataset": {
+    "name": "dialogue",
+    "rows": {
+     "train": 64570,
+     "val": 7574,
+     "test": 7371
+    },
+    "files_sha256": {
+     "train.jsonl": "178f65867652d667198ec60a85e70a1854aa0d8c18ca3f592b6400c1e9976f88",
+     "val.jsonl": "c62c0a4c9e5c986f7bfd268539c8e1b726d26e87e22e8880a1d91c25e1fea1b9",
+     "test.jsonl": "5247d419da19e186f9515ab1a4b6e0bc8f6309b5418ab24e8cb6f006c930d24c"
+    },
+    "clinical_validity": "not_clinical"
+   },
+   "training": {
+    "seed": 42,
+    "epochs": 12,
+    "rows": 64570,
+    "learning_rate": 0.2,
+    "l2": 0.0001,
+    "class_weight_cap": 4.0,
+    "emphasis": {
+     "emotion": {
+      "SAD": 1.5,
+      "FEARFUL": 1.5,
+      "ANGRY": 1.3
+     }
+    }
+   },
+   "test_metrics": {
+    "emotion": {
+     "macro_f1": 0.3583,
+     "accuracy": 0.8136,
+     "expected_calibration_error": 0.0423
+    },
+    "act": {
+     "macro_f1": 0.6727,
+     "accuracy": 0.7549,
+     "expected_calibration_error": 0.0198
+    }
+   },
+   "weights_sha256": "23708a4b5404f9fac83502aee2edead4b835b3a518d7ec4874d7f74c130bf825",
+   "not_clinically_validated": true,
+   "no_pretrained_weights": true,
+   "no_external_inference_api": true,
+   "notes": [
+    "Emotion is not a diagnosis and is never used as one.",
+    "Only DailyDialog-annotated emotions are fitted; the remaining Lumina emotion labels have no supervision in this repository.",
+    "DailyDialog is CC BY-NC-SA 4.0: non-commercial. See TECH_DEBT."
+   ]
+  }
+ },
+ "promotions": []
+}
