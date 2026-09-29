@@ -23,7 +23,7 @@ from dataclasses import asdict, dataclass, field
 from .interventions import rank
 from .taxonomy import RESPONSE_STRATEGIES, SAFETY_ORDER
 
-RULE_VERSION = "decision-rules-v1"
+RULE_VERSION = "decision-rules-v2"
 
 # Concern code -> (strategy, goal to retrieve an intervention for).
 CONCERN_PLAN = {
@@ -96,13 +96,34 @@ class Decision:
         return data
 
 
+# Acts that close a conversational loop. Answering "thanks" with a sleep
+# exercise reads as not listening, so below the safety tiers they are simply
+# acknowledged - the concern was already raised when the check-in was answered.
+CLOSING_ACTS = ("THANKS", "CLOSING")
+
+
 def decide(*, safety, state, changes, capacity, track_readings, catalog,
-           history=None, memories=(), goal_hint=None, intent=None):
+           history=None, memories=(), goal_hint=None, intent=None, act=None):
     """Produce the single decision this turn is allowed to act on.
 
     `safety` is the fused verdict from lumina.safety, `capacity` a CapacityReading,
-    `track_readings` the output of tracks.read_tracks.
+    `track_readings` the output of tracks.read_tracks. `act` is the conversational
+    move (intent.conversation_act); it adds an ACT_* reason code the response
+    layer uses for wording and never changes the safety tiers.
     """
+    decision = _decide(safety=safety, state=state, changes=changes, capacity=capacity,
+                       track_readings=track_readings, catalog=catalog, history=history,
+                       memories=memories, goal_hint=goal_hint, intent=intent, act=act)
+    if act and decision.type not in ("CRISIS_WORKFLOW", "ELEVATED_SAFETY_WORKFLOW",
+                                     "SAFETY_CLARIFICATION"):
+        decision.reason_codes.append(f"ACT_{act}")
+    if intent and decision.type not in ("CRISIS_WORKFLOW",) and             f"INTENT_{intent}" not in decision.reason_codes:
+        decision.reason_codes.append(f"TOPIC_{intent}")
+    return decision
+
+
+def _decide(*, safety, state, changes, capacity, track_readings, catalog,
+            history=None, memories=(), goal_hint=None, intent=None, act=None):
     level = safety["level"]
     primary = track_readings[0]
     prohibited = tuple(dict.fromkeys(
@@ -140,6 +161,14 @@ def decide(*, safety, state, changes, capacity, track_readings, catalog,
             reason_codes=["SAFETY_UNKNOWN", "CONSERVATIVE_DEFAULT"],
             safety_level=level, capacity=capacity.level, track=primary.track,
             prohibited=prohibited, requires_human_review=True, review_flag=review_flag)
+
+    # 3b. "Thanks" / "bye" below every safety tier: close the loop warmly.
+    if act in CLOSING_ACTS and intent in ("GENERAL_CONVERSATION", None, "UNKNOWN"):
+        return Decision(
+            type="GENERAL_SUPPORT", strategy="ACKNOWLEDGE",
+            reason_codes=["CONVERSATION_CLOSE", f"CAPACITY_{capacity.level}"],
+            safety_level=level, capacity=capacity.level, track=primary.track,
+            prohibited=prohibited, review_flag=review_flag)
 
     # 4. Track concerns, most urgent first across every active track.
     concerns = sorted((c for reading in track_readings for c in reading.concerns),
@@ -207,7 +236,16 @@ def decide(*, safety, state, changes, capacity, track_readings, catalog,
             prohibited=prohibited, review_flag=review_flag,
             requires_human_review=bool(review_flag))
 
-    # 6. Nothing pressing, but too little evidence to say anything about state.
+    # 6. Free text we could not route: listen and invite more, rather than
+    #    commenting on a day the patient did not describe.
+    if intent == "UNKNOWN":
+        return Decision(
+            type="GENERAL_SUPPORT", strategy="CLARIFY",
+            reason_codes=["OPEN_LISTENING", f"CAPACITY_{capacity.level}"],
+            safety_level=level, capacity=capacity.level, track=primary.track,
+            prohibited=prohibited, review_flag=review_flag)
+
+    # 7. Nothing pressing, but too little evidence to say anything about state.
     if state.evidence_quality == 0.0:
         return Decision(
             type="GENERAL_SUPPORT", strategy="CLARIFY",
@@ -215,7 +253,7 @@ def decide(*, safety, state, changes, capacity, track_readings, catalog,
             safety_level=level, capacity=capacity.level, track=primary.track,
             prohibited=prohibited, review_flag=review_flag)
 
-    # 6. Steady day.
+    # 8. Steady day.
     return Decision(
         type="GENERAL_SUPPORT", strategy="ACKNOWLEDGE",
         reason_codes=["NO_ACTIVE_CONCERN", f"CAPACITY_{capacity.level}"],

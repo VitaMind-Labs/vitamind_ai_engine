@@ -427,3 +427,62 @@ def test_instructions_in_patient_text_do_not_change_the_track_or_safety(lumina):
         track="ADHD")
     assert out["decision"]["track"] == "ADHD"
     assert out["safety"]["level"] == "CRISIS"
+
+
+# --- conversation quality (templates v2) ---------------------------------
+@pytest.mark.parametrize("text,act", [
+    ("hello", "GREETING"), ("I'm sad today", "SADNESS"), ("I feel anxious", "ANXIETY"),
+    ("I'm angry at my brother", "ANGER"), ("I had a good day", "POSITIVE"),
+    ("thanks", "THANKS"), ("bye", "CLOSING"), ("what can you do?", "ABOUT_LUMINA"),
+    ("i dont know", "UNSURE"), ("hi, I feel awful", "SADNESS"),
+    ("مرحبا", "GREETING"), ("انا حزين", "SADNESS"), ("من انت", "ABOUT_LUMINA"),
+])
+def test_the_conversational_act_is_read_in_both_languages(text, act):
+    assert classify(text).act == act
+
+
+@pytest.mark.parametrize("text", ["I can't sleep", "I feel lonely"])
+def test_without_data_lumina_never_claims_a_change_from_baseline(lumina, text):
+    reply = lumina.turn(text=text, track="ADHD")["response"]["text"]
+    assert "usual pattern" not in reply and "than usual" not in reply
+
+
+def test_a_greeting_is_answered_as_a_greeting(lumina):
+    reply = lumina.turn(text="hello", track="ADHD", request_id="r1")["response"]["text"]
+    assert "noted it" not in reply and "?" in reply
+
+
+def test_feelings_get_a_response_not_a_request_for_data(lumina):
+    for text in ("I'm sad today", "I'm angry at my brother", "I had a good day"):
+        reply = lumina.turn(text=text, track="ADHD")["response"]["text"]
+        assert "enough from you" not in reply
+
+
+def test_thanks_closes_the_loop_even_with_an_open_concern(lumina):
+    out = lumina.turn(text="thanks", track="BIPOLAR",
+                      checkin={"sleep_hours": 4, "energy": 4, "stress": 6, "mood": 4})
+    assert out["decision"]["intervention_id"] is None
+    assert "sleep" not in out["response"]["text"].lower()
+
+
+def test_the_preferred_name_comes_only_from_the_patients_own_answer(lumina):
+    from lumina.memory import MemoryStore
+    store = MemoryStore()
+    store.propose("PREFERENCE", "Prefers to be called: Sami", "PATIENT_EXPLICIT_STATEMENT",
+                  key="preferred_name", justification="onboarding")
+    assert "Sami" in lumina.turn(text="thanks", track="ADHD", memories=store)["response"]["text"]
+    assert "Sami" not in lumina.turn(text="thanks", track="ADHD")["response"]["text"]
+
+
+def test_crisis_wording_is_untouched_by_conversational_acts(lumina):
+    out = lumina.turn(text="hi, thanks, I want to kill myself", track="ADHD")
+    assert out["decision"]["type"] == "CRISIS_WORKFLOW"
+    assert out["response"]["text"].startswith("I am staying with you")
+
+
+@pytest.mark.parametrize("text", [
+    "I don't want to live anymore", "I wish I was dead", "No reason to keep living",
+    "I can't go on anymore", "لا اريد ان اعيش", "أتمنى الموت",
+])
+def test_common_death_wish_phrasings_reach_crisis(lumina, text):
+    assert lumina.turn(text=text, track="ADHD")["safety"]["level"] == "CRISIS"
