@@ -1,6 +1,6 @@
 {
   "benchmark": "GROUPED_PUBLIC_PLUS_SYNTHETIC_HOLDOUT",
-  "testDatasetSha256": "6017c847306503266d841597934093c25bb4691686712bb600966d98c21ec648",
+  "testDatasetSha256": "bd52eb3cf7ac95bb95fbeb8f69d6c23bfd5e6f1263dba98d381162eb80e4b480",
   "testUsedForSelection": false,
   "syntheticTestIsIndependentHumanEvaluation": false,
   "clinicalValidation": false,
@@ -13,13 +13,13 @@
   "intent": {
     "deployed": {
       "count": 1079,
-      "accuracy": 0.830398517145505,
-      "macroF1": 0.626998776709953,
+      "accuracy": 0.835032437442076,
+      "macroF1": 0.638253353436679,
       "perClass": {
         "ADD_TASK": {
-          "precision": 0.9204819277108434,
-          "recall": 0.8662131519274376,
-          "f1-score": 0.8925233644859814,
+          "precision": 0.9202898550724637,
+          "recall": 0.8639455782312925,
+          "f1-score": 0.8912280701754386,
           "support": 441.0
         },
         "BREAK_DOWN_TASK": {
@@ -71,15 +71,15 @@
           "support": 4.0
         },
         "RESCHEDULE": {
-          "precision": 0.8181818181818182,
-          "recall": 0.75,
-          "f1-score": 0.782608695652174,
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1-score": 0.8888888888888888,
           "support": 24.0
         },
         "START_TASK": {
-          "precision": 0.47368421052631576,
+          "precision": 0.5625,
           "recall": 0.75,
-          "f1-score": 0.5806451612903226,
+          "f1-score": 0.6428571428571429,
           "support": 24.0
         },
         "TASK_COMPLETED": {
@@ -101,22 +101,22 @@
           "support": 14.0
         },
         "UNKNOWN": {
-          "precision": 0.8226415094339623,
+          "precision": 0.8257575757575758,
           "recall": 0.8582677165354331,
-          "f1-score": 0.8400770712909441,
+          "f1-score": 0.8416988416988417,
           "support": 254.0
         },
-        "accuracy": 0.830398517145505,
+        "accuracy": 0.835032437442076,
         "macro avg": {
-          "precision": 0.6099840901079161,
-          "recall": 0.6908210459927628,
-          "f1-score": 0.626998776709953,
+          "precision": 0.6148879544397228,
+          "recall": 0.7073365410796865,
+          "f1-score": 0.638253353436679,
           "support": 1079.0
         },
         "weighted avg": {
-          "precision": 0.8379844922374546,
-          "recall": 0.830398517145505,
-          "f1-score": 0.83086130292989,
+          "precision": 0.8402106202482769,
+          "recall": 0.835032437442076,
+          "f1-score": 0.8344614114451279,
           "support": 1079.0
         }
       }
@@ -235,13 +235,13 @@
       "MASSIVE_1.1": {
         "deployed": {
           "count": 909,
-          "accuracy": 0.8547854785478548,
-          "macroF1": 0.31969088624836095,
+          "accuracy": 0.8536853685368537,
+          "macroF1": 0.3195208906909115,
           "perClass": {
             "ADD_TASK": {
-              "precision": 0.9168765743073047,
-              "recall": 0.8729016786570744,
-              "f1-score": 0.8943488943488943,
+              "precision": 0.9166666666666666,
+              "recall": 0.8705035971223022,
+              "f1-score": 0.8929889298892989,
               "support": 417.0
             },
             "BREAK_DOWN_TASK": {
@@ -286,17 +286,17 @@
               "f1-score": 0.8530020703933747,
               "support": 240.0
             },
-            "accuracy": 0.8547854785478548,
+            "accuracy": 0.8536853685368537,
             "macro avg": {
-              "precision": 0.3204801248811884,
-              "recall": 0.3190829479273724,
-              "f1-score": 0.31969088624836095,
+              "precision": 0.3204538864261086,
+              "recall": 0.3187831877355259,
+              "f1-score": 0.3195208906909115,
               "support": 909.0
             },
             "weighted avg": {
-              "precision": 0.8660063003465438,
-              "recall": 0.8547854785478548,
-              "f1-score": 0.860097216061103,
+              "precision": 0.8659100060823567,
+              "recall": 0.8536853685368537,
+              "f1-score": 0.8594733379756782,
               "support": 909.0
             }
           }
@@ -373,8 +373,8 @@
       "SYNTHETIC": {
         "deployed": {
           "count": 170,
-          "accuracy": 0.7,
-          "macroF1": 0.6182933782933783,
+          "accuracy": 0.7352941176470589,
+          "macroF1": 0.6322073075014251,
           "perClass": {
             "ADD_TASK": {
               "precision": 1.0,
@@ -431,15 +431,15 @@
               "support": 4.0
             },
             "RESCHEDULE": {
-              "precision": 0.9,
-              "recall": 0.75,
-              "f1-score": 0.8181818181818182,
+              "precision": 0.8888888888888888,
+              "recall": 1.0,
+              "f1-score": 0.9411764705882353,
               "support": 24.0
             },
             "START_TASK": {
-              "precision": 0.5,
+              "precision": 0.6,
               "recall": 0.75,
-              "f1-score": 0.6,
+              "f1-score": 0.6666666666666666,
               "support": 24.0
             },
             "TASK_COMPLETED": {
@@ -461,22 +461,22 @@
               "support": 14.0
             },
             "UNKNOWN": {
-              "precision": 0.5454545454545454,
+              "precision": 0.5714285714285714,
               "recall": 0.8571428571428571,
-              "f1-score": 0.6666666666666666,
+              "f1-score": 0.6857142857142857,
               "support": 14.0
             },
-            "accuracy": 0.7,
+            "accuracy": 0.7352941176470589,
             "macro avg": {
-              "precision": 0.6423465423465424,
-              "recall": 0.6619047619047619,
-              "f1-score": 0.6182933782933783,
+              "precision": 0.6500040700040699,
+              "recall": 0.6785714285714286,
+              "f1-score": 0.6322073075014251,
               "support": 170.0
             },
             "weighted avg": {
-              "precision": 0.7556286850404497,
-              "recall": 0.7,
-              "f1-score": 0.6994729559435442,
+              "precision": 0.7703167420814478,
+              "recall": 0.7352941176470589,
+              "f1-score": 0.7278172990283717,
               "support": 170.0
             }
           }
@@ -597,13 +597,13 @@
       "AR": {
         "deployed": {
           "count": 526,
-          "accuracy": 0.8326996197718631,
-          "macroF1": 0.708204887577078,
+          "accuracy": 0.8307984790874525,
+          "macroF1": 0.703523019239904,
           "perClass": {
             "ADD_TASK": {
-              "precision": 0.9082125603864735,
-              "recall": 0.8703703703703703,
-              "f1-score": 0.8888888888888888,
+              "precision": 0.9077669902912622,
+              "recall": 0.8657407407407407,
+              "f1-score": 0.8862559241706162,
               "support": 216.0
             },
             "BREAK_DOWN_TASK": {
@@ -655,9 +655,9 @@
               "support": 2.0
             },
             "RESCHEDULE": {
-              "precision": 0.9230769230769231,
+              "precision": 0.8,
               "recall": 1.0,
-              "f1-score": 0.96,
+              "f1-score": 0.8888888888888888,
               "support": 12.0
             },
             "START_TASK": {
@@ -685,22 +685,22 @@
               "support": 7.0
             },
             "UNKNOWN": {
-              "precision": 0.8403361344537815,
+              "precision": 0.847457627118644,
               "recall": 0.8333333333333334,
-              "f1-score": 0.8368200836820083,
+              "f1-score": 0.8403361344537815,
               "support": 120.0
             },
-            "accuracy": 0.8326996197718631,
+            "accuracy": 0.8307984790874525,
             "macro avg": {
-              "precision": 0.693170534589972,
-              "recall": 0.7675485008818342,
-              "f1-score": 0.708204887577078,
+              "precision": 0.685410467889487,
+              "recall": 0.7672398589065257,
+              "f1-score": 0.703523019239904,
               "support": 526.0
             },
             "weighted avg": {
-              "precision": 0.838120919183054,
-              "recall": 0.8326996197718631,
-              "f1-score": 0.8333199943319111,
+              "precision": 0.836754784016314,
+              "recall": 0.8307984790874525,
+              "f1-score": 0.8314186110241782,
               "support": 526.0
             }
           }
@@ -819,8 +819,8 @@
       "EN": {
         "deployed": {
           "count": 543,
-          "accuracy": 0.8342541436464088,
-          "macroF1": 0.5667200127498375,
+          "accuracy": 0.8453038674033149,
+          "macroF1": 0.5962536938964219,
           "perClass": {
             "ADD_TASK": {
               "precision": 0.9326923076923077,
@@ -877,15 +877,15 @@
               "support": 2.0
             },
             "RESCHEDULE": {
-              "precision": 0.6666666666666666,
-              "recall": 0.5,
-              "f1-score": 0.5714285714285714,
+              "precision": 0.8,
+              "recall": 1.0,
+              "f1-score": 0.8888888888888888,
               "support": 12.0
             },
             "START_TASK": {
-              "precision": 0.48,
+              "precision": 0.631578947368421,
               "recall": 1.0,
-              "f1-score": 0.6486486486486487,
+              "f1-score": 0.7741935483870968,
               "support": 12.0
             },
             "TASK_COMPLETED": {
@@ -912,17 +912,17 @@
               "f1-score": 0.8539325842696629,
               "support": 130.0
             },
-            "accuracy": 0.8342541436464088,
+            "accuracy": 0.8453038674033149,
             "macro avg": {
-              "precision": 0.5666083048135969,
-              "recall": 0.6150488849385909,
-              "f1-score": 0.5667200127498375,
+              "precision": 0.5856024568603805,
+              "recall": 0.6483822182719242,
+              "f1-score": 0.5962536938964219,
               "support": 543.0
             },
             "weighted avg": {
-              "precision": 0.8440685637215458,
-              "recall": 0.8342541436464088,
-              "f1-score": 0.8335411198421645,
+              "precision": 0.8503649677149547,
+              "recall": 0.8453038674033149,
+              "f1-score": 0.8433312903879937,
               "support": 543.0
             }
           }
@@ -7595,7 +7595,7 @@
         "source": "MASSIVE_1.1",
         "language": "AR",
         "expected": "ADD_TASK",
-        "prediction": "ADD_TASK",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {
@@ -9043,7 +9043,7 @@
         "source": "SYNTHETIC",
         "language": "AR",
         "expected": "PRIORITIZE",
-        "prediction": "UNKNOWN",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {
@@ -9083,7 +9083,7 @@
         "source": "SYNTHETIC",
         "language": "EN",
         "expected": "RESCHEDULE",
-        "prediction": "START_TASK",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {
@@ -9091,7 +9091,7 @@
         "source": "SYNTHETIC",
         "language": "EN",
         "expected": "RESCHEDULE",
-        "prediction": "START_TASK",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {
@@ -9099,7 +9099,7 @@
         "source": "SYNTHETIC",
         "language": "EN",
         "expected": "RESCHEDULE",
-        "prediction": "START_TASK",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {
@@ -9107,7 +9107,7 @@
         "source": "SYNTHETIC",
         "language": "EN",
         "expected": "RESCHEDULE",
-        "prediction": "START_TASK",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {
@@ -9115,7 +9115,7 @@
         "source": "SYNTHETIC",
         "language": "EN",
         "expected": "RESCHEDULE",
-        "prediction": "START_TASK",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {
@@ -9123,7 +9123,7 @@
         "source": "SYNTHETIC",
         "language": "EN",
         "expected": "RESCHEDULE",
-        "prediction": "START_TASK",
+        "prediction": "RESCHEDULE",
         "rulesPrediction": "RESCHEDULE"
       },
       {

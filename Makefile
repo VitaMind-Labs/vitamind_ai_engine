@@ -1,9 +1,9 @@
-# VitaMind AI engine. One command starts both agents, each on its own port.
+# VitaMind AI engine. One command starts all three agents, each on its own port.
 PY ?= python
 
-.PHONY: dev mira lumina test test-mira test-lumina models clean-ports
+.PHONY: dev mira lumina spark test test-mira test-lumina test-spark models clean-ports
 
-dev:            ## both agents, restart-on-crash, status table
+dev:            ## all three agents, restart-on-crash, status table
 	$(PY) -m scripts.run_all
 
 mira:           ## Mira only (:8101)
@@ -12,10 +12,16 @@ mira:           ## Mira only (:8101)
 lumina:         ## Lumina only (:8102)
 	$(PY) -m scripts.run_all --only lumina
 
-dev-reload:     ## both agents with autoreload
+spark:          ## Spark only (:8103)
+	$(PY) -m scripts.run_all --only spark
+
+dev-reload:     ## all agents with autoreload
 	$(PY) -m scripts.run_all --reload
 
-test: test-lumina test-mira
+test: test-lumina test-spark test-mira
+
+test-spark:
+	cd spark && $(PY) -m pytest -q
 
 test-lumina:
 	cd lumina && $(PY) -m pytest -q

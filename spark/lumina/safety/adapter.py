@@ -1,8 +1,11 @@
 import re
 from datetime import timedelta
-from .journal_ai import JournalSentinel
-from .journal_ai.lexicon import scan
-from .journal_ai.context import rule_context
+from ..shared import journal_ai as _shared_journal_ai
+# One copy of the safety model: Lumina's. See lumina/shared.py.
+_journal_ai=_shared_journal_ai()
+from journal_ai import JournalSentinel  # noqa: E402  (resolved by the call above)
+from journal_ai.lexicon import scan  # noqa: E402
+from journal_ai.context import rule_context  # noqa: E402
 from ..adhd.executive_function.schemas import Safety
 from ..adhd.executive_function.language import normalize,choose
 

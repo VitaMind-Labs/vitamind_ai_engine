@@ -1,4 +1,4 @@
-"""Start Mira and Lumina together, each in its own process on its own port.
+"""Start Mira, Lumina and Spark together, each in its own process on its own port.
 
 Why separate OS processes rather than one ASGI app mounting both: the two agents
 must fail independently. Mounted together, an unhandled exception during startup,
@@ -10,6 +10,11 @@ for patients who are already onboarded.
     python -m scripts.run_all --only lumina   # one
     python -m scripts.run_all --reload        # dev autoreload
     python -m scripts.run_all --no-restart    # fail fast instead of respawning
+    python -m scripts.run_all --gateway       # + one public port routing /mira /lumina /spark
+
+On a host that exposes a single port (Render sets PORT), the gateway starts on its
+own: the three agents keep their own internal ports and restart independently, and
+the gateway is the one address the backend can reach.
 
 Stdlib only: subprocess, threading, signal. No orchestrator required to run the
 stack on a laptop.
@@ -49,6 +54,8 @@ class ServiceSpec:
     default_port: int
     # Environment variables this service cannot start without.
     required_env: tuple = ()
+    # At least one of these must be set (Spark takes its own secret or Lumina's).
+    required_any: tuple = ()
     # Extra defaults injected when the operator has not set them.
     env_defaults: dict = field(default_factory=dict)
 
@@ -73,6 +80,17 @@ SERVICES = {
         # development choice that must be made explicitly, never by omission.
         required_env=("LUMINA_SERVICE_SECRET",),
         env_defaults={"ALLOW_UNREVIEWED_SAFETY_CONTENT": "true"},
+    ),
+    "spark": ServiceSpec(
+        name="spark",
+        colour="33",  # yellow
+        cwd=ROOT / "spark",
+        app="spark_service.app:app",
+        port_env="SPARK_PORT",
+        default_port=8103,
+        # One backend signs every agent call, so Spark accepts its own secret or
+        # falls back to Lumina's.
+        required_any=("SPARK_SERVICE_SECRET", "LUMINA_SERVICE_SECRET"),
     ),
 }
 
@@ -358,7 +376,7 @@ def status_table(runners: list[Runner], results: dict) -> str:
     return "\n".join(lines)
 
 
-def validate_environment(specs, environment) -> list[str]:
+def validate_environment(specs, environment, gateway_port=None) -> list[str]:
     """Fail fast on missing configuration, without ever echoing a value."""
     problems = []
     for spec in specs:
@@ -367,6 +385,11 @@ def validate_environment(specs, environment) -> list[str]:
                 problems.append(
                     f"{spec.name}: {key} is not set. Set it in .env, or export "
                     f"LUMINA_ALLOW_UNSIGNED=true for local development only.")
+        if spec.required_any and not any(
+                environment.get(key) or os.environ.get(key) for key in spec.required_any):
+            problems.append(
+                f"{spec.name}: set one of {', '.join(spec.required_any)} in .env, or "
+                f"export LUMINA_ALLOW_UNSIGNED=true for local development only.")
         if not spec.cwd.exists():
             problems.append(f"{spec.name}: directory not found: {spec.cwd}")
     ports = {}
@@ -377,6 +400,9 @@ def validate_environment(specs, environment) -> list[str]:
                 f"port {port} requested by both {ports[port]} and {spec.name}; "
                 "each agent needs its own port")
         ports[port] = spec.name
+    if gateway_port is not None and gateway_port in ports:
+        problems.append(f"the public gateway port {gateway_port} is also {ports[gateway_port]}'s "
+                        "port; the gateway needs its own")
     return problems
 
 
@@ -388,21 +414,41 @@ def main():
     parser.add_argument("--reload", action="store_true", help="uvicorn autoreload (dev)")
     parser.add_argument("--no-restart", action="store_true",
                         help="do not respawn a crashed service")
+    parser.add_argument("--gateway", action="store_true",
+                        help="serve one public port that routes /mira /lumina /spark "
+                             "(automatic when PORT is set, as on Render)")
+    parser.add_argument("--no-gateway", action="store_true",
+                        help="never start the gateway, even when PORT is set")
     parser.add_argument("--env-file", default=str(ROOT / ".env"))
     parser.add_argument("--ready-timeout", type=float, default=READY_TIMEOUT_SECONDS)
     args = parser.parse_args()
 
-    environment = load_dotenv(Path(args.env_file))
+    # The real environment wins over the file (twelve-factor): on a platform such
+    # as Render there is no .env at all, and MIRA_PORT / LUMINA_PORT / secrets come
+    # from the process environment. Reading only the file made those ignored.
+    environment = {**load_dotenv(Path(args.env_file)),
+                   **{key: value for key, value in os.environ.items()
+                      if key.endswith(("_PORT", "_HOST")) or key in (
+                          "PORT", "AGENT_HOST", "AGENT_LOG_LEVEL", "LUMINA_SERVICE_SECRET",
+                          "SPARK_SERVICE_SECRET", "LUMINA_ALLOW_UNSIGNED", "SPARK_ALLOW_UNSIGNED",
+                          "ALLOW_UNREVIEWED_SAFETY_CONTENT")}}
     # LUMINA_ALLOW_UNSIGNED is the documented escape hatch; honour it here too so
     # the launcher's own validation agrees with the service's.
     # Compare the value, not its presence: .env.example ships "false".
     if (environment.get("LUMINA_ALLOW_UNSIGNED", "").lower() == "true"
             or os.environ.get("LUMINA_ALLOW_UNSIGNED", "").lower() == "true"):
         SERVICES["lumina"].required_env = ()
+        SERVICES["spark"].required_any = ()
 
     selected = [SERVICES[name] for name in (args.only or sorted(SERVICES))]
 
-    problems = validate_environment(selected, environment)
+    # Render (and most PaaS) hand a single public port in PORT. Exposing three
+    # agents on one port needs the gateway, so PORT switches it on by itself.
+    public_port = os.environ.get("PORT") or environment.get("PORT")
+    use_gateway = not args.no_gateway and (args.gateway or bool(public_port))
+    gateway_port = int(public_port or os.environ.get("GATEWAY_PORT") or 8100) if use_gateway else None
+
+    problems = validate_environment(selected, environment, gateway_port)
     if problems:
         print(paint("31", "Configuration problems:"), file=sys.stderr)
         for problem in problems:
@@ -415,12 +461,38 @@ def main():
 
     stopping = threading.Event()
 
+    gateway = None
+    if use_gateway:
+        from scripts.gateway import make_gateway, serve_in_thread
+
+        def agent_status():
+            report = {}
+            for runner in runners:
+                _, health_body = probe(f"{runner.base_url}/health")
+                ready_status, _ = probe(f"{runner.base_url}/ready")
+                report[runner.spec.name] = {"up": health_body is not None,
+                                            "ready": ready_status == 200,
+                                            "restarts": runner.restarts}
+            return report
+
+        gateway_host = os.environ.get("GATEWAY_HOST") or environment.get("GATEWAY_HOST") or "0.0.0.0"
+        gateway = make_gateway(gateway_host, gateway_port,
+                               {runner.spec.name: runner.port for runner in runners},
+                               agent_status)
+        # Up before the agents finish loading, so a platform health check on the
+        # public port passes while the models are still warming.
+        serve_in_thread(gateway)
+        print(paint("32", f"gateway listening on {gateway_host}:{gateway_port} "
+                          f"-> {', '.join('/' + r.spec.name for r in runners)}"), flush=True)
+
     def shutdown(_signum=None, _frame=None):
         if stopping.is_set():
             return
         stopping.set()
         print()
-        print(paint("33", "shutting down both agents..."))
+        print(paint("33", "shutting down the agents..."))
+        if gateway is not None:
+            threading.Thread(target=gateway.shutdown, daemon=True).start()
         for runner in runners:
             runner.stop()
 
@@ -449,7 +521,7 @@ def main():
         print(paint("33", f"reachable but not ready: {', '.join(not_ready)} "
                           "(check /ready for the reason)"))
     if not down and not not_ready:
-        print(paint("32", "both agents up. Ctrl+C to stop."))
+        print(paint("32", "all agents up. Ctrl+C to stop."))
 
     try:
         while not stopping.is_set():

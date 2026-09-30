@@ -237,8 +237,8 @@
   "performance": {
     "samples": 110,
     "warmupExcluded": 10,
-    "medianMs": 0.7879999993747333,
-    "p95Ms": 0.8149999994202517,
+    "medianMs": 2.6792000001023553,
+    "p95Ms": 4.829399999835005,
     "includesModelLoad": false,
     "includesCalendarIO": false,
     "targetP95Ms": 500
