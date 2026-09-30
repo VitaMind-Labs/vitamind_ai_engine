@@ -1,8 +1,9 @@
+import re
 from datetime import datetime,timezone,timedelta
 from time import perf_counter
 from uuid import uuid5
 from .schemas import *
-from .language import choose,languages,normalize,mentions,referenced_task
+from .language import choose,completion_clauses,languages,normalize,mentions,referenced_task,same_task
 from .intent_classifier import IntentClassifier
 from .friction_classifier import FrictionClassifier
 from .time_engine import available_minutes,parse_temporal
@@ -47,6 +48,8 @@ class LuminaADHD:
             if cached: return cached
         safety,safety_text=self.safety.check(request)
         intent,confidence,source=self.intent_classifier.predict(request.message.text)
+        # A bare "help me" is a request for help with the day, not a report of distraction.
+        if re.fullmatch(r"\s*(?:please\s+)?help(?: me)?\s*[.!?]*",normalize(request.message.text)): intent='ORGANIZE_DAY'
         friction,friction_source=self.friction_classifier.predict(request.message.text)
         day=request.timeContext.day or request.timeContext.referenceDate
         cap,cap_evidence=capacity(request,friction,request.timeContext.referenceDate)
@@ -75,9 +78,10 @@ class LuminaADHD:
             uncertainty.extend(query_time['uncertainty'])
             issues.extend(query_time['uncertainty'])
         operations=[]
+        open_before=[t.temporaryId for t in existing.values() if t.status=='TODO']
         resolved=[]
         for t in extracted:
-            duplicate=next((x for x in existing.values() if normalize(x.title)==normalize(t.title) and x.scheduledDate==t.scheduledDate and x.status=='TODO'),None)
+            duplicate=next((x for x in existing.values() if same_task(x.title,t.title) and x.scheduledDate==t.scheduledDate and x.status=='TODO'),None)
             # "I keep putting off the email" points at the open "email James"; it is
             # not a second commitment. The turn is then about the existing task.
             if not duplicate: duplicate=referenced_task(t.title,[x for x in existing.values() if x.status=='TODO'])
@@ -99,10 +103,22 @@ class LuminaADHD:
         completed_now=[]
         if intent=='TASK_COMPLETED':
             said=normalize(request.message.text)
-            completed_now=[t for t in existing.values() if t.status=='TODO' and mentions(t.title,said)]
+            # Only tasks open before this message: one added by it is never closed by it.
+            completed_now=[existing[key] for key in open_before if existing[key].status=='TODO' and mentions(existing[key].title,said)]
             for t in completed_now:
                 t.status='DONE'
                 operations.append(TaskOperation(operation='COMPLETE',taskId=t.temporaryId))
+        else:
+            # A completion reported inside a longer message ("I called my mom. Also study for the
+            # exam again") closes what it names, whatever label the whole message got. Only tasks
+            # that were open before this message can be closed, and only by a clause that reads
+            # as a past-tense report; a task added in this same message is never closed by it.
+            for clause in completion_clauses(request.message.text):
+                for key in open_before:
+                    t=existing[key]
+                    if t.status=='TODO' and mentions(t.title,clause):
+                        t.status='DONE'; completed_now.append(t)
+                        operations.append(TaskOperation(operation='COMPLETE',taskId=t.temporaryId))
         all_tasks=list(existing.values())
         # Daily plans exclude other days but can include unscheduled tasks explicitly supplied now.
         tasks=[t for t in all_tasks if t.scheduledDate is None or day is None or t.scheduledDate==day]
@@ -110,9 +126,18 @@ class LuminaADHD:
         # classifier produced. Keying this on ADD_TASK alone meant "I have to buy
         # groceries tomorrow", read as ORGANIZE_DAY, was filtered out by today's day
         # window and answered with a clarifying question instead of being saved.
+        original_intent=intent
         if extracted:
-            tasks=extracted
-            if len({t.scheduledDate for t in extracted})==1: day=extracted[0].scheduledDate or day
+            day_open=[t for t in tasks if t.status=='TODO']
+            same_day=len({t.scheduledDate for t in extracted})==1 and extracted[0].scheduledDate in (None,day)
+            if intent in ('ADD_TASK','ORGANIZE_DAY','PRIORITIZE') and same_day and len(day_open)>=2:
+                # Giving Spark tasks is asking it to organise the day: the plan covers everything
+                # open today (what was saved earlier plus what was just said), not only the
+                # newest entry, so the list always reads as one ordered day.
+                if intent=='ADD_TASK': intent='ORGANIZE_DAY'
+            else:
+                tasks=extracted
+                if len({t.scheduledDate for t in extracted})==1: day=extracted[0].scheduledDate or day
         available=request.timeContext.availableMinutes
         if available is None: available=available_minutes(request.message.text)
         if 'UNKNOWN' in friction and len(tasks)>=10:
@@ -154,7 +179,10 @@ class LuminaADHD:
         elif completed_now and not primary:
             pass
         elif not primary:
-            clarification=choose(request.patient.language,'What is one task you want help with?','ما المهمة الواحدة التي تريد المساعدة فيها؟') if not tasks else choose(request.patient.language,'Which dependency needs to be completed before these tasks can start?','ما المهمة السابقة التي يجب ان تنتهي قبل بدء هذه المهام؟')
+            # Asked to plan or prioritise a day with nothing on the list: ask for the list
+            # itself, not for "one task", so the request is answered rather than narrowed.
+            planning=intent in ('ORGANIZE_DAY','PRIORITIZE')
+            clarification=(choose(request.patient.language,'Tell me what is on your plate today - a rough list is fine - and I will put it in order.','اخبرني بما عليك اليوم - قائمة تقريبية تكفي - وسأرتبها لك.') if planning else choose(request.patient.language,'What is one task you want help with?','ما المهمة الواحدة التي تريد المساعدة فيها؟')) if not tasks else choose(request.patient.language,'Which dependency needs to be completed before these tasks can start?','ما المهمة السابقة التي يجب ان تنتهي قبل بدء هذه المهام؟')
         if issues:
             clarification=choose(request.patient.language,'Please clarify the task date or time; I have not assumed one.','وضح تاريخ المهمة او وقتها؛ لم افترض موعدا من عندي.')
         if available==0:
@@ -163,7 +191,9 @@ class LuminaADHD:
         elif completed_now and not primary: strategy='TASK_COMPLETED_ACK'
         elif not primary: strategy='NO_TASKS'
         secondary=[]
-        if primary and cap in ('NORMAL','HIGH') and intent in ('ORGANIZE_DAY','PRIORITIZE'):
+        # An explicit request to order the day is answered at any capacity; a low
+        # capacity only shortens the list (see response_engine).
+        if primary and intent in ('ORGANIZE_DAY','PRIORITIZE'):
             strategy='SHORT_DAY_PLAN'
             # Unknown durations never count as fitting a time budget.
             remaining=available-primary.durationMinutes-2 if available is not None and primary.durationMinutes is not None else None
@@ -200,11 +230,16 @@ class LuminaADHD:
             strategy='CLARIFY'
             for rank in ranks:
                 if rank.bucket in ('PRIMARY','SECONDARY'): rank.bucket='OPTIONAL'
+        # Tasks are written in the order they were ranked, so the list a patient sees
+        # afterwards reads in the same order as the plan they were just given.
+        rank_position={r.task.temporaryId:i for i,r in enumerate(ranks)}
+        add_slots=[i for i,o in enumerate(operations) if o.operation=='ADD']
+        for slot,op in zip(add_slots,sorted((operations[i] for i in add_slots),key=lambda o:rank_position.get(o.taskId,len(rank_position)))): operations[slot]=op
         plan=Plan(strategy=strategy,primaryTask=primary,nextAction=action,secondaryTasks=secondary,rankedTasks=ranks,day=day)
         future_plan=bool(day and request.timeContext.referenceDate and day>request.timeContext.referenceDate)
         focus=None if clarification or future_plan else choose_focus(request,cap,available,action,patterns)
         analysis=Analysis(taskCount=len(tasks),needsClarification=bool(clarification),dataQuality='MODERATE' if tasks and not issues else 'LIMITED',uncertainty=sorted(set(uncertainty)),clarification=clarification,capacityEvidence=cap_evidence,intentSource=source,intentConfidence=confidence,frictionSource=friction_source,languagesObserved=languages(request.message.text))
-        result=OrganizeResponse(requestId=request.requestId,language=request.patient.language,intent=intent,friction=friction,capacity=cap,analysis=analysis,plan=plan,focusSession=focus,response=compose(request,plan,cap,intent,clarification,completed_now,friction,uncertainty),taskOperations=operations,memoryCandidates=[p for p in patterns if p.category=='PREFERENCE'],patternCandidates=[p for p in patterns if p.category=='PATTERN'],followUp=FollowUp(type='CLARIFICATION' if clarification else 'AFTER_ACTION' if action and not future_plan else 'NONE',recommendedAfterMinutes=focus.minutes if focus else None),safety=safety,performance=Performance(processingTimeMs=round((perf_counter()-start)*1000,3)))
+        result=OrganizeResponse(requestId=request.requestId,language=request.patient.language,intent=intent,friction=friction,capacity=cap,analysis=analysis,plan=plan,focusSession=focus,response=compose(request,plan,cap,intent,clarification,completed_now,friction,uncertainty,[o.task for o in operations if o.operation=='ADD'] if original_intent=='ADD_TASK' else ()),taskOperations=operations,memoryCandidates=[p for p in patterns if p.category=='PREFERENCE'],patternCandidates=[p for p in patterns if p.category=='PATTERN'],followUp=FollowUp(type='CLARIFICATION' if clarification else 'AFTER_ACTION' if action and not future_plan else 'NONE',recommendedAfterMinutes=focus.minutes if focus else None),safety=safety,performance=Performance(processingTimeMs=round((perf_counter()-start)*1000,3)))
         if request.calendar.commit and not clarification:
             return self.calendar.commit(request,result)
         return result

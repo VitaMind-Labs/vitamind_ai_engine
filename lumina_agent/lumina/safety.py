@@ -172,6 +172,40 @@ class SafetyEngine:
         }
 
 
+# A crisis is followed up with a safety check on the next turn for this long,
+# whichever conversation that turn is in.
+RECENT_SAFETY_FOLLOW_UP_HOURS = 12.0
+# Past this, an earlier turn no longer shapes the current one at all.
+RECENT_SAFETY_WINDOW_HOURS = 24.0
+
+
+def recent_safety_level(context):
+    """The safety level an earlier turn lends to this one, across conversations.
+
+    `context` is what the backend distilled from the patient's last day of turns:
+    the most serious level seen (`HIGH` or `CRISIS`), how long ago, and whether a
+    safety workflow has run since (`follow_up_done`). No message text arrives.
+
+    A crisis not yet followed up opens the next turn with a safety check (HIGH),
+    so starting a fresh conversation does not skip it. After that - or after a
+    HIGH turn, which was itself a safety check - the turn is only kept at
+    ELEVATED until the window passes. Never CRISIS: only what the patient writes
+    now can reach it.
+    """
+    if not context:
+        return "NORMAL"
+    hours_ago = float(context.get("hours_ago", 0))
+    if hours_ago > RECENT_SAFETY_WINDOW_HOURS:
+        return "NORMAL"
+    level = context.get("level")
+    if level == "CRISIS" and not context.get("follow_up_done") \
+            and hours_ago <= RECENT_SAFETY_FOLLOW_UP_HOURS:
+        return "HIGH"
+    if level in ("CRISIS", "HIGH"):
+        return "ELEVATED"
+    return "NORMAL"
+
+
 def assert_never_lowers(rule_level, fused_level):
     """Invariant used by the tests: fusion may raise a level, never lower one."""
     if SAFETY_ORDER[fused_level] < SAFETY_ORDER[rule_level]:
@@ -181,4 +215,4 @@ def assert_never_lowers(rule_level, fused_level):
 
 
 __all__ = ["SafetyEngine", "SAFETY_LEVELS", "SAFETY_ORDER", "TIER_TO_LEVEL",
-           "assert_never_lowers"]
+           "assert_never_lowers", "recent_safety_level"]

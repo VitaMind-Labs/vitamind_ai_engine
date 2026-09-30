@@ -23,8 +23,9 @@ from .intent import classify as classify_intent
 from .journal import JournalAnalyzer, JournalAnalysisResult, fuse_journal_safety, journal_context_level
 from .interventions import InterventionCatalog, OutcomeHistory
 from .memory import MemoryStore
+from .planning import extract_items
 from .response import render
-from .safety import SafetyEngine
+from .safety import SafetyEngine, recent_safety_level
 from .state import build_state
 from .taxonomy import SAFETY_ORDER, TRACKS
 from .tracks import read_tracks
@@ -91,7 +92,16 @@ class Lumina:
             understanding = MultiHeadLinear.load(root / "understanding")
         except (OSError, ValueError, KeyError):
             understanding = None
-        return cls(allow_unreviewed=allow_unreviewed, understanding=understanding)
+        # The learned intent head runs as a fallback only: rules route first, and the head
+        # answers just the messages no rule matched, and only above its own 0.95 confidence
+        # floor (it abstains otherwise), so it can add coverage but never override a rule.
+        intent_model = None
+        try:
+            intent_model = MultiHeadLinear.load(root / "intent")
+        except (OSError, ValueError, KeyError):
+            intent_model = None
+        return cls(allow_unreviewed=allow_unreviewed, understanding=understanding,
+                   intent_model=intent_model)
 
     # -- journal ----------------------------------------------------------
     def analyze_journal(self, text, *, entry_id=None, language=None,
@@ -134,7 +144,8 @@ class Lumina:
     # -- the turn ---------------------------------------------------------
     def turn(self, *, text=None, checkin=None, history=(), track="UNSPECIFIED",
              secondary_track=None, language="en", memories=None, outcomes=None,
-             journal_signals=None, journal_context=None, resources=(),
+             journal_signals=None, journal_context=None, recent_safety=None,
+             resources=(),
              request_class="CHAT_SHORT", request_id=None):
         if track not in TRACKS:
             raise ValueError(f"unknown track {track!r}")
@@ -213,6 +224,20 @@ class Lumina:
                                            "hours_ago": journal_context.get("hours_ago")},
                        "requires_human_review": (verdict.get("requires_human_review")
                                                  or lent == "HIGH")}
+        # An earlier turn's crisis or high-risk moment carries into this one, in
+        # whatever conversation it happens, so a fresh thread cannot skip the
+        # follow-up. Same rules: escalation only, never CRISIS.
+        recent_escalated = False
+        lent = recent_safety_level(recent_safety)
+        if SAFETY_ORDER[lent] > SAFETY_ORDER[verdict["level"]] \
+                and verdict["level"] != "UNKNOWN":
+            recent_escalated = True
+            journal_escalated = False
+            verdict = {**verdict, "level": lent, "decided_by": "recent_safety",
+                       "recent_safety": {"level": recent_safety.get("level"),
+                                         "hours_ago": recent_safety.get("hours_ago")},
+                       "requires_human_review": (verdict.get("requires_human_review")
+                                                 or lent == "HIGH")}
         steps.append("safety")
 
         # 5-6. Baseline and change detection against the patient's own history.
@@ -249,12 +274,16 @@ class Lumina:
                           act=intent.act if intent else None)
         if journal_escalated and decision.type == "ELEVATED_SAFETY_WORKFLOW":
             decision.reason_codes.append("JOURNAL_CONTEXT")
+        if recent_escalated and decision.type == "ELEVATED_SAFETY_WORKFLOW":
+            decision.reason_codes.append("RECENT_SAFETY")
         steps.append("decision")
 
         # 12. Render, within capacity limits and the track's language rules.
+        # A request to plan the day is answered from the list the patient just wrote.
+        plan_items = extract_items(text) if intent is not None and intent.act == "PLAN_REQUEST" else None
         reply = render(decision, language=language, changes=changes,
                        resources=resources, name=_preferred_name(store),
-                       seed=_variant_seed(request_id, text))
+                       seed=_variant_seed(request_id, text), plan_items=plan_items)
         steps.append("response")
 
         # 13-16. Persistence hints. The backend decides what actually gets stored.

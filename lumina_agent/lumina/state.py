@@ -14,6 +14,7 @@ patient actually reported.
 from __future__ import annotations
 
 import datetime as dt
+import math
 from dataclasses import asdict, dataclass, field
 
 from .taxonomy import OBSERVATION_QUALITY, STATE_DIMENSIONS
@@ -114,6 +115,18 @@ class StateSnapshot:
         }
 
 
+def _finite(value):
+    """A usable number, or None. NaN/inf, booleans and text are absent, not extreme:
+    clamping NaN would otherwise turn garbage into a maximum reading."""
+    if value is None or isinstance(value, bool):
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return number if math.isfinite(number) else None
+
+
 def build_state(checkin=None, journal_signals=None, at=None):
     """Assemble a snapshot from a check-in and optional journal-derived signals.
 
@@ -121,8 +134,8 @@ def build_state(checkin=None, journal_signals=None, at=None):
     journal text, so journal signals only fill dimensions the check-in left
     empty - and they are marked `estimated` when they do.
     """
-    checkin = checkin or {}
-    journal_signals = journal_signals or {}
+    checkin = {k: _finite(v) for k, v in (checkin or {}).items()}
+    journal_signals = {k: _finite(v) for k, v in (journal_signals or {}).items()}
     signals = {}
 
     sleep_hours = checkin.get("sleep_hours")

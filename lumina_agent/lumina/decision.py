@@ -68,6 +68,37 @@ INTENT_PLAN = {
 }
 
 
+# General support nudges (executive function, distress, withdrawal, drift from baseline).
+# message with its own topic may be answered first. Every other concern code belongs to
+# a monitoring track (sleep/energy divergence, distress, withdrawal) and is never set aside.
+DEFERRABLE_CONCERNS = frozenset({"TASK_INITIATION", "OVERLOAD", "ATTENTION",
+                                 "ROUTINE_INSTABILITY", "FOCUS_CHANGE_FROM_BASELINE",
+                                 "DISTRESS", "SOCIAL_WITHDRAWAL", "ROUTINE_SUPPORT_NEEDED",
+                                 "BASELINE_DEVIATION"})
+
+
+def _message_first(top, intent, act=None):
+    """True when the patient's own words should be answered before this concern.
+
+    Unrouted free text ("I had a fight with my brother") is listened to. A routed topic
+    is answered when it asks for something other than what the concern would offer; when
+    they coincide (they ask about tasks and the concern is about starting tasks) the
+    concern's richer wording is kept. A bare greeting keeps the gentle nudge.
+    """
+    if intent is None or top.code not in DEFERRABLE_CONCERNS:
+        return False
+    # A reply to what Lumina just said ("yes", "no", "I don't understand") is never a
+    # cue to repeat the routine nudge.
+    if act in ("AGREE", "DECLINE", "CONFUSED"):
+        return True
+    if intent == "UNKNOWN":
+        return True
+    plan = INTENT_PLAN.get(intent)
+    if plan is None or intent == "GENERAL_CONVERSATION":
+        return False
+    return plan[0] != CONCERN_PLAN.get(top.code, (None, None))[0]
+
+
 @dataclass
 class Decision:
     type: str
@@ -162,17 +193,46 @@ def _decide(*, safety, state, changes, capacity, track_readings, catalog,
             safety_level=level, capacity=capacity.level, track=primary.track,
             prohibited=prohibited, requires_human_review=True, review_flag=review_flag)
 
-    # 3b. "Thanks" / "bye" below every safety tier: close the loop warmly.
-    if act in CLOSING_ACTS and intent in ("GENERAL_CONVERSATION", None, "UNKNOWN"):
+    # 3b. "Thanks" / "bye" below every safety tier: close the loop warmly. This holds whatever
+    #     the topic: "thanks, I will keep a fixed bedtime" is the patient taking the advice, and
+    #     answering it with the same nudge again reads as not listening. A thanks that also asks
+    #     something or reports a difficulty is not a closing act (see intent.CARRIES_MORE). The
+    #     track's review flag still goes to the clinician: only the wording is set aside.
+    if act in CLOSING_ACTS:
         return Decision(
             type="GENERAL_SUPPORT", strategy="ACKNOWLEDGE",
             reason_codes=["CONVERSATION_CLOSE", f"CAPACITY_{capacity.level}"],
             safety_level=level, capacity=capacity.level, track=primary.track,
-            prohibited=prohibited, review_flag=review_flag)
+            prohibited=prohibited, review_flag=review_flag,
+            requires_human_review=bool(review_flag))
 
     # 4. Track concerns, most urgent first across every active track.
     concerns = sorted((c for reading in track_readings for c in reading.concerns),
                       key=lambda c: -c.priority)
+
+    # 3c. An explicit request to plan or order the day is answered as asked. Left to
+    #     the concern below, "help me prioritize my day" was met with a stored overload
+    #     exercise that never looked at what the patient had said. The concern is kept as
+    #     context (a gentler lead-in), not as the answer. Safety above still wins.
+    if act == "PLAN_REQUEST":
+        reason_codes = ["PLAN_REQUEST", f"CAPACITY_{capacity.level}", f"TRACK_{primary.track}"]
+        if any(c.code == "OVERLOAD" for c in concerns):
+            reason_codes.append("OVERLOAD_CONTEXT")
+        return Decision(
+            type="SUPPORT", strategy="TASK_BREAKDOWN", reason_codes=reason_codes,
+            safety_level=level, capacity=capacity.level, track=primary.track,
+            prohibited=prohibited, review_flag=review_flag,
+            requires_human_review=bool(review_flag))
+
+    # 4a. What the patient just said comes before a routine nudge from their check-in.
+    #     Without this, one stored ADHD concern turned every message - "I feel sad",
+    #     "can you help me sleep?", a fight with a sibling - into the same "smallest
+    #     action" reply. Only the executive-function concerns can be set aside; the
+    #     bipolar and schizophrenia monitoring concerns are track safety and never are.
+    deferred = bool(concerns) and _message_first(concerns[0], intent, act)
+    if deferred:
+        concerns = []
+
     if concerns:
         top = concerns[0]
         strategy, goal = CONCERN_PLAN.get(top.code, ("ACKNOWLEDGE", None))
@@ -218,7 +278,8 @@ def _decide(*, safety, state, changes, capacity, track_readings, catalog,
     if plan:
         strategy, goal = plan
         reason_codes = [f"INTENT_{intent}", f"CAPACITY_{capacity.level}",
-                        f"TRACK_{primary.track}", "NO_STATE_CONCERN"]
+                        f"TRACK_{primary.track}",
+                        "STATE_CONCERN_DEFERRED" if deferred else "NO_STATE_CONCERN"]
         chosen = None
         if goal:
             candidates = catalog.eligible(
@@ -241,7 +302,8 @@ def _decide(*, safety, state, changes, capacity, track_readings, catalog,
     if intent == "UNKNOWN":
         return Decision(
             type="GENERAL_SUPPORT", strategy="CLARIFY",
-            reason_codes=["OPEN_LISTENING", f"CAPACITY_{capacity.level}"],
+            reason_codes=["OPEN_LISTENING", f"CAPACITY_{capacity.level}"]
+            + (["STATE_CONCERN_DEFERRED"] if deferred else []),
             safety_level=level, capacity=capacity.level, track=primary.track,
             prohibited=prohibited, review_flag=review_flag)
 

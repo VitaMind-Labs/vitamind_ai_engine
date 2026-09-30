@@ -72,7 +72,7 @@ SERVICES = {
     "lumina": ServiceSpec(
         name="lumina",
         colour="35",  # magenta
-        cwd=ROOT / "lumina",
+        cwd=ROOT / "lumina_agent",
         app="service.app:app",
         port_env="LUMINA_PORT",
         default_port=8102,

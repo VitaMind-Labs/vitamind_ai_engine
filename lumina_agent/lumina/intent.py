@@ -39,6 +39,8 @@ PATTERNS = [
                  r"|(?:ملخص|كيف كان ادائي|انماطي|الشهر الماضي|افضل ام اسوا|تغير شيء)"),
     ("GOAL", r"\b(?:set a goal|my goal|a goal for|build a habit|target|drop the goal)\b"
              r"|(?:هدف|اهداف|عادة جديدة)"),
+    # Named low moods outrank topic words in the same sentence ("depressed and I can't focus").
+    ("EMOTIONAL_SUPPORT", r"\b(?:depress\w*|hopeless|worthless|numb)\b|(?:اكتئاب|مكتئب|يائس)"),
     ("SLEEP", r"\b(?:sleep|slept|sleeping|insomnia|wake up|woke up|bed(?:time)?|nap)\b"
               r"|(?:نوم|نمت|انام|ارق|استيقظ|اصحى|السرير)"),
     ("FOCUS", r"\b(?:focus|concentrat\w+|attention|distract\w+|other tabs|clear head)\b"
@@ -92,7 +94,23 @@ ACTS = [
     ("ABOUT_LUMINA", r"\b(?:who are you|what are you|what can you do|how can you help|"
                      r"what do you do|what is lumina|are you (?:a )?(?:bot|robot|ai|human|real))\b"
                      r"|(?:من انت|ماذا تستطيع|ما هي لومينا|كيف تساعدني|ماذا تفعلين|من تكونين)"),
-    ("SADNESS", r"\b(?:sad|sadness|unhappy|miserable|crying|cried|heartbroken|lonely|empty|"
+    # A request to plan or order the day. It is a concrete ask, so it outranks the mood
+    # acts below and, in the decision engine, outranks stored state concerns: the patient
+    # said what they want, and answering with an unrelated exercise is not listening.
+    ("PLAN_REQUEST", r"\b(?:prioriti[sz]\w*|organi[sz]e\s+(?:my|the|our|them|these|those|it|things|everything|all)\b|"
+                     r"organi[sz]e\b.{0,24}\b(?:day|list|tasks?|things|schedule)\b|"
+                     r"plan\s+(?:my|the|our)\s+(?:day|week|morning|afternoon|evening|tomorrow|time|schedule)\b|"
+                     r"(?:what|which)\s+(?:should|do|to)\s+(?:i\s+)?(?:do|start|tackle|focus on)\s+(?:first|next)\b|"
+                     r"what to do first\b|sort\s+(?:out\s+)?my\s+(?:day|tasks|list|things)\b|"
+                     r"put (?:them|these|things|my day) in order\b|order of my tasks\b|"
+                     r"manage my (?:day|time)\b|help me (?:plan|organi[sz]e|sort)\b)"
+                     r"|(?:(?<![ا-ي])و?رتب|(?<![ا-ي])(?:ال)?ترتيب|اولوي\w*|نظم (?:يومي|وقتي)|خطط (?:ليومي|ليوم)|"
+                     r"شو اسوي اول|ايش اسوي اول|ماذا افعل اولا)"),
+    ("CONFUSED", r"\b(?:i )?(?:don'?t|do not|dont) (?:und\w+|get (?:it|this))|what do you mean|not clear|confus\w+"
+                 r"|(?:لا افهم|مش فاهم|ما فهمت|غير واضح)"),
+    ("AGREE", r"^\s*(?:yes|yeah|yep|yup|ok|okay|sure|alright|نعم|ايوه|اوكي|حسنا)\s*[.!]*\s*$"),
+    ("DECLINE", r"^\s*(?:no|nope|nah|not now|لا|كلا|مش الان)\s*[.!]*\s*$"),
+    ("SADNESS", r"\b(?:sad|sadness|depress\w*|numb|unhappy|miserable|crying|cried|heartbroken|lonely|empty|"
                 r"(?:feel(?:ing)?|i'?m|i am) (?:down|low|bad|awful|terrible)|"
                 r"not (?:good|great|okay|ok|well|fine))\b"
                 r"|(?:حزين|زعلان|مكتئب|ابكي|لست بخير|مش كويس|وحيد|فراغ)"),
@@ -114,11 +132,23 @@ ACTS = [
 COMPILED_ACTS = [(act, re.compile(pattern, re.I | re.UNICODE)) for act, pattern in ACTS]
 
 
+# A "thanks" that also asks something or reports a difficulty is not a closing: "thanks, but I
+# still can't sleep" and "thank you - how do I start?" have to be answered, not waved off.
+CARRIES_MORE = re.compile(
+    r"\?|؟|\b(?:can|could|would|will|do|does|did|should) (?:you|i|we)\b|\bhelp me\b"
+    r"|\b(?:but|still|however|though|although|what|how|why|when|where|which)\b"
+    r"|\b(?:can'?t|cannot|couldn'?t|won'?t|don'?t|doesn'?t|didn'?t|isn'?t|not working)\b"
+    r"|لكن|بس|ما زال|مازال|كيف|ليش|لماذا|متى|ساعدني|لا استطيع|ما اقدر", re.I | re.UNICODE)
+CLOSING_ACT_NAMES = ("THANKS", "CLOSING")
+
+
 def conversation_act(text):
     """Return the first matching conversational act, or None."""
     normalized = normalize(text)
     for act, pattern in COMPILED_ACTS:
         if pattern.search(normalized):
+            if act in CLOSING_ACT_NAMES and CARRIES_MORE.search(normalized):
+                continue
             return act
     return None
 
@@ -154,6 +184,11 @@ def classify(text, model=None):
 
     normalized = normalize(text)
     act = conversation_act(text)
+    if act == "PLAN_REQUEST":
+        # Whatever else the sentence mentions (a friend, a doctor), what was asked for is
+        # help with tasks; the topic rules would otherwise read the list as small talk.
+        return IntentReading(intent="TASK_SUPPORT", matched_rule="PLAN_REQUEST",
+                             all_matches=("TASK_SUPPORT",), act=act)
     matches = [intent for intent, pattern in COMPILED if pattern.search(normalized)]
     if matches:
         return IntentReading(intent=matches[0], matched_rule=matches[0],

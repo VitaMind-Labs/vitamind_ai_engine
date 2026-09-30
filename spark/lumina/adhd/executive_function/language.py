@@ -21,6 +21,19 @@ def _stem(word):
         if len(word)>len(suffix)+2 and word.endswith(suffix): return word[:-len(suffix)]
     return word
 
+_SYNONYMS=((r"\b(?:praying|prayer|prayers)\b","pray"),(r"\b(?:go to|going to|see|visit|seeing|visiting)\b"," "),
+           (r"\b(?:phone|phoning|ring|calling|call up)\b","call"),(r"\bwork out\b|\bworking out\b|\bworkouts?\b","workout"),
+           (r"\bstudying\b","study"),(r"\bemailing\b","email"))
+def same_task(a,b):
+    """Two titles that name the same commitment: "pray" and "praying", "see the doctor" and
+    "go to the doctor". Compared without articles and without the verb that only says
+    "be there", so restating a task never creates a second copy of it."""
+    def key(title):
+        t=normalize(title)
+        for pattern,repl in _SYNONYMS: t=re.sub(pattern,repl,t)
+        return ' '.join(w for w in re.findall(r'[\w؀-ۿ]+',t) if w not in STOPWORDS)
+    return key(a)==key(b)
+
 def mentions(title,text):
     """True when the message names this task by its object, allowing inflection.
 
@@ -51,3 +64,18 @@ def referenced_task(title,candidates):
     hits=[c for c in candidates
           if noun<={_stem(w) for w in re.findall(r'[\w؀-ۿ]+',normalize(c.title))}]
     return hits[0] if len(hits)==1 else None
+
+
+_DONE_VERBS=(r"finished|completed|done|called|phoned|emailed|texted|messaged|paid|sent|bought|cleaned|washed|studied|"
+             r"prayed|booked|submitted|read|wrote|cooked|visited|met|renewed|fixed|printed|filled|replied|ordered|"
+             r"picked|packed|tidied")
+_REPORTED_DONE=re.compile(r"\bi(?:'ve| have)?\s+(?:just\s+|already\s+)?(?:"+_DONE_VERBS+r")\b|^(?:just\s+)?(?:finished|completed)\b|^خلصت|انهيت",re.I)
+_CLAUSES=re.compile(r"[.!?؟;\n,،]+|\s+(?:and|also|but|then)\s+",re.I)
+
+def completion_clauses(text):
+    """The clauses of a message that report something as already done ("I called my mom").
+
+    Only a past-tense report counts, so "I need to call mom", "I haven't called" and
+    "I didn't finish" are never read as completions. Returned normalized, for `mentions`.
+    """
+    return [normalize(clause) for clause in _CLAUSES.split(text or '') if clause and _REPORTED_DONE.search(normalize(clause))]
