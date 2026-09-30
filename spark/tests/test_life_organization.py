@@ -225,3 +225,35 @@ def test_interruption_recovery_uses_provided_context(agent):
                         'nextStep': 'Reopen section 3'}]), NOW)
     assert result.plan.nextAction.text == 'Reopen section 3'
     assert result.plan.nextAction.source == 'PROVIDED_CONTEXT'
+
+
+# --- Loose references to a task that is already on the list ----------------------
+JAMES = [{'temporaryId': 'task_email_james', 'title': 'email James', 'status': 'TODO',
+          'scheduledDate': '2026-09-30', 'source': 'MESSAGE'}]
+
+
+def test_reference_to_an_open_task_is_not_a_second_task(agent):
+    result = agent.organize(request("I keep procrastinating on the email, I can't get started",
+                                    tasks=JAMES), NOW)
+    assert [op for op in result.taskOperations if op.operation == 'ADD'] == []
+    assert result.plan.primaryTask.temporaryId == 'task_email_james'
+
+
+def test_ambiguous_reference_is_never_guessed(agent):
+    tasks = JAMES + [{'temporaryId': 'task_email_sam', 'title': 'email Sam', 'status': 'TODO',
+                      'scheduledDate': '2026-09-30', 'source': 'MESSAGE'}]
+    result = agent.organize(request('I keep putting off the email', tasks=tasks), NOW)
+    assert [op.task.title for op in result.taskOperations if op.operation == 'ADD'] == ['the email']
+
+
+def test_a_new_object_is_still_a_new_task(agent):
+    result = agent.organize(request('I need to email Sarah', tasks=JAMES), NOW)
+    assert [op.task.title for op in result.taskOperations if op.operation == 'ADD'] == ['email Sarah']
+
+
+def test_finished_but_unmatched_asks_which_task_instead_of_starting_work(agent):
+    result = agent.organize(request('I finished the email', tasks=JAMES), NOW)
+    assert result.intent == 'TASK_COMPLETED'
+    assert result.analysis.needsClarification
+    assert result.plan.strategy == 'CLARIFY' and result.plan.primaryTask is None
+    assert result.taskOperations == []

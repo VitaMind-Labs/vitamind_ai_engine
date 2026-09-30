@@ -63,6 +63,20 @@ class OutcomeItem(Strict):
     at: str = ""
 
 
+class JournalContext(Strict):
+    """What the patient's latest analysed journal entry said, as structure only.
+
+    Never the entry text (spec s46): the tier the journal assigned, the follow-ups it
+    recommended, its cue categories, and timing. `follow_up_done` is the backend's
+    record that a safety check-in already happened after that entry.
+    """
+    tier: str = Field(default="none", max_length=32)
+    follow_ups: list[str] = Field(default_factory=list, max_length=10)
+    cues: list[str] = Field(default_factory=list, max_length=10)
+    hours_ago: float = Field(default=0, ge=0, le=24 * 30)
+    follow_up_done: bool = False
+
+
 class SafetyConfig(Strict):
     """Emergency resources come from the backend. The agent never invents one."""
     emergency_resources: list[str] = Field(default_factory=list, max_length=10)
@@ -87,6 +101,7 @@ class ContextBundle(Strict):
     intervention_outcomes: list[OutcomeItem] = Field(default_factory=list,
                                                      max_length=MAX_OUTCOMES)
     journal_signals: dict[str, float] | None = None
+    journal_context: JournalContext | None = None
     safety_config: SafetyConfig = Field(default_factory=SafetyConfig)
     contract_version: str = CONTRACT_VERSION
 
@@ -119,6 +134,6 @@ class OutcomeRequest(Strict):
     contract_version: str = CONTRACT_VERSION
 
 
-__all__ = ["ContextBundle", "CheckinPayload", "MemoryItem", "OutcomeItem",
+__all__ = ["ContextBundle", "CheckinPayload", "JournalContext", "MemoryItem", "OutcomeItem",
            "SafetyConfig", "JournalAnalyzeRequest", "StateRecomputeRequest",
            "OutcomeRequest", "LANGUAGES", "TRACKS", "CONTRACT_VERSION"]

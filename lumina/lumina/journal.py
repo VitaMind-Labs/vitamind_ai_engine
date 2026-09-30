@@ -299,3 +299,36 @@ def fuse_journal_safety(analysis, chat_verdict=None):
         return journal_level
     return max((journal_level, chat_verdict["level"]),
                key=lambda level: SAFETY_ORDER[level])
+
+
+# A journal entry's follow-up is a safety check, and it is owed once: this is how
+# long after the entry a chat turn or check-in still carries it as HIGH.
+JOURNAL_FOLLOW_UP_HOURS = 12.0
+
+
+def journal_context_level(context):
+    """The safety level a recent journal entry lends to the turn that follows it.
+
+    `context` is what the backend distilled from the patient's latest analysed,
+    non-private entry: its tier, the journal's own recommended follow-ups, the cue
+    categories and how long ago it was written. No entry text ever arrives.
+
+    The entry was already screened when it was written; this is about the *next*
+    conversation. When the journal itself recommended a safety check (tier
+    `high`/`moderate_flagged`, or a `safety_check` follow-up) the next turn opens
+    with one, and it stays owed for `JOURNAL_FOLLOW_UP_HOURS`. Once a safety
+    check-in has been made since the entry (`follow_up_done`) - or the window has
+    passed - the entry only keeps the turn at ELEVATED, so a patient is not asked
+    the same question on every message. Never CRISIS: only what the patient writes
+    now can reach it.
+    """
+    if not context:
+        return "NORMAL"
+    tier = context.get("tier")
+    owed = (tier in ("high", "moderate_flagged")
+            or "safety_check" in (context.get("follow_ups") or ()))
+    if owed and not context.get("follow_up_done")             and float(context.get("hours_ago", 0)) <= JOURNAL_FOLLOW_UP_HOURS:
+        return "HIGH"
+    if owed or tier == "moderate":
+        return "ELEVATED"
+    return "NORMAL"

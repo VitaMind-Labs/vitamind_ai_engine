@@ -34,3 +34,20 @@ def mentions(title,text):
     if not content: return False
     said={_stem(w) for w in re.findall(r'[\w؀-ۿ]+',normalize(text))}
     return content<=said
+
+
+def referenced_task(title,candidates):
+    """The one open task a bare reference like "the email" points at, else None.
+
+    "I keep putting off the email" names something already on the list, so it must not
+    become a second task. It is resolved only when the reference is a determiner plus
+    a noun and exactly one candidate contains that noun; two matches are ambiguous and
+    are never guessed, and "email Sarah" (a verb plus an object) is a new task.
+    """
+    words=re.findall(r'[\w؀-ۿ]+',normalize(title))
+    if len(words)<2 or words[0] not in {'the','that','this','my'}: return None
+    noun={_stem(w) for w in words[1:] if w not in STOPWORDS and len(w)>=3}
+    if not noun: return None
+    hits=[c for c in candidates
+          if noun<={_stem(w) for w in re.findall(r'[\w؀-ۿ]+',normalize(c.title))}]
+    return hits[0] if len(hits)==1 else None

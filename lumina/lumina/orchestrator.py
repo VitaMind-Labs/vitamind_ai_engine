@@ -20,7 +20,7 @@ from .baseline import compute_baseline, detect_changes, CONFIG as BASELINE_CONFI
 from .capacity import estimate
 from .decision import decide
 from .intent import classify as classify_intent
-from .journal import JournalAnalyzer, JournalAnalysisResult, fuse_journal_safety
+from .journal import JournalAnalyzer, JournalAnalysisResult, fuse_journal_safety, journal_context_level
 from .interventions import InterventionCatalog, OutcomeHistory
 from .memory import MemoryStore
 from .response import render
@@ -134,8 +134,8 @@ class Lumina:
     # -- the turn ---------------------------------------------------------
     def turn(self, *, text=None, checkin=None, history=(), track="UNSPECIFIED",
              secondary_track=None, language="en", memories=None, outcomes=None,
-             journal_signals=None, resources=(), request_class="CHAT_SHORT",
-             request_id=None):
+             journal_signals=None, journal_context=None, resources=(),
+             request_class="CHAT_SHORT", request_id=None):
         if track not in TRACKS:
             raise ValueError(f"unknown track {track!r}")
         if request_class not in REQUEST_CLASSES:
@@ -200,6 +200,19 @@ class Lumina:
                            "requires_human_review": True}
             else:
                 verdict = {**verdict, "journal": journal_analysis.safety}
+        # A recent journal entry lends its follow-up to this turn: when the journal
+        # itself recommended a safety check, the conversation that follows opens with
+        # one. Escalation only - never lowers a level, never reaches CRISIS.
+        journal_escalated = False
+        lent = journal_context_level(journal_context)
+        if SAFETY_ORDER[lent] > SAFETY_ORDER[verdict["level"]]                 and verdict["level"] != "UNKNOWN":
+            journal_escalated = True
+            verdict = {**verdict, "level": lent, "decided_by": "journal_context",
+                       "journal_context": {"tier": journal_context.get("tier"),
+                                           "cues": list(journal_context.get("cues") or ()),
+                                           "hours_ago": journal_context.get("hours_ago")},
+                       "requires_human_review": (verdict.get("requires_human_review")
+                                                 or lent == "HIGH")}
         steps.append("safety")
 
         # 5-6. Baseline and change detection against the patient's own history.
@@ -211,6 +224,10 @@ class Lumina:
 
         # 7. Capacity, bounded by safety.
         capacity = estimate(state, verdict["level"])
+        # The snapshot travels in the envelope and is what the backend stores as the
+        # day's state. Its `capacity` field was a default nothing ever set, so every
+        # persisted snapshot said UNKNOWN whatever the engine had just decided.
+        state.capacity = capacity.level
         steps.append("capacity")
 
         # 8. Track logic, kept separate per track.
@@ -230,6 +247,8 @@ class Lumina:
                           memories=relevant,
                           intent=intent.intent if intent else None,
                           act=intent.act if intent else None)
+        if journal_escalated and decision.type == "ELEVATED_SAFETY_WORKFLOW":
+            decision.reason_codes.append("JOURNAL_CONTEXT")
         steps.append("decision")
 
         # 12. Render, within capacity limits and the track's language rules.

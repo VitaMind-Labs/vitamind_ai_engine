@@ -2,7 +2,7 @@ from datetime import datetime,timezone,timedelta
 from time import perf_counter
 from uuid import uuid5
 from .schemas import *
-from .language import choose,languages,normalize,mentions
+from .language import choose,languages,normalize,mentions,referenced_task
 from .intent_classifier import IntentClassifier
 from .friction_classifier import FrictionClassifier
 from .time_engine import available_minutes,parse_temporal
@@ -75,11 +75,18 @@ class LuminaADHD:
             uncertainty.extend(query_time['uncertainty'])
             issues.extend(query_time['uncertainty'])
         operations=[]
+        resolved=[]
         for t in extracted:
             duplicate=next((x for x in existing.values() if normalize(x.title)==normalize(t.title) and x.scheduledDate==t.scheduledDate and x.status=='TODO'),None)
-            if duplicate: continue
+            # "I keep putting off the email" points at the open "email James"; it is
+            # not a second commitment. The turn is then about the existing task.
+            if not duplicate: duplicate=referenced_task(t.title,[x for x in existing.values() if x.status=='TODO'])
+            if duplicate:
+                resolved.append(duplicate); continue
             existing[t.temporaryId]=t
+            resolved.append(t)
             operations.append(TaskOperation(operation='ADD',task=t,taskId=t.temporaryId))
+        extracted=resolved
         outcomes=(self.calendar.outcomes(request.patient.id) if self.calendar else [])+request.outcomes
         patterns=learn_patterns(outcomes,request.patient.id,now)
         for o in request.outcomes:
@@ -138,6 +145,12 @@ class LuminaADHD:
             else:
                 primary=action=None
                 clarification=choose(request.patient.language,'Name the task and the new date you want.','اذكر المهمة والتاريخ الجديد الذي تريده.')
+        elif intent=='TASK_COMPLETED' and not completed_now and not extracted:
+            # Saying something is finished is not a request to start work. If no open
+            # task is named plainly enough to close, ask which one instead of
+            # answering with the next action for a different task.
+            primary=action=None
+            clarification=choose(request.patient.language,'Which task did you finish?','ما المهمة التي أنهيتها؟')
         elif completed_now and not primary:
             pass
         elif not primary:

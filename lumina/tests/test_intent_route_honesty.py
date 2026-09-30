@@ -111,3 +111,23 @@ def test_decision_does_not_depend_on_the_understanding_head(lumina):
         decisions.add((out["decision"]["type"], out["decision"]["strategy"],
                        out["response"]["text"]))
     assert len(decisions) == 1, decisions
+
+
+# --- the state Lumina hands back carries the capacity it decided ------------
+def test_envelope_state_carries_the_estimated_capacity(lumina):
+    """`state.capacity` used to stay at its default (UNKNOWN) on every turn, so the
+    snapshot the backend persists never held what the capacity engine computed."""
+    out = lumina.turn(checkin={"energy": 2, "stress": 8, "focus": 2, "mood": 3, "sleep_hours": 4},
+                      track="ADHD", request_class="CHECKIN")
+    assert out["capacity"]["level"] in ("REDUCED", "VERY_LOW")
+    assert out["state"]["capacity"] == out["capacity"]["level"]
+
+    calm = lumina.turn(checkin={"energy": 8, "stress": 2, "focus": 7, "mood": 8, "sleep_hours": 8,
+                                "routine_stability": 7, "social_connection": 6, "task_completion": 7},
+                       track="ADHD", request_class="CHECKIN")
+    assert calm["state"]["capacity"] == calm["capacity"]["level"] != "UNKNOWN"
+
+
+def test_no_signals_is_reported_as_unknown_not_invented(lumina):
+    out = lumina.turn(text="hello there", track="ADHD")
+    assert out["state"]["capacity"] == out["capacity"]["level"] == "UNKNOWN"

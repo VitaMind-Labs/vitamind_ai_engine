@@ -220,6 +220,16 @@ def test_state_recompute_returns_baseline_and_trends_without_a_reply(client):
     assert "response" not in envelope
 
 
+def test_state_recompute_reports_the_capacity_of_the_latest_day(client):
+    """A recomputed state used to come back with capacity UNKNOWN, which is what the
+    journal-driven snapshot then stored."""
+    tired = {"sleep_hours": 4.0, "energy": 2.0, "stress": 8.0, "focus": 2.0, "mood": 3.0}
+    envelope = post(client, "/api/v1/lumina/state/recompute",
+                    {"request_id": "r14b", "patient_id": "p1",
+                     "history": [{"sleep_hours": 7.2, "energy": 5.0}] * 6 + [tired]}).json()
+    assert envelope["state"]["capacity"] in ("REDUCED", "VERY_LOW")
+
+
 def test_state_recompute_needs_history(client):
     response = post(client, "/api/v1/lumina/state/recompute",
                     {"request_id": "r15", "patient_id": "p1", "history": []})
@@ -252,3 +262,14 @@ def test_a_journal_entry_and_a_chat_turn_fuse_to_the_higher_level(client):
     # is asserted in test_journal_integration. Here we only confirm the signals
     # arrive as estimated state rather than being dropped.
     assert envelope["state"]["signals"]["mood"]["quality"] == "estimated"
+
+
+def test_the_service_accepts_a_journal_context_and_rejects_unknown_keys(client):
+    body = {"request_id": "rj1", "patient_id": "p1", "track": "ADHD",
+            "text": "How do I get through this evening?",
+            "journal_context": {"tier": "moderate_flagged", "follow_ups": ["safety_check"],
+                                "cues": ["hopelessness"], "hours_ago": 1}}
+    out = post(client, "/api/v1/lumina/chat", body).json()
+    assert out["decision"]["type"] == "ELEVATED_SAFETY_WORKFLOW"
+    body["journal_context"]["text"] = "raw entry text"
+    assert post(client, "/api/v1/lumina/chat", body).status_code == 422
