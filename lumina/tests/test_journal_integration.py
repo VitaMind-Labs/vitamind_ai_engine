@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import pytest
 
-from lumina.journal import JournalAnalysisResult, JournalAnalyzer, fuse_journal_safety
+from lumina.journal import (JournalAnalysisResult, JournalAnalyzer, fuse_journal_safety,
+                            journal_context_level)
 from lumina.memory import CONFIDENCE_FLOOR, MemoryStore
 from lumina.orchestrator import Lumina
 from lumina.taxonomy import SAFETY_ORDER, STATE_DIMENSIONS
@@ -231,3 +232,51 @@ def test_a_chat_turn_is_never_handed_journal_prose(lumina):
     serialized = str(out)
     for phrase in ("songs on the radio", "secret messages", "my family"):
         assert phrase not in serialized
+
+
+# --- a recent entry lends its follow-up to the next turn -------------------
+FLAGGED = {"tier": "moderate_flagged", "follow_ups": ["mood", "safety_check"],
+           "cues": ["hopelessness"], "hours_ago": 2.0}
+
+
+def test_a_flagged_entry_owes_the_next_turn_a_safety_check():
+    assert journal_context_level(FLAGGED) == "HIGH"
+    assert journal_context_level({**FLAGGED, "tier": "moderate", "follow_ups": ["safety_check"]}) == "HIGH"
+
+
+def test_the_follow_up_is_owed_once_and_expires():
+    assert journal_context_level({**FLAGGED, "follow_up_done": True}) == "ELEVATED"
+    assert journal_context_level({**FLAGGED, "hours_ago": 30}) == "ELEVATED"
+
+
+def test_a_calm_or_missing_entry_lends_nothing_and_never_crisis():
+    assert journal_context_level(None) == "NORMAL"
+    assert journal_context_level({"tier": "none"}) == "NORMAL"
+    assert journal_context_level({"tier": "moderate", "follow_ups": ["mood"]}) == "ELEVATED"
+    assert journal_context_level({"tier": "high", "hours_ago": 0}) != "CRISIS"
+
+
+def test_a_chat_after_a_flagged_entry_opens_with_a_safety_check(lumina):
+    without = lumina.turn(text="How do I get through this evening?", track="ADHD")
+    with_entry = lumina.turn(text="How do I get through this evening?", track="ADHD",
+                             journal_context=FLAGGED)
+    assert without["decision"]["type"] != "ELEVATED_SAFETY_WORKFLOW"
+    assert with_entry["decision"]["type"] == "ELEVATED_SAFETY_WORKFLOW"
+    assert with_entry["safety"]["decided_by"] == "journal_context"
+    assert "JOURNAL_CONTEXT" in with_entry["decision"]["reason_codes"]
+    assert with_entry["decision"]["requires_human_review"] is True
+    # Structure only: the envelope carries cues and timing, never entry text.
+    assert set(with_entry["safety"]["journal_context"]) == {"tier", "cues", "hours_ago"}
+
+
+def test_once_the_check_in_was_made_the_same_entry_stops_repeating_it(lumina):
+    out = lumina.turn(text="How do I get through this evening?", track="ADHD",
+                      journal_context={**FLAGGED, "follow_up_done": True})
+    assert out["decision"]["type"] != "ELEVATED_SAFETY_WORKFLOW"
+
+
+def test_a_journal_context_never_lowers_what_the_message_raised(lumina):
+    out = lumina.turn(text="I want to kill myself", track="ADHD",
+                      journal_context={"tier": "none"})
+    assert out["safety"]["level"] == "CRISIS"
+    assert out["decision"]["type"] == "CRISIS_WORKFLOW"

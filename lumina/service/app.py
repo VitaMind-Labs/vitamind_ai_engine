@@ -22,6 +22,7 @@ from fastapi.responses import JSONResponse
 
 from lumina import CONTRACT_VERSION
 from lumina.baseline import RULE_VERSION as BASELINE_RULES
+from lumina.capacity import estimate
 from lumina.decision import RULE_VERSION as DECISION_RULES
 from lumina.interventions import Outcome, OutcomeHistory
 from lumina.memory import MemoryStore
@@ -208,6 +209,8 @@ def _turn(bundle: ContextBundle, request_class=None):
         memories=_memory_store(bundle.memory),
         outcomes=_outcomes(bundle.intervention_outcomes),
         journal_signals=bundle.journal_signals,
+        journal_context=(bundle.journal_context.model_dump()
+                         if bundle.journal_context else None),
         resources=bundle.safety_config.emergency_resources,
         request_class=request_class or bundle.request_class,
         request_id=bundle.request_id,
@@ -255,9 +258,13 @@ def recompute_state(payload: StateRecomputeRequest):
         return JSONResponse(status_code=422, content={
             "error": "invalid_request", "reason": "state/recompute requires history"})
     result = summarize(history)
+    latest = history[-1]
+    # No free text here, so no safety verdict: capacity is estimated from the
+    # signals alone (a crisis reading only ever comes from a chat or journal turn).
+    latest.capacity = estimate(latest).level
     return {"requestId": payload.request_id, "agent": "LUMINA",
             "agentVersion": AGENT_VERSION, "contractVersion": CONTRACT_VERSION,
-            "state": history[-1].to_dict(), **result,
+            "state": latest.to_dict(), **result,
             "persistence": ["PERSIST_INTERACTION"]}
 
 
