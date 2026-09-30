@@ -13,7 +13,7 @@
  "sources": {
   "combined_mental_health_statements": {
    "path": "data\\Combined Data.csv\\Combined Data.csv",
-   "sha256": "67274f52dec3b0155aec4d7d1ff31d2a92b0e9b383ab917614591cd168cc2474",
+   "sha256": "0700996d814af3ec77ef31870b68c6cdf991217eb76e259c7196df7f2e0e27ba",
    "source_type": "weak_supervision",
    "label_mapping": {
     "Normal": "NORMAL",
@@ -31,7 +31,7 @@
    }
   },
   "vitamind_journal_ai_curated": {
-   "path": "VitaMind_Journal_AI\\data\\prepared",
+   "path": "journal_ai\\data\\prepared",
    "source_type": "human_reviewed",
    "label_mapping": {
     "none": "NORMAL",

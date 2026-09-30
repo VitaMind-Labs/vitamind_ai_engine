@@ -234,7 +234,7 @@ def test_ready_reports_every_model_and_the_shared_safety_copy(client):
 def test_spark_uses_luminas_journal_ai_not_a_copy():
     import journal_ai
 
-    lumina_copy = (ROOT.parent / "lumina" / "journal_ai").resolve()
+    lumina_copy = (ROOT.parent / "lumina_agent" / "journal_ai").resolve()
     assert Path(journal_ai.__file__).resolve().parent == lumina_copy
     assert not (ROOT / "lumina" / "safety" / "journal_ai").exists()
 

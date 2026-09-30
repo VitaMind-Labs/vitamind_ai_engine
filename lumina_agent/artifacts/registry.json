@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-09-28T22:09:11.979446+00:00",
+ "generated_at": "2026-09-30T15:08:16.458999+00:00",
  "models": {
   "intent": {
    "version": "intent-seed42-v1",
    "status": "candidate",
-   "created_at": "2026-09-28T22:07:46.986793+00:00",
+   "created_at": "2026-09-30T15:03:26.859428+00:00",
    "architecture": "multi_head_sparse_linear_softmax",
    "trained_from": "random_initialisation",
    "parameters": 19998,
@@ -79,7 +79,7 @@
   "safety": {
    "version": "safety-seed42-v1",
    "status": "candidate",
-   "created_at": "2026-09-28T21:54:53.926189+00:00",
+   "created_at": "2026-09-30T15:01:22.984067+00:00",
    "architecture": "multi_head_sparse_linear_softmax",
    "trained_from": "random_initialisation",
    "parameters": 120000,
@@ -146,7 +146,7 @@
   "understanding": {
    "version": "understanding-seed42-v1",
    "status": "candidate",
-   "created_at": "2026-09-28T22:07:38.062149+00:00",
+   "created_at": "2026-09-30T15:03:25.093777+00:00",
    "architecture": "multi_head_sparse_linear_softmax",
    "trained_from": "random_initialisation",
    "parameters": 360000,

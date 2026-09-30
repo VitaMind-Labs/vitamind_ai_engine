@@ -24,8 +24,17 @@ import sys
 from pathlib import Path
 
 SPARK_ROOT = Path(__file__).resolve().parents[1]
-# vitamind_agent/spark/lumina/shared.py -> vitamind_agent/lumina
-LUMINA_ROOT = Path(os.environ.get("LUMINA_ROOT") or SPARK_ROOT.parent / "lumina").resolve()
+# vitamind_agent/spark/lumina/shared.py -> vitamind_agent/lumina_agent
+# ("lumina" is the pre-rename folder name, still accepted for older checkouts).
+def _default_lumina_root() -> Path:
+    for name in ("lumina_agent", "lumina"):
+        candidate = SPARK_ROOT.parent / name
+        if (candidate / "journal_ai").is_dir():
+            return candidate
+    return SPARK_ROOT.parent / "lumina_agent"
+
+
+LUMINA_ROOT = Path(os.environ.get("LUMINA_ROOT") or _default_lumina_root()).resolve()
 
 _auth_module = None
 

@@ -1,7 +1,7 @@
 {
   "modelVersion": "friction-planning-2.0.0",
   "datasetVersion": "8c51c928a2108ef7f4a282677f67f19d9d5172f208ee39204b24d7ca2c19826d",
-  "trainingDate": "2026-09-29T17:05:36.302150+00:00",
+  "trainingDate": "2026-09-30T14:59:38.679003+00:00",
   "languageCoverage": [
     "EN",
     "AR"
@@ -738,7 +738,7 @@
     "testStatus": "NOT_READ_DURING_SELECTION",
     "selection": "Best validation macro F1; per-language deployment requires improvement over rules and at least 20 train/validation examples. Otherwise rule fallback. This is not statistical or clinical validation."
   },
-  "checksum": "88a5c081e719e25bbca3282137b39c427b24c648e71693d2ed528be8b4251950",
+  "checksum": "f72a5a992023235348c04fa3e6e3edf53e4845197702a8e26d2ff908475b8d9f",
   "status": "TRAINED_ON_SYNTHETIC",
   "humanReviewed": false,
   "clinicalValidation": false,

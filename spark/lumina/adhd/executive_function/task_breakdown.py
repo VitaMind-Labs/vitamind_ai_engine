@@ -19,6 +19,16 @@ def first_action(task,lang,capacity):
         text=choose(lang,f'Put one item in place to start: {title}.',f'ضع غرضا واحدا في مكانه لتبدا: {title}.'); key='clean.one_item'
     elif re.search(r'study|read|review|ادرس|اذاكر|اقرا|اراجع',s):
         text=choose(lang,f'Open the material for: {title}.',f'افتح المادة الخاصة بالمهمة: {title}.'); key='study.open'
+    elif re.search(r'\b(?:doctor|dentist|clinic|hospital|appointment|therapist|psychiatrist|checkup)\b|طبيب|دكتور|عياد|موعد|مستشفى',s):
+        text=choose(lang,'Check the time and place, and set a reminder to leave.','تاكد من الوقت والمكان، واضبط تذكيرا للخروج.'); key='appointment.prepare'
+    elif re.search(r'\b(?:pray|prayer|salah|salat)\b|صلا[هة]|اصلي|صلي',s):
+        text=choose(lang,'Pause what you are doing and get ready for prayer.','توقف عما تفعله وتهيأ للصلاة.'); key='prayer.prepare'
+    elif re.search(r'\b(?:see|meet|visit|catch up with|hang out with)\b.*\b(?:friend|friends|mom|mum|dad|family|sister|brother)\b|اشوف|اقابل|ازور|صديق|اصدقاء',s):
+        text=choose(lang,'Send a short message to fix a time.','ارسل رسالة قصيرة لتحديد موعد.'); key='social.arrange'
+    elif re.search(r'workout|work out|gym|training|تمرين|نادي',s):
+        text=choose(lang,'Put on your workout clothes and fill your water bottle.','البس ملابس التمرين وجهز زجاجة الماء.'); key='workout.prepare'
+    elif re.search(r'school|class|lecture|homework|مدرس|جامع|محاضر',s):
+        text=choose(lang,'Pack your bag and check the time you need to leave.','جهز حقيبتك وتاكد من وقت الخروج.'); key='school.prepare'
     else:
         text=choose(lang,f'Write one small first step for: {title}.',f'اكتب خطوة اولى صغيرة للمهمة: {title}.'); key='generic.define_step'
     return NextAction(text=text,templateId=key,estimatedMinutes=None)

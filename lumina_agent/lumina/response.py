@@ -284,6 +284,20 @@ ACT_REPLIES = {
         "ar": ["يسعدني سماع ذلك حقًا{name}. ما الذي ساعد يومك أن يمضي جيدًا برأيك؟",
                "جميل أن أسمع هذا. ما الذي صنع الفرق اليوم؟"],
     },
+    "CONFUSED": {
+        "en": ["Sorry, I wasn't clear. Let me say it simply: I'm here to listen, and we can take one small thing at a time. What is one thing on your mind right now?"],
+        "ar": ["آسفة، لم أكن واضحة. سأقولها ببساطة: أنا هنا لأستمع، ونأخذ شيئًا صغيرًا واحدًا في كل مرة. ما الشيء الواحد الذي يشغل بالك الآن؟"],
+    },
+    "AGREE": {
+        "en": ["Good. Would you like to tell me more about how it's going, or try one more small step together?",
+               "Okay. What would help most next - talking it through, or a small step to try?"],
+        "ar": ["جيد. هل تودّ أن تخبرني أكثر عن حالك، أم نجرّب خطوة صغيرة أخرى معًا؟",
+               "حسنًا. ما الأنفع الآن - أن نتحدث عنه، أم أن نجرّب خطوة صغيرة؟"],
+    },
+    "DECLINE": {
+        "en": ["That's completely fine. We can leave it there. I'm here whenever you want to pick something up."],
+        "ar": ["لا بأس إطلاقًا. يمكننا أن نتركه هنا. أنا موجودة متى أردت أن نكمل."],
+    },
     "UNSURE": {
         "en": ["That's okay - you don't need the words yet. We can start small: does your body feel tired, tense, or okay right now?"],
         "ar": ["لا بأس - لست بحاجة للكلمات بعد. لنبدأ ببساطة: هل يشعر جسدك الآن بالتعب أم التوتر أم أنه بخير؟"],
@@ -420,7 +434,8 @@ def _body_template(decision, language, seed):
     codes = decision.reason_codes
     topics = _codes(decision, "INTENT_") + _codes(decision, "TOPIC_")
     topic = topics[0] if topics else None
-    heard = "NO_STATE_CONCERN" in codes
+    # A concern set aside for what the patient just said is not a measured claim either.
+    heard = "NO_STATE_CONCERN" in codes or "STATE_CONCERN_DEFERRED" in codes
 
     if key == "ACKNOWLEDGE" and "NO_ACTIVE_CONCERN" in codes and not topic:
         return _pick(TEMPLATES["ACKNOWLEDGE_CHECKIN"], language, seed)
@@ -443,8 +458,61 @@ def _body_template(decision, language, seed):
     return _pick(TEMPLATES.get(key, TEMPLATES["UNKNOWN_SUPPORT"]), language, seed)
 
 
+PLAN_TEXT = {
+    "ask": {
+        "en": "Happy to help you put your day in order. What is on your list? A rough list is fine - "
+              "write the things separated by commas, and we will sort them together.",
+        "ar": "يسعدني أن أساعدك في ترتيب يومك. ما الذي في قائمتك؟ قائمة تقريبية تكفي - "
+              "اكتب الأشياء تفصل بينها فواصل، ونرتبها معًا.",
+    },
+    "lead": {
+        "en": "That is a lot for one day, so let's keep it simple. ",
+        "ar": "هذا كثير ليوم واحد، فلنجعل الأمر بسيطًا. ",
+    },
+    "intro": {
+        "en": "Here is a gentle order to take them in:",
+        "ar": "هذا ترتيب هادئ يمكنك أن تسير عليه:",
+    },
+    "start": {
+        "en": "Start with the first one, and let the rest wait until it is done.",
+        "ar": "ابدأ بالأول، ودع الباقي ينتظر حتى تنتهي منه.",
+    },
+    "kept": {
+        "en": " Only the first three for now; the rest will keep.",
+        "ar": " أول ثلاثة فقط الآن؛ والباقي يمكنه الانتظار.",
+    },
+    "note": {
+        "en": " I put things with a fixed time first - tell me what is due soonest and we can change it.",
+        "ar": " وضعت ما له وقت ثابت أولًا - أخبرني بما هو أقرب موعدًا ويمكننا تعديله.",
+    },
+}
+
+
+def _render_plan(decision, language, items):
+    """Order the patient's own list, or ask for it. Items are their words, never ours."""
+    from .planning import order_items, shown
+    # An item that would trip a content rule is left out rather than echoed back.
+    usable = [item for item in (items or ())
+              if not check_prohibited(item, decision.prohibited)]
+    gentle = decision.capacity in ("REDUCED", "VERY_LOW")
+    lead = PLAN_TEXT["lead"][language] if gentle or "OVERLOAD_CONTEXT" in decision.reason_codes else ""
+    if len(usable) < 2:
+        return lead + PLAN_TEXT["ask"][language]
+    ordered, from_names = order_items(usable)
+    kept = len(ordered) > 3 and gentle
+    if gentle:
+        ordered = ordered[:3]
+    lines = "\n".join(f"{i}) {shown(item)}" for i, item in enumerate(ordered, 1))
+    text = f"{lead}{PLAN_TEXT['intro'][language]}\n{lines}\n{PLAN_TEXT['start'][language]}"
+    if kept:
+        text += PLAN_TEXT["kept"][language]
+    if from_names:
+        text += PLAN_TEXT["note"][language]
+    return text
+
+
 def render(decision, language="en", changes=(), resources=(), disclaimer=True,
-           name=None, seed=0):
+           name=None, seed=0, plan_items=None):
     """Turn a Decision into approved patient-facing text.
 
     `name` is the patient's own preferred name (never inferred); `seed` picks
@@ -467,6 +535,18 @@ def render(decision, language="en", changes=(), resources=(), disclaimer=True,
         return Reply(text=text, language=language, strategy=decision.strategy,
                      sentences=_count_sentences(text), questions=_count_questions(text))
 
+    if decision.type == "SUPPORT" and "PLAN_REQUEST" in decision.reason_codes:
+        # A list is structure, not prose: it is not trimmed to the sentence budget, but
+        # its length is capped by capacity above and the text is still rule-checked.
+        text = _render_plan(decision, language, plan_items)
+        violations = check_prohibited(text, decision.prohibited)
+        if violations:
+            raise ProhibitedContent(
+                f"rendered reply violates {violations} for track {decision.track}")
+        return Reply(text=text, language=language, strategy=decision.strategy,
+                     sentences=_count_sentences(text), questions=_count_questions(text),
+                     intervention_id=None)
+
     safety_path = decision.type in ("ELEVATED_SAFETY_WORKFLOW", "SAFETY_CLARIFICATION")
     acts = [] if safety_path else _codes(decision, "ACT_")
     act = acts[0] if acts else None
@@ -480,7 +560,8 @@ def render(decision, language="en", changes=(), resources=(), disclaimer=True,
         body = _pick(ACT_REPLIES[act], language, seed)
     elif act == "ABOUT_LUMINA":
         body = _pick(ACT_REPLIES[act], language, seed)
-    elif conversational and act in ("GREETING", "POSITIVE", "UNSURE", "SADNESS", "ANGER"):
+    elif conversational and act in ("GREETING", "POSITIVE", "UNSURE", "SADNESS", "ANGER",
+                                          "CONFUSED", "AGREE", "DECLINE"):
         # Nothing in the data asks for more: answer the person, not the pipeline.
         if act in ACT_OPENERS:
             opener = _pick(ACT_OPENERS[act], language, seed)

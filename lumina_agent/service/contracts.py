@@ -77,6 +77,18 @@ class JournalContext(Strict):
     follow_up_done: bool = False
 
 
+class RecentSafety(Strict):
+    """The most serious safety moment of the patient's last day, from any thread.
+
+    Structure only, never the message: the level seen, how long ago, and whether a
+    safety workflow has run since. It lets a new conversation follow up a crisis
+    instead of starting as if it never happened.
+    """
+    level: Literal["HIGH", "CRISIS"]
+    hours_ago: float = Field(default=0, ge=0, le=24 * 30)
+    follow_up_done: bool = False
+
+
 class SafetyConfig(Strict):
     """Emergency resources come from the backend. The agent never invents one."""
     emergency_resources: list[str] = Field(default_factory=list, max_length=10)
@@ -102,6 +114,7 @@ class ContextBundle(Strict):
                                                      max_length=MAX_OUTCOMES)
     journal_signals: dict[str, float] | None = None
     journal_context: JournalContext | None = None
+    recent_safety: RecentSafety | None = None
     safety_config: SafetyConfig = Field(default_factory=SafetyConfig)
     contract_version: str = CONTRACT_VERSION
 
@@ -135,5 +148,6 @@ class OutcomeRequest(Strict):
 
 
 __all__ = ["ContextBundle", "CheckinPayload", "JournalContext", "MemoryItem", "OutcomeItem",
+           "RecentSafety",
            "SafetyConfig", "JournalAnalyzeRequest", "StateRecomputeRequest",
            "OutcomeRequest", "LANGUAGES", "TRACKS", "CONTRACT_VERSION"]

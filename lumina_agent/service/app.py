@@ -171,7 +171,7 @@ def ready():
                 "role": "advisory: returned in the envelope, never read by the decision engine"},
             "intent_head": {
                 "loaded": engine.intent_model is not None,
-                "role": "disabled: abstains on every input; intent is routed by rules"},
+                "role": "fallback only: rules route first; answers unmatched messages above its 0.95 confidence floor, abstains otherwise"},
             "journal_ai": {
                 "loaded": engine.journal is not None,
                 "role": "rules + journal classifier: sole path to CRISIS, journal signals"},
@@ -211,6 +211,8 @@ def _turn(bundle: ContextBundle, request_class=None):
         journal_signals=bundle.journal_signals,
         journal_context=(bundle.journal_context.model_dump()
                          if bundle.journal_context else None),
+        recent_safety=(bundle.recent_safety.model_dump()
+                       if bundle.recent_safety else None),
         resources=bundle.safety_config.emergency_resources,
         request_class=request_class or bundle.request_class,
         request_id=bundle.request_id,

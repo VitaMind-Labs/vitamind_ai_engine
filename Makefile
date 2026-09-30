@@ -24,13 +24,13 @@ test-spark:
 	cd spark && $(PY) -m pytest -q
 
 test-lumina:
-	cd lumina && $(PY) -m pytest -q
+	cd lumina_agent && $(PY) -m pytest -q
 
 test-mira:
 	cd mira && $(PY) -m pytest -q
 
 models:         ## rebuild datasets and retrain every Lumina model
-	cd lumina && $(PY) -m data_prep.build_dialogue \
+	cd lumina_agent && $(PY) -m data_prep.build_dialogue \
 	  && $(PY) -m data_prep.build_safety \
 	  && $(PY) -m data_prep.build_intent \
 	  && $(PY) -m training.train_safety \

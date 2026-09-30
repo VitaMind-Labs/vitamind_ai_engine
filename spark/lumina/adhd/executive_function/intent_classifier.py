@@ -29,6 +29,10 @@ def protected_intent(text):
     if re.search(r"\b(?:don't|do not|never)\s+(?:add|schedule|reschedule|postpone|move)\b|لا (?:تضف|تجدول|توجل|تنقل)",value): return 'UNKNOWN'
     if re.search(r'what.*(?:word|mean)|معني كلمة|ما معنى',value): return 'UNKNOWN'
     if re.search(r'\bprioriti[sz]e\b|ترتيب اولويات|رتب.*اولوي',value): return 'PRIORITIZE'
+    if re.search(r'\b(?:order|organi[sz]e|sort|rank)\s+(?:them|these|those|it|my tasks)\b|\bprioriti[sz]e\b',value): return 'PRIORITIZE'
+    # "Order my day" is a request to plan, whichever label a learned model would give it
+    # (it read "رتب لي يومي" as ADD_TASK and asked for a task instead).
+    if re.search(r'^رتب لي(?: يومي| يوم)?$|رتب.{0,12}(?:يومي|اليوم|مهامي|اعمالي|شغلي)',value): return 'ORGANIZE_DAY'
     # An unambiguous move/postpone command outranks a learned label, the same way
     # a negated write does; otherwise the classifier reads it as CONTINUE_TASK.
     if re.search(r'\b(?:reschedule|postpone|push back)\b|\bmove\b.{0,40}\bto\b|اجل |تاجيل|غير الموعد|انقل.{0,30}الى',value): return 'RESCHEDULE'
