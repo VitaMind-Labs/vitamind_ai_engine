@@ -36,6 +36,29 @@ REQUEST_CLASSES = ("CHAT_SHORT", "CHAT_DEEP", "CHECKIN", "JOURNAL_ANALYSIS",
                    "SAFETY_CLASSIFICATION")
 
 
+def _preferred_name(store):
+    """The name the patient asked to be called, from their own onboarding answer.
+
+    Stored by the backend as "<label>: <value>" under key preferred_name. Only a
+    short run of letters is used, so a stored sentence can never be echoed back.
+    """
+    import re
+    for memory in store.find(key="preferred_name"):
+        if not memory.active:
+            continue
+        value = memory.content.split(":", 1)[-1].strip()
+        match = re.match(r"[^\W\d_][^\W\d_' -]{0,23}", value)
+        if match:
+            return match.group(0).strip()
+    return None
+
+
+def _variant_seed(request_id, text):
+    """Stable per turn, different across turns: a replay gets the same wording."""
+    import zlib
+    return zlib.crc32(f"{request_id or ''}|{text or ''}".encode("utf-8"))
+
+
 class Lumina:
     """One assembled engine. Stateless with respect to patients.
 
@@ -205,12 +228,14 @@ class Lumina:
                           capacity=capacity, track_readings=readings,
                           catalog=self.catalog, history=outcome_history,
                           memories=relevant,
-                          intent=intent.intent if intent else None)
+                          intent=intent.intent if intent else None,
+                          act=intent.act if intent else None)
         steps.append("decision")
 
         # 12. Render, within capacity limits and the track's language rules.
         reply = render(decision, language=language, changes=changes,
-                       resources=resources)
+                       resources=resources, name=_preferred_name(store),
+                       seed=_variant_seed(request_id, text))
         steps.append("response")
 
         # 13-16. Persistence hints. The backend decides what actually gets stored.

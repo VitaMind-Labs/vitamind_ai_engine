@@ -20,7 +20,7 @@
     "examples/requests.jsonl": "f92d3199852657f4ea7c11a723e921a5ad913b319269078dc8a6fe97a3f914a0",
     "features.py": "f6a47a3517160f7b2d604d9f505d85a52815db9e78a1a5a492cd166a62aa35ed",
     "fuse.py": "83db89a308ab5dce4d77c17771f5d963873d9adeed36b52e534b0ce56d6e882c",
-    "lexicon.py": "89c15d72a73646f116a2551ced1a578334b4e5d964567554d01cc289adf06e7f",
+    "lexicon.py": "e14d67c635711933ae3c6aed8e0f9f1e2baf7ef6a07e7cb5a8af4e2fc02036b6",
     "model.py": "52c9da8552e8731eb9134a25d9e763b02f22c59971a86ae018e3beb4b978409c",
     "models/journal-linear/config.json": "b014687599f8a9c0146be89336ff50206f6be47cd364a0fb25127999493d1ce6",
     "models/journal-linear/weights.npz": "f403115b36f2ec5319b8884e39d098ea6aa2064478a05703a7497f89042cd9bc",

@@ -56,15 +56,15 @@ def test_intent_only_reply_makes_no_claim_about_unmeasured_state(lumina, text, l
         assert not re.search(claim, reply, re.I), (claim, reply)
 
 
-def test_measured_concern_still_uses_the_measured_wording(lumina):
-    """The honest variant is for the intent route only; real data keeps its wording."""
+def test_measured_sleep_uses_absolute_wording_without_claiming_a_baseline(lumina):
+    """An absolute sleep reading must not be phrased as a comparison to history."""
     from lumina.decision import Decision
     from lumina.response import render
 
     measured = Decision(type="SUPPORT", strategy="SLEEP_SUPPORT",
                         reason_codes=["CONCERN_LOW_SLEEP", "CAPACITY_NORMAL"],
                         capacity="NORMAL", track="BIPOLAR")
-    assert "shorter than your own usual pattern" in render(measured, "en").text
+    assert "Your sleep was short" in render(measured, "en").text
 
     intent_only = Decision(type="SUPPORT", strategy="SLEEP_SUPPORT",
                            reason_codes=["INTENT_SLEEP", "NO_STATE_CONCERN"],
