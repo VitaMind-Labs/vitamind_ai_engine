@@ -1,0 +1,262 @@
+{
+  "benchmarkStatus": "DEVELOPMENT_REGRESSION_NOT_HELD_OUT",
+  "note": "Small development regressions, not held-out accuracy. See planning-heldout.json for the frozen public/synthetic intent and friction evaluation.",
+  "intent": {
+    "accuracy": 0.625,
+    "macroF1": 0.5151515151515151,
+    "perClass": {
+      "ADD_TASK": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 3
+      },
+      "BREAK_DOWN_TASK": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1-score": 0.6666666666666666,
+        "support": 2
+      },
+      "INTERRUPTION_RECOVERY": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 2
+      },
+      "ORGANIZE_DAY": {
+        "precision": 0.0,
+        "recall": 0,
+        "f1-score": 0,
+        "support": 0
+      },
+      "OVERWHELMED_WITH_TASKS": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0,
+        "support": 1
+      },
+      "PRIORITIZE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1
+      },
+      "PROCRASTINATION": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1
+      },
+      "START_TASK": {
+        "precision": 0,
+        "recall": 0.0,
+        "f1-score": 0,
+        "support": 2
+      },
+      "TASK_COMPLETED": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 2
+      },
+      "TASK_FAILED": {
+        "precision": 0,
+        "recall": 0.0,
+        "f1-score": 0,
+        "support": 2
+      },
+      "UNKNOWN": {
+        "precision": 0.0,
+        "recall": 0,
+        "f1-score": 0,
+        "support": 0
+      },
+      "accuracy": 0.625,
+      "macro avg": {
+        "precision": 0.5454545454545454,
+        "recall": 0.5,
+        "f1-score": 0.5151515151515151,
+        "support": 16
+      },
+      "weighted avg": {
+        "precision": 0.6875,
+        "recall": 0.625,
+        "f1-score": 0.6458333333333334,
+        "support": 16
+      }
+    },
+    "byLanguage": {
+      "EN": {
+        "count": 8,
+        "accuracy": 0.625
+      },
+      "AR": {
+        "count": 7,
+        "accuracy": 0.5714285714285714
+      },
+      "MIXED": {
+        "count": 1,
+        "accuracy": 1.0
+      }
+    }
+  },
+  "taskExtraction": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "truePositiveTasks": 7,
+    "falsePositiveTasks": 0,
+    "missedTasks": 0,
+    "cases": [
+      {
+        "language": "EN",
+        "text": "I need to email James tomorrow.",
+        "expectedTasks": [
+          "email James"
+        ],
+        "actualTasks": [
+          "email James"
+        ]
+      },
+      {
+        "language": "EN",
+        "text": "Help me prioritize my schedule for today.",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "EN",
+        "text": "I can't start.",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "EN",
+        "text": "I forgot what I was doing.",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "EN",
+        "text": "The task feels too big.",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "EN",
+        "text": "I finished the first step.",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "EN",
+        "text": "I didn't do it.",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "EN",
+        "text": "I keep avoiding this task.",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "AR",
+        "text": "لازم أكلم البنك وأخلص التقرير وأشتري أغراض",
+        "expectedTasks": [
+          "اكلم البنك",
+          "اخلص التقرير",
+          "اشتري اغراض"
+        ],
+        "actualTasks": [
+          "اكلم البنك",
+          "اخلص التقرير",
+          "اشتري اغراض"
+        ]
+      },
+      {
+        "language": "AR",
+        "text": "عندي وايد شغلات اليوم ومب عارف من وين أبدأ",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "AR",
+        "text": "عندي تقرير لازم أخلصه بس ما قدرت أبدأ",
+        "expectedTasks": [
+          "اخلص تقرير"
+        ],
+        "actualTasks": [
+          "اخلص تقرير"
+        ]
+      },
+      {
+        "language": "AR",
+        "text": "نسيت شو كنت أسوي",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "AR",
+        "text": "خلصت",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "AR",
+        "text": "ما قدرت أخلصها",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "AR",
+        "text": "كانت الخطوة كبيرة",
+        "expectedTasks": [],
+        "actualTasks": []
+      },
+      {
+        "language": "MIXED",
+        "text": "لازم أرسل email وأخلص report",
+        "expectedTasks": [
+          "ارسل email",
+          "اخلص report"
+        ],
+        "actualTasks": [
+          "ارسل email",
+          "اخلص report"
+        ]
+      }
+    ]
+  },
+  "safety": {
+    "developmentHighRecall": 1.0,
+    "caught": 3,
+    "cases": 3,
+    "clinicalValidation": false
+  },
+  "performance": {
+    "samples": 110,
+    "warmupExcluded": 10,
+    "medianMs": 2.6792000001023553,
+    "p95Ms": 4.829399999835005,
+    "includesModelLoad": false,
+    "includesCalendarIO": false,
+    "targetP95Ms": 500
+  },
+  "fabricationChecks": {
+    "scope": "120 repeated unknown-metadata requests; regression probes only",
+    "hallucinatedDeadlineRate": 0.0,
+    "hallucinatedDurationRate": 0.0,
+    "unsupportedPriorityRate": 0.0,
+    "hallucinatedTaskRate": 0.0
+  },
+  "modelComparison": {
+    "intent": "linear_svm",
+    "friction": "logistic_regression"
+  },
+  "nextActionQuality": {
+    "rubric": "evaluation/NEXT_ACTION_RUBRIC.md",
+    "humanScoredHoldout": "NOT_AVAILABLE"
+  },
+  "frictionMetrics": "See planning-heldout.json: synthetic-only grouped test, not independent human evaluation."
+}

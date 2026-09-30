@@ -1,0 +1,8 @@
+{
+  "requestId": "2ce44215-b1fc-4e96-a355-ebc9c84748e8",
+  "patient": {"id": "ae3e23cc-5b26-468f-a8df-708519a4a144", "language": "EN", "supportTrack": "ADHD"},
+  "message": {"text": "I need to email James tomorrow."},
+  "currentState": {"energy": "LOW", "stress": "HIGH"},
+  "timeContext": {"referenceDate": "2026-09-29", "localTime": "14:30", "availableMinutes": 20},
+  "calendar": {"commit": false}
+}

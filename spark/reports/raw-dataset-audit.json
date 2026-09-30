@@ -1,0 +1,185 @@
+{
+  "file": "C:\\Users\\21629\\Downloads\\adhd_dataset.csv",
+  "sha256": "7ddec51027ba48f3868501f915eff3f24bcadbc703a8abf3a4f7b69ac5d4905b",
+  "rows": 10271,
+  "fields": [
+    "Question",
+    "Answer",
+    ""
+  ],
+  "languages": {
+    "en": 10270,
+    "other": 1
+  },
+  "missing": {
+    "Question": 1,
+    "Answer": 1
+  },
+  "extra_columns_rows": 0,
+  "blank_column_nonempty": 5,
+  "unique_exact_pairs": 10271,
+  "unique_normalized_pairs": 10271,
+  "unique_normalized_questions": 9880,
+  "questions_with_multiple_answers": 344,
+  "email_like_rows": 0,
+  "phone_like_rows": 0,
+  "top_repeat_counts": [
+    [
+      "tell me a fun fact",
+      5
+    ],
+    [
+      "is adhd linked to creativity?",
+      4
+    ],
+    [
+      "why do i forget what i was about to say?",
+      4
+    ],
+    [
+      "what makes multitasking feel impossible sometimes?",
+      4
+    ],
+    [
+      "tell me a trivia fact",
+      4
+    ],
+    [
+      "what makes time feel unpredictable?",
+      4
+    ],
+    [
+      "what helps me avoid emotional burnout?",
+      4
+    ],
+    [
+      "tell me a riddle",
+      4
+    ],
+    [
+      "how can i stop forgetting to back up files?",
+      4
+    ],
+    [
+      "is adhd genetic?",
+      3
+    ],
+    [
+      "can adhd affect friendships?",
+      3
+    ],
+    [
+      "is adhd linked to impulsive spending?",
+      3
+    ],
+    [
+      "is adhd linked to impulsive risk-taking?",
+      3
+    ],
+    [
+      "why do i feel guilty about procrastinating?",
+      3
+    ],
+    [
+      "who invented the light bulb?",
+      3
+    ]
+  ],
+  "samples": [
+    {
+      "Question": "What is ADHD?",
+      "Answer": "ADHD stands for Attention Deficit Hyperactivity Disorder, a condition that affects focus, impulse control, and activity levels."
+    },
+    {
+      "Question": "What are the main symptoms of ADHD?",
+      "Answer": "The three core symptoms are inattention, hyperactivity, and impulsivity."
+    },
+    {
+      "Question": "Can adults have ADHD?",
+      "Answer": "Yes, ADHD can persist into adulthood and impact work, relationships, and daily routines."
+    },
+    {
+      "Question": "Is ADHD treatable?",
+      "Answer": "ADHD can be managed with therapy, lifestyle changes, and sometimes medication."
+    },
+    {
+      "Question": "Does ADHD affect learning?",
+      "Answer": "It can make concentration and organization harder, but with support strategies, learning is possible."
+    },
+    {
+      "Question": "Is ADHD a mental illness?",
+      "Answer": "ADHD is considered a neurodevelopmental disorder, not a mental illness."
+    },
+    {
+      "Question": "Can ADHD be cured?",
+      "Answer": "There is no cure, but symptoms can be managed effectively."
+    },
+    {
+      "Question": "What causes ADHD?",
+      "Answer": "The exact cause is unknown, but genetics and brain differences play a role."
+    },
+    {
+      "Question": "How is ADHD diagnosed?",
+      "Answer": "Diagnosis is made through behavioral assessments, interviews, and medical history."
+    },
+    {
+      "Question": "Can ADHD be managed without medication?",
+      "Answer": "Yes, therapy, coaching, lifestyle adjustments, and coping strategies can help."
+    },
+    {
+      "Question": "Is ADHD common?",
+      "Answer": "Yes, ADHD is one of the most common neurodevelopmental disorders in children and adults."
+    },
+    {
+      "Question": "Does ADHD only affect children?",
+      "Answer": "No, ADHD can continue into adolescence and adulthood."
+    },
+    {
+      "Question": "Can ADHD affect emotions?",
+      "Answer": "Yes, people with ADHD may experience emotional dysregulation, frustration, or mood swings."
+    },
+    {
+      "Question": "Is ADHD genetic?",
+      "Answer": "Research shows ADHD often runs in families, suggesting a genetic component."
+    },
+    {
+      "Question": "Can ADHD affect sleep?",
+      "Answer": "Yes, ADHD can cause difficulties with falling asleep or staying asleep."
+    }
+  ],
+  "last_samples": [
+    {
+      "Question": "What is confirmatory factor analysis?",
+      "Answer": "Testing how well data fits a theoretical model."
+    },
+    {
+      "Question": "How do I keep my introduction concise?",
+      "Answer": "Discuss only essential context leading to your problem."
+    },
+    {
+      "Question": "What is an empirical gap?",
+      "Answer": "A missing empirical investigation in the topic."
+    },
+    {
+      "Question": "How do I interpret standard error?",
+      "Answer": "It estimates variability in sample means."
+    },
+    {
+      "Question": "What is research utility?",
+      "Answer": "The usefulness of findings in real life."
+    },
+    {
+      "Question": "How do I avoid double-barreled questions?",
+      "Answer": "Ask one idea per item."
+    },
+    {
+      "Question": "What is respondent fatigue?",
+      "Answer": "Declining response quality from long surveys."
+    },
+    {
+      "Question": "How do I defend my sampling method?",
+      "Answer": "Explain its appropriateness for your research goals."
+    }
+  ],
+  "encoding": "cp1252"
+}

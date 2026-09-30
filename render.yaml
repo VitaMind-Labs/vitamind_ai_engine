@@ -1,0 +1,29 @@
+# Mira + Lumina + Spark as ONE Render web service, started by one file: run.py.
+#
+# run.py starts each agent in its own process on its own internal port
+# (Mira 8101, Lumina 8102, Spark 8103) and puts a small gateway on Render's single
+# public port ($PORT). The backend reaches them by path prefix:
+#
+#   MIRA_SERVICE_URL   = https://<this-service>.onrender.com/mira
+#   LUMINA_SERVICE_URL = https://<this-service>.onrender.com/lumina
+#   SPARK_SERVICE_URL  = https://<this-service>.onrender.com/spark
+#
+# and signs Lumina/Spark calls with the same LUMINA_SERVICE_SECRET set below.
+services:
+  - type: web
+    name: vitamind-agents
+    runtime: python
+    plan: free            # free instances spin down after 15 min idle: Mira sessions live in memory
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.3
+      # Shared with the backend's LUMINA_SERVICE_SECRET. Spark reuses it unless
+      # SPARK_SERVICE_SECRET is set as well.
+      - key: LUMINA_SERVICE_SECRET
+        sync: false
+      # Lumina refuses an unreviewed intervention catalog unless this is true.
+      - key: ALLOW_UNREVIEWED_SAFETY_CONTENT
+        value: "true"

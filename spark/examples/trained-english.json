@@ -1,0 +1,20 @@
+{
+  "requestId": "c44c6bca-6e38-4de6-bfe7-24520dbbd307",
+  "patient": {
+    "id": "ae3e23cc-5b26-468f-a8df-708519a4a144",
+    "language": "EN"
+  },
+  "message": {
+    "text": "Give me an overview of my commitments today."
+  },
+  "tasks": [
+    {
+      "temporaryId": "report",
+      "title": "write the report"
+    }
+  ],
+  "timeContext": {
+    "referenceDate": "2026-09-29",
+    "availableMinutes": 20
+  }
+}

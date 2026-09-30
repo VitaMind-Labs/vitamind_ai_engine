@@ -208,6 +208,30 @@ HEARD = {
     },
 }
 
+# Intent-routed replies have no measured history to compare against.
+INTENT_ONLY_TEMPLATES = {
+    "SLEEP_SUPPORT": {
+        "en": "Sleep can shape the whole day, so it is worth a closer look. {action}",
+        "ar": "النوم يؤثر في اليوم كله، ولذلك يستحق أن ننظر فيه عن قرب. {action}",
+    },
+    "ROUTINE_SUPPORT": {
+        "en": "A steady routine helps, and one fixed point is enough to start. {action}",
+        "ar": "الروتين الثابت يساعد، ونقطة ثابتة واحدة تكفي للبداية. {action}",
+    },
+    "ENCOURAGE_SUPPORT_CONNECTION": {
+        "en": "Connection with other people can help. {action}",
+        "ar": "التواصل مع الآخرين قد يساعد. {action}",
+    },
+    "STATE_MONITORING": {
+        "en": "I do not have enough check-ins yet to compare this with your usual pattern. Let's keep watching it together. {action}",
+        "ar": "ليست لديّ تسجيلات كافية بعد لمقارنة ذلك بنمطك المعتاد. لنواصل ملاحظته معًا. {action}",
+    },
+    "FOLLOW_UP": {
+        "en": "I am happy to look at how things have been going. What would you like to start with?",
+        "ar": "يسعدني أن ننظر معًا في كيف كانت الأمور. بماذا تحب أن نبدأ؟",
+    },
+}
+
 # The conversational move sets how a reply opens (or, for a few acts, the whole
 # reply). `{name}` is ", <preferred name>" or empty.
 ACT_OPENERS = {
@@ -407,6 +431,9 @@ def _body_template(decision, language, seed):
     if key == "SLEEP_SUPPORT" and "CONCERN_LOW_SLEEP" in codes:
         return _pick(HEARD["SLEEP_SUPPORT_LOW"], language, seed)
     if heard:
+        if key in INTENT_ONLY_TEMPLATES and not (
+                key == "FOLLOW_UP" and topic in ("PROGRESS", "GOAL")):
+            return _pick(INTENT_ONLY_TEMPLATES[key], language, seed)
         if key == "FOLLOW_UP" and topic in ("PROGRESS", "GOAL"):
             return _pick(HEARD[f"FOLLOW_UP_{topic}"], language, seed)
         if key == "ACKNOWLEDGE" and f"ACKNOWLEDGE_{topic}" in HEARD:

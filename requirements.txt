@@ -1,0 +1,9 @@
+# One environment for all three agents (Mira, Lumina, Spark), as deployed by run.py.
+# Each agent's own requirements file stays the source for running it alone.
+fastapi>=0.115,<1
+uvicorn[standard]==0.34.2
+pydantic>=2.8,<3
+numpy>=1.26,<3
+# Mira's classifier is a joblib pickle written by exactly this version.
+scikit-learn==1.7.2
+joblib>=1.3,<2

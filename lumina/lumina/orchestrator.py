@@ -175,6 +175,10 @@ class Lumina:
                 "act": prediction["act"]["label"],
                 "model_version": self.understanding.version,
                 "not_a_diagnosis": True,
+                # Its emotion head scores macro-F1 0.36 (MODELS.md), so nothing
+                # downstream may steer a decision from it. Say so in the envelope
+                # rather than leaving a caller to assume it is an input.
+                "advisory_only": True,
             }
             steps.append("understanding")
 

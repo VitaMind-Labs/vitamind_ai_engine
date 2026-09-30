@@ -159,6 +159,22 @@ def ready():
         "safety_model": engine.safety.model.version if engine.safety.model else None,
         "understanding_model": engine.understanding.version if engine.understanding else None,
         "journal_analyzer": engine.journal is not None,
+        # What each learned component does in the turn, so "loaded" is never
+        # mistaken for "steering decisions".
+        "models": {
+            "safety_head": {
+                "loaded": engine.safety.model is not None,
+                "role": "escalation_only: fused with the journal rules as max(); cannot reach CRISIS"},
+            "understanding_head": {
+                "loaded": engine.understanding is not None,
+                "role": "advisory: returned in the envelope, never read by the decision engine"},
+            "intent_head": {
+                "loaded": engine.intent_model is not None,
+                "role": "disabled: abstains on every input; intent is routed by rules"},
+            "journal_ai": {
+                "loaded": engine.journal is not None,
+                "role": "rules + journal classifier: sole path to CRISIS, journal signals"},
+        },
         "intervention_catalog": engine.catalog.version,
         "unreviewed_interventions": len(unreviewed),
         "signed_requests_required": _secret is not None,
