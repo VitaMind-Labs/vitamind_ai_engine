@@ -1,0 +1,75 @@
+{
+ "purpose": "Adds (1) English Reddit depression/SuicideWatch posts, (2) long NORMAL texts, and (3) Arabic first turns of machine-generated dialogues, to datasets/safety",
+ "built_by": "data_prep/build_final_all.py",
+ "seed": 42,
+ "heads": [
+  "safety"
+ ],
+ "label_rule": "same collapse as Combined_Data: a condition name is never a level by itself; suicide/SuicideWatch -> HIGH, every other condition -> ELEVATED, none -> NORMAL. CRISIS is never assigned.",
+ "composition": {
+  "reddit": {
+   "rows_in": 20364,
+   "overlap_with_combined_data_dropped": 12565
+  },
+  "long_normal_rows": {
+   "thread": 123,
+   "subreddit": 2598,
+   "smalltalk_window": 300
+  },
+  "arabic_first_turns": 26445
+ },
+ "deduplication": {
+  "conflicting_dropped": 0,
+  "duplicates_dropped": 0
+ },
+ "honest_limits": [
+  "Labels come from a subreddit or a dialogue-level tag, not from a clinician.",
+  "Reddit SuicideWatch posts include venting and recovery stories; HIGH here is a language signal, never a person rating.",
+  "Arabic rows are machine-generated, not patient text; report Arabic scores separately.",
+  "Long NORMAL texts are concatenated neutral/positive Reddit comments, filtered by an exclusion lexicon; they fix the length confound but are not diary-style text.",
+  "English Reddit text overlaps the style of Combined_Data; exact overlaps were removed."
+ ],
+ "dataset": "safety_addon",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 29785,
+   "safety": {
+    "ELEVATED": 18293,
+    "HIGH": 6089,
+    "NORMAL": 5403
+   }
+  },
+  "val": {
+   "rows": 3724,
+   "safety": {
+    "ELEVATED": 2286,
+    "HIGH": 762,
+    "NORMAL": 676
+   }
+  },
+  "test": {
+   "rows": 3720,
+   "safety": {
+    "ELEVATED": 2285,
+    "HIGH": 760,
+    "NORMAL": 675
+   }
+  }
+ },
+ "rows": {
+  "train": 29785,
+  "val": 3724,
+  "test": 3720
+ },
+ "files_sha256": {
+  "train.jsonl": "123ff9db48e8ed92cb6a0dbf30bd20c38e7892065c64341b51f51a4fbf68b380",
+  "val.jsonl": "87ad4556126e117332b337dab73ce130dad6088758fd7fcd58b54ecc7be5e187",
+  "test.jsonl": "c9cacebeb23d623f0d73c4d2eb5534ff096432611e5a24f5309e70b4ed07511b"
+ }
+}

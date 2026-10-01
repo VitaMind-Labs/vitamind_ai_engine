@@ -15,7 +15,7 @@ lower it.
 import argparse
 
 from lumina.taxonomy import SAFETY_LEVELS
-from training.runner import run
+from training.runner import merge_datasets, run
 
 # The head is trained on the three levels the corpus supports. CRISIS is absent
 # by design (see datasets/safety/manifest.json -> why_no_learned_crisis_class):
@@ -29,12 +29,19 @@ TRAINING_LEVELS = ("NORMAL", "ELEVATED", "HIGH")
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--epochs", type=int, default=14)
+    # Chosen on validation against HIGH recall and the under-call rate, not
+    # macro-F1: under-calling risk is the error that reaches a patient. The
+    # shipped model had been trained for 3 epochs, which scored HIGH recall
+    # 0.800 and under-called 6.4%; 10 epochs gives 0.829 and 5.5%. Twenty
+    # epochs edges macro-F1 (0.826 vs 0.820) but loses HIGH recall again
+    # (0.814), so it is not the trade to take here.
+    parser.add_argument("--epochs", type=int, default=10)
     parser.add_argument("--max-features", type=int, default=30000)
     parser.add_argument("--target-precision", type=float, default=0.85)
     args = parser.parse_args()
 
-    run("safety", "safety",
+    run("safety", merge_datasets("safety+addon", ("safety", "safety_addon", "safety_synth"),
+                    ("safety", "safety_addon")),
         head_definitions={"safety_signal": TRAINING_LEVELS + ("UNKNOWN",)},
         abstain_labels={"safety_signal": "UNKNOWN"},
         seed=args.seed, epochs=args.epochs, max_features=args.max_features,

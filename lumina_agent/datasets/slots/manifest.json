@@ -1,0 +1,87 @@
+{
+ "purpose": "Text -> state slots (Lumina has no chat-to-state extraction today). Train or unit-test a rule/tagger extractor; Western and Arabic-Indic digits, Arabic number words, dual forms (ساعتين)",
+ "built_by": "data_prep/build_final_all.py",
+ "seed": 42,
+ "heads": [
+  "primary_slot"
+ ],
+ "slots": {
+  "sleep_hours": "float hours",
+  "energy": "0-10",
+  "mood": "0-10",
+  "stress": "0-10",
+  "tasks_count": "int",
+  "alcohol_drinks": "int (English only)",
+  "meds_taken": "bool",
+  "spending_unplanned": "bool",
+  "social_contact": "bool"
+ },
+ "split_policy": "one template = one group; values vary inside it",
+ "deduplication": {
+  "conflicting_dropped": 0,
+  "duplicates_dropped": 20
+ },
+ "honest_limits": [
+  "Templated: good for a regression suite, weak as training text.",
+  "Missing: ranges ('5 to 6 hours'), fractions ('half an hour'), negations ('not 5 hours'), corrections, several slots in one message, Arabic alcohol/substance (left out on purpose; needs a native clinical reviewer)."
+ ],
+ "dataset": "slots",
+ "clinical_validity": "not_clinical",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 266,
+   "primary_slot": {
+    "sleep_hours": 88,
+    "energy": 40,
+    "mood": 40,
+    "stress": 20,
+    "tasks_count": 36,
+    "alcohol_drinks": 16,
+    "meds_taken": 11,
+    "spending_unplanned": 5,
+    "social_contact": 10
+   }
+  },
+  "val": {
+   "rows": 59,
+   "primary_slot": {
+    "sleep_hours": 16,
+    "energy": 10,
+    "mood": 10,
+    "stress": 10,
+    "tasks_count": 9,
+    "meds_taken": 2,
+    "spending_unplanned": 1,
+    "social_contact": 1
+   }
+  },
+  "test": {
+   "rows": 50,
+   "primary_slot": {
+    "sleep_hours": 8,
+    "energy": 10,
+    "mood": 10,
+    "stress": 10,
+    "tasks_count": 9,
+    "meds_taken": 1,
+    "spending_unplanned": 1,
+    "social_contact": 1
+   }
+  }
+ },
+ "rows": {
+  "train": 266,
+  "val": 59,
+  "test": 50
+ },
+ "files_sha256": {
+  "train.jsonl": "e6dfb5e86cf71575776fca21b4f8f60569767b3a0e1434ed278f8d511c6699af",
+  "val.jsonl": "f650eba1c7cd283b087033732331357bac167e5166b73fb3ca805bc3de6836af",
+  "test.jsonl": "612869473259539334902400a4358ae9fea963b60f537b0baa74e0f86ed0ce7c"
+ },
+ "row_weights": "synthetic rows carry weight 0.5; the field used to be absent, so loaders defaulted them to 1.0"
+}

@@ -135,11 +135,14 @@ def train(rows, head_definitions, label_of, feature_spec,
         vectors.append((np.array(ids, dtype=np.int64), np.array(values, dtype=np.float64)))
 
     targets, class_weights = {}, {}
+    sample_weights = np.asarray([max(0.0, float(r.get("weight", 1.0))) for r in rows])
     for name, head in heads.items():
         labels = head["labels"]
         targets[name] = np.array([labels.index(label_of(r, name)) for r in rows])
-        counts = np.bincount(targets[name], minlength=len(labels))
-        w = np.sqrt(len(rows) / (len(labels) * np.maximum(counts, 1)))
+        counts = np.bincount(targets[name], weights=sample_weights,
+                     minlength=len(labels))
+        total_weight = max(float(sample_weights.sum()), 1.0)
+        w = np.sqrt(total_weight / (len(labels) * np.maximum(counts, 1)))
         w = np.clip(w, 0.5, class_weight_cap)
         for label, multiplier in (emphasis or {}).get(name, {}).items():
             w[labels.index(label)] *= multiplier
@@ -159,9 +162,10 @@ def train(rows, head_definitions, label_of, feature_spec,
                 start, end = head["start"], head["end"]
                 p = softmax(raw[start:end])
                 target = targets[name][index]
-                loss -= math.log(max(p[target], 1e-12))
+                weight = sample_weights[index]
+                loss -= weight * math.log(max(p[target], 1e-12))
                 p[target] -= 1.0
-                grad[start:end] = p * class_weights[name][target]
+                grad[start:end] = p * class_weights[name][target] * weight
             weights[ids] -= lr * (values[:, None] * grad[None, :] + l2 * weights[ids])
             bias -= lr * grad * 0.15
         if epoch == 0 or (epoch + 1) % 5 == 0 or epoch == epochs - 1:

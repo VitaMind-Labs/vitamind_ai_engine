@@ -1,0 +1,106 @@
+{
+ "purpose": "Language coverage for track-relevant signals (bipolar, ADHD, psychosis), for the clinician-facing signal layer and regression tests",
+ "built_by": "data_prep/build_final_all.py",
+ "seed": 42,
+ "heads": [
+  "track",
+  "signal"
+ ],
+ "deduplication": {
+  "conflicting_dropped": 0,
+  "duplicates_dropped": 3
+ },
+ "rules": [
+  "Never use to choose or change a patient's track (spec s79, s80).",
+  "Psychosis sentences are attributed experience; replies reflect, never confirm or dispute.",
+  "Output goes to the clinician dashboard or a review flag, never to the patient as a label."
+ ],
+ "honest_limits": [
+  "~24 sentences per signal across 6 language varieties.",
+  "NONE is ordinary-day text; real confusers (baby-related sleep loss, real deadlines) are missing.",
+  "No real patient language. Expect large drops on real text."
+ ],
+ "dataset": "track_signals",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 309,
+   "signal": {
+    "LOW_SLEEP_HIGH_ENERGY": 19,
+    "RACING_THOUGHTS_PRESSURED_SPEECH": 19,
+    "IMPULSIVE_SPENDING_PROJECTS": 19,
+    "IRRITABILITY_ESCALATION": 19,
+    "DEPRESSIVE_SLUMP": 19,
+    "INITIATION_DIFFICULTY": 19,
+    "TIME_BLINDNESS": 19,
+    "DISTRACTIBILITY": 18,
+    "TASK_OVERWHELM": 19,
+    "EMOTIONAL_DYSREGULATION": 19,
+    "REFERENTIAL_PARANOID_FEELING": 19,
+    "PERCEPTUAL_EXPERIENCE_REPORT": 19,
+    "MEDICATION_STOPPING_MENTION": 19,
+    "DISORGANISED_THINKING_REPORT": 19,
+    "SLEEP_LOSS_WITHDRAWAL": 19,
+    "NONE": 25
+   }
+  },
+  "val": {
+   "rows": 48,
+   "signal": {
+    "LOW_SLEEP_HIGH_ENERGY": 3,
+    "RACING_THOUGHTS_PRESSURED_SPEECH": 3,
+    "IMPULSIVE_SPENDING_PROJECTS": 3,
+    "IRRITABILITY_ESCALATION": 3,
+    "DEPRESSIVE_SLUMP": 3,
+    "INITIATION_DIFFICULTY": 3,
+    "TIME_BLINDNESS": 3,
+    "DISTRACTIBILITY": 3,
+    "TASK_OVERWHELM": 3,
+    "EMOTIONAL_DYSREGULATION": 3,
+    "REFERENTIAL_PARANOID_FEELING": 3,
+    "PERCEPTUAL_EXPERIENCE_REPORT": 3,
+    "MEDICATION_STOPPING_MENTION": 3,
+    "DISORGANISED_THINKING_REPORT": 3,
+    "SLEEP_LOSS_WITHDRAWAL": 3,
+    "NONE": 3
+   }
+  },
+  "test": {
+   "rows": 33,
+   "signal": {
+    "LOW_SLEEP_HIGH_ENERGY": 2,
+    "RACING_THOUGHTS_PRESSURED_SPEECH": 2,
+    "IMPULSIVE_SPENDING_PROJECTS": 2,
+    "IRRITABILITY_ESCALATION": 2,
+    "DEPRESSIVE_SLUMP": 2,
+    "INITIATION_DIFFICULTY": 2,
+    "TIME_BLINDNESS": 2,
+    "DISTRACTIBILITY": 2,
+    "TASK_OVERWHELM": 2,
+    "EMOTIONAL_DYSREGULATION": 2,
+    "REFERENTIAL_PARANOID_FEELING": 2,
+    "PERCEPTUAL_EXPERIENCE_REPORT": 2,
+    "MEDICATION_STOPPING_MENTION": 2,
+    "DISORGANISED_THINKING_REPORT": 2,
+    "SLEEP_LOSS_WITHDRAWAL": 2,
+    "NONE": 3
+   }
+  }
+ },
+ "rows": {
+  "train": 309,
+  "val": 48,
+  "test": 33
+ },
+ "files_sha256": {
+  "train.jsonl": "a3a4962734709643142c60aa442daeee738de1374be894c6fb7ddb3116a40486",
+  "val.jsonl": "053e1be12997a5eb1c6d91a00485d0d045c33437441a03cb5b46ac48ff6e8aec",
+  "test.jsonl": "5186cf7e6b3da85931b2f2a69dc8ffa724f64c2bffa2b8606dca5e4258d83eef"
+ },
+ "row_weights": "synthetic rows carry weight 0.5; the field used to be absent, so loaders defaulted them to 1.0"
+}

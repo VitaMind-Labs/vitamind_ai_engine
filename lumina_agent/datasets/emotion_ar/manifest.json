@@ -1,0 +1,81 @@
+{
+ "purpose": "Arabic coarse emotion head (Egyptian/Gulf/MSA tweets)",
+ "built_by": "data_prep/build_final_real.py",
+ "seed": 42,
+ "heads": [
+  "emotion"
+ ],
+ "source": {
+  "name": "Emotional-Tone-Dataset.csv"
+ },
+ "label_mapping": {
+  "none": "NEUTRAL",
+  "anger": "ANGRY",
+  "joy": "CONTENT",
+  "love": "CONTENT",
+  "sadness": "SAD",
+  "fear": "FEARFUL"
+ },
+ "unmapped_source_labels": [
+  "sympathy",
+  "surprise"
+ ],
+ "deduplication": {
+  "conflicting_dropped": 13,
+  "duplicates_dropped": 78
+ },
+ "honest_limits": [
+  "Tweets, often about public events - a 'sadness' row can be about football, not the writer.",
+  "Mixed dialects, no dialect label, no author id (grouped by normalized text).",
+  "Only NEUTRAL/ANGRY/CONTENT/SAD/FEARFUL are covered."
+ ],
+ "dataset": "emotion_ar",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 6269,
+   "emotion": {
+    "NEUTRAL": 1215,
+    "ANGRY": 1150,
+    "SAD": 995,
+    "CONTENT": 1964,
+    "FEARFUL": 945
+   }
+  },
+  "val": {
+   "rows": 784,
+   "emotion": {
+    "CONTENT": 246,
+    "ANGRY": 143,
+    "NEUTRAL": 152,
+    "SAD": 125,
+    "FEARFUL": 118
+   }
+  },
+  "test": {
+   "rows": 783,
+   "emotion": {
+    "NEUTRAL": 152,
+    "CONTENT": 245,
+    "ANGRY": 144,
+    "SAD": 124,
+    "FEARFUL": 118
+   }
+  }
+ },
+ "rows": {
+  "train": 6269,
+  "val": 784,
+  "test": 783
+ },
+ "files_sha256": {
+  "train.jsonl": "31ac933b3b9ffedc17d48cbc4c28530d1d5a67c05bb9b567055ea326f8e0cb91",
+  "val.jsonl": "cc0fcea741301954f4553425fda827c10cdaf83a3796e369df34cec1a168a9d9",
+  "test.jsonl": "28b85d6d496cbbaf81294119ae2fa53d8778b3480a393124679a65593b6dba63"
+ }
+}

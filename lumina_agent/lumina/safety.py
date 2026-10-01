@@ -59,6 +59,35 @@ TIERS_NEEDING_REVIEW = frozenset({"moderate_flagged", "high"})
 # ELEVATED so the conservative branch is taken (spec s124).
 UNKNOWN_FLOOR = "ELEVATED"
 
+# KNOWN DEFECT, not mitigated here: the head reads executive-function overload as
+# severe distress. "I have so much to do and I cannot start any of it" scores HIGH
+# at 0.864 and "I have ten things to do and I am doing none of them" at 0.556. Its
+# corpus is Reddit depression and SuicideWatch text, which contains nothing phrased
+# that way, so ADHD task-overload language is out of distribution for it.
+#
+# Two mitigations were tried and both rejected:
+#
+# * A confidence floor on the head's HIGH. The ranges overlap and cannot be
+#   separated - benign overload scores 0.556, 0.623, 0.682, 0.864 while real
+#   distress scores 0.624 ("worthless and everything is pointless") and 0.890
+#   ("hopeless and like a burden"). Any floor that catches the benign 0.864 also
+#   discards the genuine 0.624.
+#
+# * A task-overload pattern, applied only when the lexicon reported no cue at all.
+#   The gate is not trustworthy, because the lexicon is the thing that missed the
+#   risk: it reported no cue for "I cannot start anything anymore and I want it to
+#   end", and the guard then suppressed a 0.966 HIGH on a message that plainly
+#   warrants one. Suppressing risk on the strength of the detector that just failed
+#   is not a safe trade.
+#
+# This predates the current head - the previously shipped one scored the same
+# sentences 0.543, 0.499, 0.694 and 0.848, and passed the tests only because the two
+# sentences they used happened to fall under the abstention line.
+#
+# The fix is supervision, not a threshold or a regex: the safety corpus needs
+# executive-function and task-overload language labelled, and every HIGH row needs
+# clinician confirmation before it is trusted. Tracked in MODELS.md.
+
 
 def _max_level(*levels):
     return max(levels, key=lambda level: SAFETY_ORDER[level])
@@ -138,6 +167,7 @@ class SafetyEngine:
 
         rule_level, rule_detail = self._rule_level(text)
         model_level, model_detail = self._model_level(text)
+
 
         available = [level for level in (rule_level, model_level) if level is not None]
         if not available:

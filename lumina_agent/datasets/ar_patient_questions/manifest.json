@@ -1,0 +1,100 @@
+{
+ "purpose": "Arabic topic head over real patient questions; Arabic vocabulary source",
+ "built_by": "data_prep/build_final_real.py",
+ "seed": 42,
+ "heads": [
+  "topic"
+ ],
+ "source": {
+  "name": "five Arabic doctor Q&A CSVs",
+  "rows_in": 34696
+ },
+ "cleaning": "salutations stripped, emails/phones removed, truncated to first 80 words",
+ "deduplication": {
+  "conflicting_dropped": 13405,
+  "duplicates_dropped": 4278
+ },
+ "excluded": "Doctor answers are NOT shipped: 300-word clinical letters with medication advice and religious framing; they would violate the reply guard.",
+ "honest_limits": [
+  "Topic = forum category, never a diagnosis. There is no ADHD category in the source.",
+  "CONCENTRATION is concentration/daydreaming, not ADHD.",
+  "PSYCHOSIS ~600 questions and BIPOLAR 300 - small.",
+  "Questions are much longer than chat messages; truncated but still longer."
+ ],
+ "dataset": "ar_patient_questions",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 13590,
+   "topic": {
+    "PSYCHOSIS": 406,
+    "CONCENTRATION": 290,
+    "MEMORY": 124,
+    "GENERAL_GUIDANCE": 208,
+    "OTHER": 116,
+    "SELF_DEVELOPMENT": 690,
+    "PERSONALITY": 732,
+    "DEPRESSION": 1111,
+    "BIPOLAR": 208,
+    "OCD": 2046,
+    "ANXIETY": 3026,
+    "FEARS_PHOBIA": 3313,
+    "SLEEP": 822,
+    "MOTOR_TREMOR": 498
+   }
+  },
+  "val": {
+   "rows": 1697,
+   "topic": {
+    "PSYCHOSIS": 50,
+    "CONCENTRATION": 36,
+    "MEMORY": 16,
+    "GENERAL_GUIDANCE": 26,
+    "OTHER": 14,
+    "SELF_DEVELOPMENT": 86,
+    "PERSONALITY": 92,
+    "DEPRESSION": 139,
+    "BIPOLAR": 26,
+    "OCD": 255,
+    "ANXIETY": 378,
+    "FEARS_PHOBIA": 414,
+    "SLEEP": 102,
+    "MOTOR_TREMOR": 63
+   }
+  },
+  "test": {
+   "rows": 1698,
+   "topic": {
+    "PSYCHOSIS": 51,
+    "CONCENTRATION": 36,
+    "MEMORY": 15,
+    "GENERAL_GUIDANCE": 26,
+    "OTHER": 15,
+    "SELF_DEVELOPMENT": 86,
+    "PERSONALITY": 91,
+    "DEPRESSION": 139,
+    "BIPOLAR": 26,
+    "OCD": 256,
+    "ANXIETY": 378,
+    "FEARS_PHOBIA": 414,
+    "SLEEP": 103,
+    "MOTOR_TREMOR": 62
+   }
+  }
+ },
+ "rows": {
+  "train": 13590,
+  "val": 1697,
+  "test": 1698
+ },
+ "files_sha256": {
+  "train.jsonl": "eefb8f5ebf7651cceab057c4b602677e219fe77071e51bd3b630b44bb9889696",
+  "val.jsonl": "6e2f446d58640b537d84bd8c5741bb16d81ea404669542b762c281698991b862",
+  "test.jsonl": "b7342fdefd0c5dade80cdf976de1e2401d5da163c83f9aa240c9a08610f27246"
+ }
+}

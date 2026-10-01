@@ -1,0 +1,2875 @@
+{
+ "purpose": "Simulated daily check-ins with known episode onsets, isolated bad-day blips and missing data, to test baseline + change detection + track rules.",
+ "seed": 42,
+ "days_per_patient": 70,
+ "dimensions": [
+  "sleep_hours",
+  "energy",
+  "stress",
+  "mood",
+  "focus",
+  "routine_stability",
+  "social_connection",
+  "task_completion"
+ ],
+ "units": "sleep_hours in hours; every other dimension 0-10 (stress: high = worse)",
+ "scenarios": {
+  "manic_prodrome": {
+   "track": "BIPOLAR",
+   "ramp_days": 5,
+   "plateau_days": 10,
+   "plateau_delta": {
+    "sleep_hours": -3.0,
+    "energy": 3.0,
+    "mood": 1.5,
+    "stress": 0.5,
+    "focus": -1.0,
+    "routine_stability": -1.5,
+    "social_connection": 1.0,
+    "task_completion": 0.5
+   }
+  },
+  "depressive_slump": {
+   "track": "BIPOLAR",
+   "ramp_days": 7,
+   "plateau_days": 14,
+   "plateau_delta": {
+    "sleep_hours": 2.0,
+    "energy": -3.0,
+    "mood": -3.0,
+    "stress": 1.0,
+    "focus": -2.0,
+    "routine_stability": -1.5,
+    "social_connection": -2.5,
+    "task_completion": -2.5
+   }
+  },
+  "adhd_overwhelm": {
+   "track": "ADHD",
+   "ramp_days": 4,
+   "plateau_days": 8,
+   "plateau_delta": {
+    "sleep_hours": -0.8,
+    "energy": -0.5,
+    "stress": 2.5,
+    "mood": -1.0,
+    "focus": -2.5,
+    "routine_stability": -2.0,
+    "social_connection": -0.5,
+    "task_completion": -3.0
+   }
+  },
+  "psychosis_prodrome": {
+   "track": "SCHIZOPHRENIA",
+   "ramp_days": 7,
+   "plateau_days": 12,
+   "plateau_delta": {
+    "sleep_hours": -2.5,
+    "energy": -0.5,
+    "stress": 2.5,
+    "mood": -1.0,
+    "focus": -2.0,
+    "routine_stability": -2.5,
+    "social_connection": -3.0,
+    "task_completion": -1.5
+   }
+  }
+ },
+ "mix": {
+  "stable": 40,
+  "false_alarm_blips": 20,
+  "manic_prodrome": 30,
+  "depressive_slump": 20,
+  "adhd_overwhelm": 25,
+  "psychosis_prodrome": 25
+ },
+ "phase": "none | ramp | episode | recovery (ground truth); blip=true marks an isolated bad day that is NOT an episode",
+ "missing": "~10% of values and ~6% of whole days are empty",
+ "honest_limits": [
+  "Effect sizes and ramp shapes are illustrative, not clinical estimates.",
+  "Real trajectories are messier: weekly rhythm, travel, illness, medication changes.",
+  "A detector tuned on this will look better than it is."
+ ],
+ "patients": [
+  {
+   "patient_id": "sim_001",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.21,
+    "energy": 4.96,
+    "stress": 4.75,
+    "mood": 6.94,
+    "focus": 3.85,
+    "routine_stability": 4.7,
+    "social_connection": 5.65,
+    "task_completion": 5.68
+   }
+  },
+  {
+   "patient_id": "sim_002",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.19,
+    "energy": 5.44,
+    "stress": 4.7,
+    "mood": 6.11,
+    "focus": 4.5,
+    "routine_stability": 5.97,
+    "social_connection": 2.56,
+    "task_completion": 3.08
+   }
+  },
+  {
+   "patient_id": "sim_003",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.89,
+    "energy": 6.45,
+    "stress": 5.14,
+    "mood": 7.2,
+    "focus": 5.37,
+    "routine_stability": 7.16,
+    "social_connection": 6.61,
+    "task_completion": 8.57
+   }
+  },
+  {
+   "patient_id": "sim_004",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.34,
+    "energy": 8.06,
+    "stress": 5.36,
+    "mood": 4.1,
+    "focus": 7.22,
+    "routine_stability": 6.94,
+    "social_connection": 3.65,
+    "task_completion": 5.7
+   }
+  },
+  {
+   "patient_id": "sim_005",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.06,
+    "energy": 5.39,
+    "stress": 4.88,
+    "mood": 5.98,
+    "focus": 4.46,
+    "routine_stability": 3.66,
+    "social_connection": 5.43,
+    "task_completion": 3.73
+   }
+  },
+  {
+   "patient_id": "sim_006",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.79,
+    "energy": 6.03,
+    "stress": 3.56,
+    "mood": 7.12,
+    "focus": 4.81,
+    "routine_stability": 6.39,
+    "social_connection": 8.23,
+    "task_completion": 6.21
+   }
+  },
+  {
+   "patient_id": "sim_007",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.09,
+    "energy": 7.4,
+    "stress": 2.58,
+    "mood": 5.8,
+    "focus": 6.85,
+    "routine_stability": 5.97,
+    "social_connection": 4.32,
+    "task_completion": 4.65
+   }
+  },
+  {
+   "patient_id": "sim_008",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.73,
+    "energy": 6.61,
+    "stress": 4.46,
+    "mood": 5.6,
+    "focus": 5.72,
+    "routine_stability": 8.53,
+    "social_connection": 6.33,
+    "task_completion": 4.6
+   }
+  },
+  {
+   "patient_id": "sim_009",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.97,
+    "energy": 5.93,
+    "stress": 3.8,
+    "mood": 5.16,
+    "focus": 6.23,
+    "routine_stability": 5.68,
+    "social_connection": 6.82,
+    "task_completion": 5.82
+   }
+  },
+  {
+   "patient_id": "sim_010",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.1,
+    "energy": 7.03,
+    "stress": 4.3,
+    "mood": 5.46,
+    "focus": 5.93,
+    "routine_stability": 6.73,
+    "social_connection": 6.93,
+    "task_completion": 5.87
+   }
+  },
+  {
+   "patient_id": "sim_011",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.4,
+    "energy": 6.19,
+    "stress": 4.11,
+    "mood": 6.21,
+    "focus": 5.26,
+    "routine_stability": 4.46,
+    "social_connection": 6.04,
+    "task_completion": 3.51
+   }
+  },
+  {
+   "patient_id": "sim_012",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.8,
+    "energy": 5.14,
+    "stress": 3.1,
+    "mood": 7.14,
+    "focus": 6.8,
+    "routine_stability": 5.51,
+    "social_connection": 3.25,
+    "task_completion": 4.87
+   }
+  },
+  {
+   "patient_id": "sim_013",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.57,
+    "energy": 4.37,
+    "stress": 4.28,
+    "mood": 5.62,
+    "focus": 5.35,
+    "routine_stability": 6.17,
+    "social_connection": 4.65,
+    "task_completion": 6.51
+   }
+  },
+  {
+   "patient_id": "sim_014",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.91,
+    "energy": 5.93,
+    "stress": 3.15,
+    "mood": 6.28,
+    "focus": 4.7,
+    "routine_stability": 4.06,
+    "social_connection": 6.3,
+    "task_completion": 5.53
+   }
+  },
+  {
+   "patient_id": "sim_015",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.79,
+    "energy": 5.88,
+    "stress": 3.73,
+    "mood": 7.45,
+    "focus": 5.64,
+    "routine_stability": 6.61,
+    "social_connection": 3.39,
+    "task_completion": 5.65
+   }
+  },
+  {
+   "patient_id": "sim_016",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.02,
+    "energy": 5.27,
+    "stress": 3.6,
+    "mood": 7.29,
+    "focus": 5.65,
+    "routine_stability": 4.17,
+    "social_connection": 4.99,
+    "task_completion": 6.06
+   }
+  },
+  {
+   "patient_id": "sim_017",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.58,
+    "energy": 6.14,
+    "stress": 3.86,
+    "mood": 6.78,
+    "focus": 4.14,
+    "routine_stability": 4.73,
+    "social_connection": 4.75,
+    "task_completion": 3.56
+   }
+  },
+  {
+   "patient_id": "sim_018",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.09,
+    "energy": 5.0,
+    "stress": 5.15,
+    "mood": 8.04,
+    "focus": 5.6,
+    "routine_stability": 5.9,
+    "social_connection": 5.79,
+    "task_completion": 4.89
+   }
+  },
+  {
+   "patient_id": "sim_019",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.53,
+    "energy": 5.57,
+    "stress": 3.04,
+    "mood": 5.15,
+    "focus": 6.45,
+    "routine_stability": 5.92,
+    "social_connection": 4.75,
+    "task_completion": 5.69
+   }
+  },
+  {
+   "patient_id": "sim_020",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.97,
+    "energy": 6.58,
+    "stress": 3.25,
+    "mood": 6.89,
+    "focus": 2.87,
+    "routine_stability": 4.4,
+    "social_connection": 5.46,
+    "task_completion": 4.98
+   }
+  },
+  {
+   "patient_id": "sim_021",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.25,
+    "energy": 5.67,
+    "stress": 5.29,
+    "mood": 4.77,
+    "focus": 4.58,
+    "routine_stability": 6.59,
+    "social_connection": 5.0,
+    "task_completion": 6.49
+   }
+  },
+  {
+   "patient_id": "sim_022",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.51,
+    "energy": 5.46,
+    "stress": 3.69,
+    "mood": 5.18,
+    "focus": 6.96,
+    "routine_stability": 3.23,
+    "social_connection": 4.9,
+    "task_completion": 7.15
+   }
+  },
+  {
+   "patient_id": "sim_023",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.97,
+    "energy": 5.37,
+    "stress": 3.32,
+    "mood": 5.25,
+    "focus": 2.39,
+    "routine_stability": 6.39,
+    "social_connection": 4.45,
+    "task_completion": 3.7
+   }
+  },
+  {
+   "patient_id": "sim_024",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.29,
+    "energy": 5.75,
+    "stress": 3.1,
+    "mood": 6.86,
+    "focus": 7.76,
+    "routine_stability": 6.85,
+    "social_connection": 3.55,
+    "task_completion": 6.75
+   }
+  },
+  {
+   "patient_id": "sim_025",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.11,
+    "energy": 7.29,
+    "stress": 2.75,
+    "mood": 6.33,
+    "focus": 4.87,
+    "routine_stability": 4.64,
+    "social_connection": 6.65,
+    "task_completion": 5.74
+   }
+  },
+  {
+   "patient_id": "sim_026",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.96,
+    "energy": 6.32,
+    "stress": 4.17,
+    "mood": 6.85,
+    "focus": 3.46,
+    "routine_stability": 3.12,
+    "social_connection": 5.53,
+    "task_completion": 3.89
+   }
+  },
+  {
+   "patient_id": "sim_027",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.64,
+    "energy": 4.8,
+    "stress": 3.21,
+    "mood": 5.7,
+    "focus": 5.51,
+    "routine_stability": 5.39,
+    "social_connection": 5.48,
+    "task_completion": 8.45
+   }
+  },
+  {
+   "patient_id": "sim_028",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.25,
+    "energy": 6.28,
+    "stress": 4.4,
+    "mood": 6.96,
+    "focus": 4.37,
+    "routine_stability": 5.49,
+    "social_connection": 5.41,
+    "task_completion": 6.2
+   }
+  },
+  {
+   "patient_id": "sim_029",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.01,
+    "energy": 6.08,
+    "stress": 4.96,
+    "mood": 5.92,
+    "focus": 5.55,
+    "routine_stability": 5.84,
+    "social_connection": 6.58,
+    "task_completion": 3.96
+   }
+  },
+  {
+   "patient_id": "sim_030",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.69,
+    "energy": 6.97,
+    "stress": 4.32,
+    "mood": 6.18,
+    "focus": 7.89,
+    "routine_stability": 5.46,
+    "social_connection": 5.79,
+    "task_completion": 5.41
+   }
+  },
+  {
+   "patient_id": "sim_031",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.79,
+    "energy": 6.24,
+    "stress": 4.82,
+    "mood": 6.56,
+    "focus": 5.93,
+    "routine_stability": 6.94,
+    "social_connection": 5.0,
+    "task_completion": 6.06
+   }
+  },
+  {
+   "patient_id": "sim_032",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.25,
+    "energy": 6.1,
+    "stress": 4.51,
+    "mood": 4.57,
+    "focus": 3.94,
+    "routine_stability": 2.81,
+    "social_connection": 5.3,
+    "task_completion": 3.71
+   }
+  },
+  {
+   "patient_id": "sim_033",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.75,
+    "energy": 5.97,
+    "stress": 3.84,
+    "mood": 4.01,
+    "focus": 6.72,
+    "routine_stability": 6.63,
+    "social_connection": 7.93,
+    "task_completion": 6.5
+   }
+  },
+  {
+   "patient_id": "sim_034",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.54,
+    "energy": 6.04,
+    "stress": 3.65,
+    "mood": 6.99,
+    "focus": 5.06,
+    "routine_stability": 5.93,
+    "social_connection": 4.11,
+    "task_completion": 6.73
+   }
+  },
+  {
+   "patient_id": "sim_035",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.15,
+    "energy": 5.91,
+    "stress": 5.1,
+    "mood": 5.85,
+    "focus": 4.07,
+    "routine_stability": 6.79,
+    "social_connection": 7.2,
+    "task_completion": 4.64
+   }
+  },
+  {
+   "patient_id": "sim_036",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.52,
+    "energy": 7.92,
+    "stress": 3.98,
+    "mood": 3.56,
+    "focus": 5.48,
+    "routine_stability": 5.94,
+    "social_connection": 6.83,
+    "task_completion": 6.05
+   }
+  },
+  {
+   "patient_id": "sim_037",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.59,
+    "energy": 7.27,
+    "stress": 5.49,
+    "mood": 4.83,
+    "focus": 5.75,
+    "routine_stability": 6.71,
+    "social_connection": 4.2,
+    "task_completion": 4.69
+   }
+  },
+  {
+   "patient_id": "sim_038",
+   "track": "ADHD",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.61,
+    "energy": 6.24,
+    "stress": 4.84,
+    "mood": 6.19,
+    "focus": 6.51,
+    "routine_stability": 3.97,
+    "social_connection": 3.11,
+    "task_completion": 4.78
+   }
+  },
+  {
+   "patient_id": "sim_039",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.93,
+    "energy": 7.9,
+    "stress": 3.98,
+    "mood": 5.49,
+    "focus": 5.34,
+    "routine_stability": 6.45,
+    "social_connection": 5.26,
+    "task_completion": 4.25
+   }
+  },
+  {
+   "patient_id": "sim_040",
+   "track": "BIPOLAR",
+   "scenario": "stable",
+   "episode_onset_day": null,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.75,
+    "energy": 6.85,
+    "stress": 4.4,
+    "mood": 6.96,
+    "focus": 6.19,
+    "routine_stability": 6.77,
+    "social_connection": 7.92,
+    "task_completion": 4.65
+   }
+  },
+  {
+   "patient_id": "sim_041",
+   "track": "BIPOLAR",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    38,
+    53
+   ],
+   "baseline": {
+    "sleep_hours": 7.01,
+    "energy": 5.64,
+    "stress": 4.19,
+    "mood": 3.45,
+    "focus": 6.46,
+    "routine_stability": 7.47,
+    "social_connection": 4.84,
+    "task_completion": 6.2
+   }
+  },
+  {
+   "patient_id": "sim_042",
+   "track": "ADHD",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    50,
+    63
+   ],
+   "baseline": {
+    "sleep_hours": 6.61,
+    "energy": 3.81,
+    "stress": 4.33,
+    "mood": 4.87,
+    "focus": 2.91,
+    "routine_stability": 4.87,
+    "social_connection": 7.08,
+    "task_completion": 4.28
+   }
+  },
+  {
+   "patient_id": "sim_043",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    20,
+    24
+   ],
+   "baseline": {
+    "sleep_hours": 6.47,
+    "energy": 6.05,
+    "stress": 2.6,
+    "mood": 6.16,
+    "focus": 5.08,
+    "routine_stability": 6.23,
+    "social_connection": 5.28,
+    "task_completion": 5.86
+   }
+  },
+  {
+   "patient_id": "sim_044",
+   "track": "BIPOLAR",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    57,
+    60
+   ],
+   "baseline": {
+    "sleep_hours": 6.45,
+    "energy": 5.65,
+    "stress": 3.27,
+    "mood": 5.03,
+    "focus": 6.81,
+    "routine_stability": 5.13,
+    "social_connection": 2.79,
+    "task_completion": 5.65
+   }
+  },
+  {
+   "patient_id": "sim_045",
+   "track": "ADHD",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    41,
+    55
+   ],
+   "baseline": {
+    "sleep_hours": 7.14,
+    "energy": 6.38,
+    "stress": 3.58,
+    "mood": 5.32,
+    "focus": 4.66,
+    "routine_stability": 3.15,
+    "social_connection": 6.01,
+    "task_completion": 4.15
+   }
+  },
+  {
+   "patient_id": "sim_046",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    54,
+    56
+   ],
+   "baseline": {
+    "sleep_hours": 8.13,
+    "energy": 5.54,
+    "stress": 3.73,
+    "mood": 6.03,
+    "focus": 5.53,
+    "routine_stability": 5.42,
+    "social_connection": 5.35,
+    "task_completion": 5.21
+   }
+  },
+  {
+   "patient_id": "sim_047",
+   "track": "BIPOLAR",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    48,
+    55
+   ],
+   "baseline": {
+    "sleep_hours": 8.2,
+    "energy": 5.46,
+    "stress": 4.17,
+    "mood": 6.6,
+    "focus": 5.54,
+    "routine_stability": 4.59,
+    "social_connection": 5.04,
+    "task_completion": 5.78
+   }
+  },
+  {
+   "patient_id": "sim_048",
+   "track": "ADHD",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    36,
+    52
+   ],
+   "baseline": {
+    "sleep_hours": 7.42,
+    "energy": 5.8,
+    "stress": 3.29,
+    "mood": 5.5,
+    "focus": 3.7,
+    "routine_stability": 6.68,
+    "social_connection": 6.72,
+    "task_completion": 3.68
+   }
+  },
+  {
+   "patient_id": "sim_049",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    24,
+    41
+   ],
+   "baseline": {
+    "sleep_hours": 6.94,
+    "energy": 6.71,
+    "stress": 4.82,
+    "mood": 7.41,
+    "focus": 4.49,
+    "routine_stability": 4.96,
+    "social_connection": 4.4,
+    "task_completion": 6.0
+   }
+  },
+  {
+   "patient_id": "sim_050",
+   "track": "BIPOLAR",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    43,
+    63
+   ],
+   "baseline": {
+    "sleep_hours": 6.94,
+    "energy": 6.08,
+    "stress": 4.69,
+    "mood": 5.6,
+    "focus": 5.26,
+    "routine_stability": 8.45,
+    "social_connection": 3.95,
+    "task_completion": 6.9
+   }
+  },
+  {
+   "patient_id": "sim_051",
+   "track": "ADHD",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    34,
+    59
+   ],
+   "baseline": {
+    "sleep_hours": 7.28,
+    "energy": 5.62,
+    "stress": 5.59,
+    "mood": 6.86,
+    "focus": 5.47,
+    "routine_stability": 6.36,
+    "social_connection": 6.38,
+    "task_completion": 4.35
+   }
+  },
+  {
+   "patient_id": "sim_052",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    23,
+    56
+   ],
+   "baseline": {
+    "sleep_hours": 6.09,
+    "energy": 5.54,
+    "stress": 2.96,
+    "mood": 6.17,
+    "focus": 4.42,
+    "routine_stability": 6.67,
+    "social_connection": 6.92,
+    "task_completion": 7.15
+   }
+  },
+  {
+   "patient_id": "sim_053",
+   "track": "BIPOLAR",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    40,
+    62
+   ],
+   "baseline": {
+    "sleep_hours": 5.73,
+    "energy": 6.71,
+    "stress": 6.22,
+    "mood": 3.76,
+    "focus": 6.51,
+    "routine_stability": 5.01,
+    "social_connection": 5.44,
+    "task_completion": 4.69
+   }
+  },
+  {
+   "patient_id": "sim_054",
+   "track": "ADHD",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    24,
+    38
+   ],
+   "baseline": {
+    "sleep_hours": 6.78,
+    "energy": 5.09,
+    "stress": 5.13,
+    "mood": 5.79,
+    "focus": 6.43,
+    "routine_stability": 4.6,
+    "social_connection": 5.01,
+    "task_completion": 4.22
+   }
+  },
+  {
+   "patient_id": "sim_055",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    26,
+    39
+   ],
+   "baseline": {
+    "sleep_hours": 6.59,
+    "energy": 6.58,
+    "stress": 2.68,
+    "mood": 5.92,
+    "focus": 5.67,
+    "routine_stability": 6.63,
+    "social_connection": 6.46,
+    "task_completion": 5.84
+   }
+  },
+  {
+   "patient_id": "sim_056",
+   "track": "BIPOLAR",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    28,
+    32
+   ],
+   "baseline": {
+    "sleep_hours": 6.89,
+    "energy": 5.4,
+    "stress": 4.45,
+    "mood": 5.01,
+    "focus": 5.37,
+    "routine_stability": 6.94,
+    "social_connection": 6.75,
+    "task_completion": 6.48
+   }
+  },
+  {
+   "patient_id": "sim_057",
+   "track": "ADHD",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    39,
+    53
+   ],
+   "baseline": {
+    "sleep_hours": 6.4,
+    "energy": 8.61,
+    "stress": 3.06,
+    "mood": 6.25,
+    "focus": 4.95,
+    "routine_stability": 3.83,
+    "social_connection": 4.47,
+    "task_completion": 4.22
+   }
+  },
+  {
+   "patient_id": "sim_058",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    47,
+    62
+   ],
+   "baseline": {
+    "sleep_hours": 7.58,
+    "energy": 7.03,
+    "stress": 4.98,
+    "mood": 6.67,
+    "focus": 5.02,
+    "routine_stability": 5.05,
+    "social_connection": 6.6,
+    "task_completion": 4.8
+   }
+  },
+  {
+   "patient_id": "sim_059",
+   "track": "BIPOLAR",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    34,
+    48
+   ],
+   "baseline": {
+    "sleep_hours": 7.75,
+    "energy": 5.88,
+    "stress": 2.93,
+    "mood": 5.82,
+    "focus": 7.68,
+    "routine_stability": 8.51,
+    "social_connection": 4.57,
+    "task_completion": 5.96
+   }
+  },
+  {
+   "patient_id": "sim_060",
+   "track": "ADHD",
+   "scenario": "false_alarm_blips",
+   "episode_onset_day": null,
+   "blip_days": [
+    22,
+    55
+   ],
+   "baseline": {
+    "sleep_hours": 7.69,
+    "energy": 5.42,
+    "stress": 3.9,
+    "mood": 7.5,
+    "focus": 7.41,
+    "routine_stability": 4.97,
+    "social_connection": 3.41,
+    "task_completion": 4.21
+   }
+  },
+  {
+   "patient_id": "sim_061",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 41,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.31,
+    "energy": 6.48,
+    "stress": 3.34,
+    "mood": 5.05,
+    "focus": 6.39,
+    "routine_stability": 4.74,
+    "social_connection": 6.55,
+    "task_completion": 6.57
+   }
+  },
+  {
+   "patient_id": "sim_062",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.4,
+    "energy": 5.61,
+    "stress": 3.94,
+    "mood": 6.31,
+    "focus": 5.42,
+    "routine_stability": 7.42,
+    "social_connection": 5.01,
+    "task_completion": 6.16
+   }
+  },
+  {
+   "patient_id": "sim_063",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 46,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.95,
+    "energy": 6.24,
+    "stress": 4.76,
+    "mood": 4.68,
+    "focus": 5.65,
+    "routine_stability": 7.24,
+    "social_connection": 3.42,
+    "task_completion": 5.99
+   }
+  },
+  {
+   "patient_id": "sim_064",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 42,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.11,
+    "energy": 5.85,
+    "stress": 3.02,
+    "mood": 5.81,
+    "focus": 7.74,
+    "routine_stability": 5.16,
+    "social_connection": 5.29,
+    "task_completion": 7.22
+   }
+  },
+  {
+   "patient_id": "sim_065",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 41,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.08,
+    "energy": 6.61,
+    "stress": 4.69,
+    "mood": 6.22,
+    "focus": 4.56,
+    "routine_stability": 8.24,
+    "social_connection": 5.12,
+    "task_completion": 6.78
+   }
+  },
+  {
+   "patient_id": "sim_066",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.58,
+    "energy": 6.53,
+    "stress": 3.25,
+    "mood": 6.9,
+    "focus": 6.35,
+    "routine_stability": 4.5,
+    "social_connection": 6.14,
+    "task_completion": 5.54
+   }
+  },
+  {
+   "patient_id": "sim_067",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 32,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.12,
+    "energy": 4.33,
+    "stress": 3.39,
+    "mood": 6.68,
+    "focus": 5.99,
+    "routine_stability": 4.65,
+    "social_connection": 6.66,
+    "task_completion": 6.22
+   }
+  },
+  {
+   "patient_id": "sim_068",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 42,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.04,
+    "energy": 5.94,
+    "stress": 3.79,
+    "mood": 5.83,
+    "focus": 7.02,
+    "routine_stability": 4.75,
+    "social_connection": 5.45,
+    "task_completion": 5.38
+   }
+  },
+  {
+   "patient_id": "sim_069",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.31,
+    "energy": 7.32,
+    "stress": 1.94,
+    "mood": 7.61,
+    "focus": 7.02,
+    "routine_stability": 6.53,
+    "social_connection": 5.13,
+    "task_completion": 7.07
+   }
+  },
+  {
+   "patient_id": "sim_070",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.49,
+    "energy": 5.08,
+    "stress": 3.99,
+    "mood": 5.89,
+    "focus": 7.71,
+    "routine_stability": 7.86,
+    "social_connection": 7.33,
+    "task_completion": 5.8
+   }
+  },
+  {
+   "patient_id": "sim_071",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 49,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.25,
+    "energy": 4.82,
+    "stress": 2.82,
+    "mood": 7.13,
+    "focus": 6.55,
+    "routine_stability": 6.68,
+    "social_connection": 6.16,
+    "task_completion": 5.59
+   }
+  },
+  {
+   "patient_id": "sim_072",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.65,
+    "energy": 3.1,
+    "stress": 2.2,
+    "mood": 5.93,
+    "focus": 5.38,
+    "routine_stability": 6.41,
+    "social_connection": 4.99,
+    "task_completion": 6.58
+   }
+  },
+  {
+   "patient_id": "sim_073",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 38,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.34,
+    "energy": 6.21,
+    "stress": 5.9,
+    "mood": 5.85,
+    "focus": 6.0,
+    "routine_stability": 5.89,
+    "social_connection": 4.3,
+    "task_completion": 7.46
+   }
+  },
+  {
+   "patient_id": "sim_074",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 32,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.24,
+    "energy": 5.23,
+    "stress": 5.32,
+    "mood": 8.3,
+    "focus": 5.81,
+    "routine_stability": 4.29,
+    "social_connection": 6.44,
+    "task_completion": 6.11
+   }
+  },
+  {
+   "patient_id": "sim_075",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 33,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.38,
+    "energy": 6.46,
+    "stress": 3.77,
+    "mood": 5.59,
+    "focus": 6.63,
+    "routine_stability": 4.87,
+    "social_connection": 6.01,
+    "task_completion": 4.86
+   }
+  },
+  {
+   "patient_id": "sim_076",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 30,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.74,
+    "energy": 5.78,
+    "stress": 3.78,
+    "mood": 4.88,
+    "focus": 6.59,
+    "routine_stability": 5.4,
+    "social_connection": 6.1,
+    "task_completion": 5.74
+   }
+  },
+  {
+   "patient_id": "sim_077",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 41,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.15,
+    "energy": 6.06,
+    "stress": 4.4,
+    "mood": 5.3,
+    "focus": 3.62,
+    "routine_stability": 5.0,
+    "social_connection": 4.55,
+    "task_completion": 6.33
+   }
+  },
+  {
+   "patient_id": "sim_078",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.55,
+    "energy": 6.72,
+    "stress": 3.67,
+    "mood": 6.22,
+    "focus": 4.54,
+    "routine_stability": 6.26,
+    "social_connection": 3.1,
+    "task_completion": 4.49
+   }
+  },
+  {
+   "patient_id": "sim_079",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 47,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.94,
+    "energy": 4.38,
+    "stress": 6.06,
+    "mood": 7.24,
+    "focus": 4.72,
+    "routine_stability": 7.31,
+    "social_connection": 5.77,
+    "task_completion": 6.72
+   }
+  },
+  {
+   "patient_id": "sim_080",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.68,
+    "energy": 6.88,
+    "stress": 5.22,
+    "mood": 5.15,
+    "focus": 6.14,
+    "routine_stability": 6.11,
+    "social_connection": 8.56,
+    "task_completion": 5.58
+   }
+  },
+  {
+   "patient_id": "sim_081",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 47,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.67,
+    "energy": 5.7,
+    "stress": 2.66,
+    "mood": 4.73,
+    "focus": 6.21,
+    "routine_stability": 5.57,
+    "social_connection": 5.1,
+    "task_completion": 6.67
+   }
+  },
+  {
+   "patient_id": "sim_082",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 45,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.47,
+    "energy": 4.45,
+    "stress": 3.67,
+    "mood": 6.4,
+    "focus": 4.34,
+    "routine_stability": 7.07,
+    "social_connection": 5.01,
+    "task_completion": 5.82
+   }
+  },
+  {
+   "patient_id": "sim_083",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.47,
+    "energy": 5.92,
+    "stress": 4.9,
+    "mood": 6.71,
+    "focus": 8.12,
+    "routine_stability": 4.16,
+    "social_connection": 6.3,
+    "task_completion": 7.04
+   }
+  },
+  {
+   "patient_id": "sim_084",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 50,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.1,
+    "energy": 3.81,
+    "stress": 3.33,
+    "mood": 7.39,
+    "focus": 5.88,
+    "routine_stability": 5.81,
+    "social_connection": 5.55,
+    "task_completion": 5.26
+   }
+  },
+  {
+   "patient_id": "sim_085",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 43,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.17,
+    "energy": 6.28,
+    "stress": 2.97,
+    "mood": 8.11,
+    "focus": 5.77,
+    "routine_stability": 6.77,
+    "social_connection": 5.03,
+    "task_completion": 5.35
+   }
+  },
+  {
+   "patient_id": "sim_086",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 33,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.15,
+    "energy": 7.46,
+    "stress": 3.55,
+    "mood": 6.12,
+    "focus": 6.13,
+    "routine_stability": 6.38,
+    "social_connection": 4.8,
+    "task_completion": 5.57
+   }
+  },
+  {
+   "patient_id": "sim_087",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 32,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.5,
+    "energy": 8.37,
+    "stress": 5.51,
+    "mood": 5.24,
+    "focus": 4.97,
+    "routine_stability": 4.7,
+    "social_connection": 4.02,
+    "task_completion": 6.62
+   }
+  },
+  {
+   "patient_id": "sim_088",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 50,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.57,
+    "energy": 5.56,
+    "stress": 4.05,
+    "mood": 6.01,
+    "focus": 6.17,
+    "routine_stability": 5.06,
+    "social_connection": 4.21,
+    "task_completion": 5.13
+   }
+  },
+  {
+   "patient_id": "sim_089",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 49,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.94,
+    "energy": 7.21,
+    "stress": 4.35,
+    "mood": 6.45,
+    "focus": 5.83,
+    "routine_stability": 8.01,
+    "social_connection": 5.96,
+    "task_completion": 7.75
+   }
+  },
+  {
+   "patient_id": "sim_090",
+   "track": "BIPOLAR",
+   "scenario": "manic_prodrome",
+   "episode_onset_day": 46,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.82,
+    "energy": 3.44,
+    "stress": 2.65,
+    "mood": 5.01,
+    "focus": 4.65,
+    "routine_stability": 6.59,
+    "social_connection": 4.92,
+    "task_completion": 5.96
+   }
+  },
+  {
+   "patient_id": "sim_091",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 48,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.62,
+    "energy": 5.53,
+    "stress": 3.52,
+    "mood": 6.19,
+    "focus": 2.75,
+    "routine_stability": 5.29,
+    "social_connection": 5.03,
+    "task_completion": 5.78
+   }
+  },
+  {
+   "patient_id": "sim_092",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.02,
+    "energy": 5.18,
+    "stress": 3.29,
+    "mood": 5.89,
+    "focus": 5.72,
+    "routine_stability": 6.89,
+    "social_connection": 4.57,
+    "task_completion": 7.48
+   }
+  },
+  {
+   "patient_id": "sim_093",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 50,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.19,
+    "energy": 5.41,
+    "stress": 4.36,
+    "mood": 5.97,
+    "focus": 5.29,
+    "routine_stability": 6.83,
+    "social_connection": 4.69,
+    "task_completion": 7.09
+   }
+  },
+  {
+   "patient_id": "sim_094",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 31,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.74,
+    "energy": 5.55,
+    "stress": 3.87,
+    "mood": 6.15,
+    "focus": 4.36,
+    "routine_stability": 5.04,
+    "social_connection": 4.74,
+    "task_completion": 6.27
+   }
+  },
+  {
+   "patient_id": "sim_095",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 33,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.98,
+    "energy": 6.62,
+    "stress": 4.46,
+    "mood": 4.3,
+    "focus": 6.42,
+    "routine_stability": 7.05,
+    "social_connection": 6.01,
+    "task_completion": 4.98
+   }
+  },
+  {
+   "patient_id": "sim_096",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 34,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.26,
+    "energy": 4.73,
+    "stress": 2.21,
+    "mood": 5.1,
+    "focus": 6.43,
+    "routine_stability": 5.22,
+    "social_connection": 4.27,
+    "task_completion": 5.07
+   }
+  },
+  {
+   "patient_id": "sim_097",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 41,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.28,
+    "energy": 6.59,
+    "stress": 4.91,
+    "mood": 5.27,
+    "focus": 7.01,
+    "routine_stability": 5.45,
+    "social_connection": 5.29,
+    "task_completion": 5.98
+   }
+  },
+  {
+   "patient_id": "sim_098",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 50,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.55,
+    "energy": 6.61,
+    "stress": 4.01,
+    "mood": 6.09,
+    "focus": 6.48,
+    "routine_stability": 5.18,
+    "social_connection": 7.03,
+    "task_completion": 5.62
+   }
+  },
+  {
+   "patient_id": "sim_099",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.06,
+    "energy": 5.58,
+    "stress": 5.42,
+    "mood": 5.09,
+    "focus": 4.22,
+    "routine_stability": 5.54,
+    "social_connection": 7.32,
+    "task_completion": 6.41
+   }
+  },
+  {
+   "patient_id": "sim_100",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.54,
+    "energy": 7.61,
+    "stress": 4.96,
+    "mood": 5.19,
+    "focus": 5.41,
+    "routine_stability": 6.24,
+    "social_connection": 5.07,
+    "task_completion": 4.72
+   }
+  },
+  {
+   "patient_id": "sim_101",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 35,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.07,
+    "energy": 6.4,
+    "stress": 4.33,
+    "mood": 4.58,
+    "focus": 3.84,
+    "routine_stability": 6.69,
+    "social_connection": 8.11,
+    "task_completion": 7.42
+   }
+  },
+  {
+   "patient_id": "sim_102",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.35,
+    "energy": 5.48,
+    "stress": 2.69,
+    "mood": 5.97,
+    "focus": 5.25,
+    "routine_stability": 6.06,
+    "social_connection": 4.03,
+    "task_completion": 4.84
+   }
+  },
+  {
+   "patient_id": "sim_103",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.55,
+    "energy": 4.63,
+    "stress": 2.27,
+    "mood": 5.13,
+    "focus": 5.66,
+    "routine_stability": 5.44,
+    "social_connection": 2.59,
+    "task_completion": 5.74
+   }
+  },
+  {
+   "patient_id": "sim_104",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.82,
+    "energy": 5.74,
+    "stress": 3.47,
+    "mood": 5.03,
+    "focus": 6.64,
+    "routine_stability": 5.68,
+    "social_connection": 5.9,
+    "task_completion": 4.85
+   }
+  },
+  {
+   "patient_id": "sim_105",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 35,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.76,
+    "energy": 6.07,
+    "stress": 3.05,
+    "mood": 7.59,
+    "focus": 5.68,
+    "routine_stability": 8.18,
+    "social_connection": 3.88,
+    "task_completion": 5.58
+   }
+  },
+  {
+   "patient_id": "sim_106",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.05,
+    "energy": 5.74,
+    "stress": 3.65,
+    "mood": 5.52,
+    "focus": 4.9,
+    "routine_stability": 6.22,
+    "social_connection": 4.71,
+    "task_completion": 7.78
+   }
+  },
+  {
+   "patient_id": "sim_107",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.57,
+    "energy": 5.3,
+    "stress": 4.19,
+    "mood": 3.53,
+    "focus": 4.74,
+    "routine_stability": 5.67,
+    "social_connection": 3.03,
+    "task_completion": 5.02
+   }
+  },
+  {
+   "patient_id": "sim_108",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.4,
+    "energy": 4.85,
+    "stress": 4.99,
+    "mood": 3.53,
+    "focus": 4.59,
+    "routine_stability": 6.8,
+    "social_connection": 5.15,
+    "task_completion": 7.22
+   }
+  },
+  {
+   "patient_id": "sim_109",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.41,
+    "energy": 5.11,
+    "stress": 4.74,
+    "mood": 4.56,
+    "focus": 5.63,
+    "routine_stability": 7.34,
+    "social_connection": 5.68,
+    "task_completion": 7.33
+   }
+  },
+  {
+   "patient_id": "sim_110",
+   "track": "BIPOLAR",
+   "scenario": "depressive_slump",
+   "episode_onset_day": 43,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.1,
+    "energy": 4.98,
+    "stress": 5.45,
+    "mood": 6.58,
+    "focus": 4.76,
+    "routine_stability": 6.66,
+    "social_connection": 6.98,
+    "task_completion": 5.83
+   }
+  },
+  {
+   "patient_id": "sim_111",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 47,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.22,
+    "energy": 3.77,
+    "stress": 3.28,
+    "mood": 3.7,
+    "focus": 4.05,
+    "routine_stability": 4.39,
+    "social_connection": 6.23,
+    "task_completion": 3.33
+   }
+  },
+  {
+   "patient_id": "sim_112",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.56,
+    "energy": 5.81,
+    "stress": 1.67,
+    "mood": 6.35,
+    "focus": 4.38,
+    "routine_stability": 4.59,
+    "social_connection": 4.54,
+    "task_completion": 3.68
+   }
+  },
+  {
+   "patient_id": "sim_113",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 30,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.99,
+    "energy": 4.24,
+    "stress": 2.94,
+    "mood": 7.92,
+    "focus": 4.64,
+    "routine_stability": 2.74,
+    "social_connection": 5.29,
+    "task_completion": 6.69
+   }
+  },
+  {
+   "patient_id": "sim_114",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 38,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.14,
+    "energy": 6.37,
+    "stress": 3.0,
+    "mood": 6.03,
+    "focus": 4.22,
+    "routine_stability": 5.3,
+    "social_connection": 7.36,
+    "task_completion": 3.89
+   }
+  },
+  {
+   "patient_id": "sim_115",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.25,
+    "energy": 6.83,
+    "stress": 3.31,
+    "mood": 6.79,
+    "focus": 3.85,
+    "routine_stability": 4.02,
+    "social_connection": 5.31,
+    "task_completion": 3.98
+   }
+  },
+  {
+   "patient_id": "sim_116",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 41,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.41,
+    "energy": 6.22,
+    "stress": 2.75,
+    "mood": 5.82,
+    "focus": 2.99,
+    "routine_stability": 5.24,
+    "social_connection": 3.37,
+    "task_completion": 2.79
+   }
+  },
+  {
+   "patient_id": "sim_117",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 45,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.21,
+    "energy": 5.73,
+    "stress": 4.47,
+    "mood": 5.35,
+    "focus": 4.68,
+    "routine_stability": 5.59,
+    "social_connection": 6.23,
+    "task_completion": 2.56
+   }
+  },
+  {
+   "patient_id": "sim_118",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 35,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.98,
+    "energy": 6.87,
+    "stress": 2.92,
+    "mood": 6.3,
+    "focus": 6.91,
+    "routine_stability": 4.67,
+    "social_connection": 5.53,
+    "task_completion": 3.08
+   }
+  },
+  {
+   "patient_id": "sim_119",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 45,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.49,
+    "energy": 6.1,
+    "stress": 4.37,
+    "mood": 5.11,
+    "focus": 4.21,
+    "routine_stability": 4.07,
+    "social_connection": 7.56,
+    "task_completion": 4.34
+   }
+  },
+  {
+   "patient_id": "sim_120",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 33,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.73,
+    "energy": 4.9,
+    "stress": 2.6,
+    "mood": 6.88,
+    "focus": 3.37,
+    "routine_stability": 4.28,
+    "social_connection": 5.43,
+    "task_completion": 3.12
+   }
+  },
+  {
+   "patient_id": "sim_121",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 49,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.58,
+    "energy": 7.05,
+    "stress": 4.24,
+    "mood": 5.02,
+    "focus": 2.83,
+    "routine_stability": 5.51,
+    "social_connection": 6.5,
+    "task_completion": 4.56
+   }
+  },
+  {
+   "patient_id": "sim_122",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.77,
+    "energy": 5.68,
+    "stress": 5.51,
+    "mood": 4.89,
+    "focus": 4.83,
+    "routine_stability": 5.23,
+    "social_connection": 6.42,
+    "task_completion": 4.22
+   }
+  },
+  {
+   "patient_id": "sim_123",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 43,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.83,
+    "energy": 8.3,
+    "stress": 3.47,
+    "mood": 6.32,
+    "focus": 4.89,
+    "routine_stability": 3.66,
+    "social_connection": 5.07,
+    "task_completion": 2.67
+   }
+  },
+  {
+   "patient_id": "sim_124",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.2,
+    "energy": 5.89,
+    "stress": 5.02,
+    "mood": 6.73,
+    "focus": 4.24,
+    "routine_stability": 3.08,
+    "social_connection": 4.05,
+    "task_completion": 3.98
+   }
+  },
+  {
+   "patient_id": "sim_125",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 35,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.62,
+    "energy": 5.98,
+    "stress": 2.2,
+    "mood": 6.99,
+    "focus": 4.13,
+    "routine_stability": 3.68,
+    "social_connection": 3.83,
+    "task_completion": 4.32
+   }
+  },
+  {
+   "patient_id": "sim_126",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.8,
+    "energy": 6.13,
+    "stress": 4.78,
+    "mood": 5.27,
+    "focus": 2.42,
+    "routine_stability": 4.54,
+    "social_connection": 5.54,
+    "task_completion": 4.65
+   }
+  },
+  {
+   "patient_id": "sim_127",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 42,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.54,
+    "energy": 5.0,
+    "stress": 4.2,
+    "mood": 6.0,
+    "focus": 3.62,
+    "routine_stability": 4.1,
+    "social_connection": 6.53,
+    "task_completion": 4.9
+   }
+  },
+  {
+   "patient_id": "sim_128",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 50,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.37,
+    "energy": 3.82,
+    "stress": 3.73,
+    "mood": 7.56,
+    "focus": 3.73,
+    "routine_stability": 3.61,
+    "social_connection": 5.56,
+    "task_completion": 5.93
+   }
+  },
+  {
+   "patient_id": "sim_129",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.63,
+    "energy": 5.9,
+    "stress": 3.23,
+    "mood": 4.71,
+    "focus": 2.71,
+    "routine_stability": 4.59,
+    "social_connection": 7.61,
+    "task_completion": 3.71
+   }
+  },
+  {
+   "patient_id": "sim_130",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 47,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.52,
+    "energy": 6.78,
+    "stress": 5.51,
+    "mood": 5.29,
+    "focus": 3.93,
+    "routine_stability": 4.9,
+    "social_connection": 5.56,
+    "task_completion": 3.76
+   }
+  },
+  {
+   "patient_id": "sim_131",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 30,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.43,
+    "energy": 6.34,
+    "stress": 1.59,
+    "mood": 6.43,
+    "focus": 3.9,
+    "routine_stability": 5.92,
+    "social_connection": 4.38,
+    "task_completion": 5.19
+   }
+  },
+  {
+   "patient_id": "sim_132",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 50,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.3,
+    "energy": 6.68,
+    "stress": 2.32,
+    "mood": 7.37,
+    "focus": 4.64,
+    "routine_stability": 3.32,
+    "social_connection": 4.34,
+    "task_completion": 4.79
+   }
+  },
+  {
+   "patient_id": "sim_133",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 49,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.58,
+    "energy": 5.96,
+    "stress": 3.14,
+    "mood": 7.26,
+    "focus": 4.74,
+    "routine_stability": 1.7,
+    "social_connection": 6.99,
+    "task_completion": 5.86
+   }
+  },
+  {
+   "patient_id": "sim_134",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.84,
+    "energy": 4.9,
+    "stress": 4.29,
+    "mood": 5.45,
+    "focus": 4.85,
+    "routine_stability": 3.93,
+    "social_connection": 3.4,
+    "task_completion": 4.93
+   }
+  },
+  {
+   "patient_id": "sim_135",
+   "track": "ADHD",
+   "scenario": "adhd_overwhelm",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.95,
+    "energy": 4.21,
+    "stress": 2.89,
+    "mood": 5.81,
+    "focus": 5.55,
+    "routine_stability": 5.88,
+    "social_connection": 4.85,
+    "task_completion": 5.37
+   }
+  },
+  {
+   "patient_id": "sim_136",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.81,
+    "energy": 6.51,
+    "stress": 3.85,
+    "mood": 8.42,
+    "focus": 5.29,
+    "routine_stability": 5.83,
+    "social_connection": 6.85,
+    "task_completion": 5.07
+   }
+  },
+  {
+   "patient_id": "sim_137",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 41,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.59,
+    "energy": 5.43,
+    "stress": 4.07,
+    "mood": 5.98,
+    "focus": 4.32,
+    "routine_stability": 5.75,
+    "social_connection": 6.55,
+    "task_completion": 6.25
+   }
+  },
+  {
+   "patient_id": "sim_138",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 45,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.21,
+    "energy": 5.59,
+    "stress": 2.79,
+    "mood": 6.66,
+    "focus": 6.62,
+    "routine_stability": 7.97,
+    "social_connection": 3.67,
+    "task_completion": 7.46
+   }
+  },
+  {
+   "patient_id": "sim_139",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.5,
+    "energy": 6.3,
+    "stress": 4.6,
+    "mood": 5.71,
+    "focus": 5.66,
+    "routine_stability": 7.42,
+    "social_connection": 7.52,
+    "task_completion": 5.63
+   }
+  },
+  {
+   "patient_id": "sim_140",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 45,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.6,
+    "energy": 6.39,
+    "stress": 4.01,
+    "mood": 6.81,
+    "focus": 5.77,
+    "routine_stability": 7.72,
+    "social_connection": 5.63,
+    "task_completion": 6.86
+   }
+  },
+  {
+   "patient_id": "sim_141",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.8,
+    "energy": 5.22,
+    "stress": 2.45,
+    "mood": 5.91,
+    "focus": 6.23,
+    "routine_stability": 6.27,
+    "social_connection": 5.08,
+    "task_completion": 4.69
+   }
+  },
+  {
+   "patient_id": "sim_142",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.88,
+    "energy": 7.2,
+    "stress": 3.69,
+    "mood": 6.22,
+    "focus": 5.95,
+    "routine_stability": 5.25,
+    "social_connection": 5.63,
+    "task_completion": 6.07
+   }
+  },
+  {
+   "patient_id": "sim_143",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 50,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.43,
+    "energy": 4.84,
+    "stress": 6.06,
+    "mood": 6.4,
+    "focus": 4.73,
+    "routine_stability": 5.4,
+    "social_connection": 6.44,
+    "task_completion": 7.16
+   }
+  },
+  {
+   "patient_id": "sim_144",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 31,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.57,
+    "energy": 4.45,
+    "stress": 3.65,
+    "mood": 6.74,
+    "focus": 4.79,
+    "routine_stability": 5.26,
+    "social_connection": 6.15,
+    "task_completion": 5.02
+   }
+  },
+  {
+   "patient_id": "sim_145",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 42,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.95,
+    "energy": 5.7,
+    "stress": 2.93,
+    "mood": 6.38,
+    "focus": 5.75,
+    "routine_stability": 4.38,
+    "social_connection": 6.43,
+    "task_completion": 6.26
+   }
+  },
+  {
+   "patient_id": "sim_146",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 46,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.34,
+    "energy": 6.62,
+    "stress": 5.14,
+    "mood": 4.82,
+    "focus": 4.48,
+    "routine_stability": 4.54,
+    "social_connection": 3.53,
+    "task_completion": 7.69
+   }
+  },
+  {
+   "patient_id": "sim_147",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.51,
+    "energy": 6.76,
+    "stress": 4.13,
+    "mood": 4.34,
+    "focus": 5.43,
+    "routine_stability": 5.07,
+    "social_connection": 5.57,
+    "task_completion": 3.84
+   }
+  },
+  {
+   "patient_id": "sim_148",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.08,
+    "energy": 5.74,
+    "stress": 5.66,
+    "mood": 6.24,
+    "focus": 4.86,
+    "routine_stability": 5.21,
+    "social_connection": 6.26,
+    "task_completion": 5.59
+   }
+  },
+  {
+   "patient_id": "sim_149",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 8.24,
+    "energy": 6.63,
+    "stress": 2.8,
+    "mood": 7.79,
+    "focus": 5.29,
+    "routine_stability": 6.63,
+    "social_connection": 4.47,
+    "task_completion": 6.15
+   }
+  },
+  {
+   "patient_id": "sim_150",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 38,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.09,
+    "energy": 7.84,
+    "stress": 4.06,
+    "mood": 5.09,
+    "focus": 5.32,
+    "routine_stability": 6.62,
+    "social_connection": 6.46,
+    "task_completion": 7.04
+   }
+  },
+  {
+   "patient_id": "sim_151",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 41,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.04,
+    "energy": 7.1,
+    "stress": 5.38,
+    "mood": 6.97,
+    "focus": 5.29,
+    "routine_stability": 6.17,
+    "social_connection": 4.21,
+    "task_completion": 6.87
+   }
+  },
+  {
+   "patient_id": "sim_152",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 37,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.49,
+    "energy": 7.0,
+    "stress": 4.46,
+    "mood": 6.17,
+    "focus": 5.99,
+    "routine_stability": 5.93,
+    "social_connection": 5.42,
+    "task_completion": 6.39
+   }
+  },
+  {
+   "patient_id": "sim_153",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 46,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.6,
+    "energy": 6.47,
+    "stress": 5.03,
+    "mood": 5.9,
+    "focus": 5.02,
+    "routine_stability": 5.77,
+    "social_connection": 6.54,
+    "task_completion": 5.83
+   }
+  },
+  {
+   "patient_id": "sim_154",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.37,
+    "energy": 4.36,
+    "stress": 2.8,
+    "mood": 7.43,
+    "focus": 6.6,
+    "routine_stability": 5.5,
+    "social_connection": 4.84,
+    "task_completion": 7.85
+   }
+  },
+  {
+   "patient_id": "sim_155",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 6.7,
+    "energy": 5.41,
+    "stress": 5.78,
+    "mood": 6.61,
+    "focus": 7.49,
+    "routine_stability": 5.4,
+    "social_connection": 4.71,
+    "task_completion": 4.32
+   }
+  },
+  {
+   "patient_id": "sim_156",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 39,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.27,
+    "energy": 6.11,
+    "stress": 4.29,
+    "mood": 4.85,
+    "focus": 6.43,
+    "routine_stability": 4.71,
+    "social_connection": 6.31,
+    "task_completion": 5.73
+   }
+  },
+  {
+   "patient_id": "sim_157",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 35,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.17,
+    "energy": 3.88,
+    "stress": 5.5,
+    "mood": 5.96,
+    "focus": 6.17,
+    "routine_stability": 5.05,
+    "social_connection": 6.37,
+    "task_completion": 5.5
+   }
+  },
+  {
+   "patient_id": "sim_158",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 36,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 5.75,
+    "energy": 5.59,
+    "stress": 5.6,
+    "mood": 5.62,
+    "focus": 5.42,
+    "routine_stability": 5.8,
+    "social_connection": 5.65,
+    "task_completion": 6.2
+   }
+  },
+  {
+   "patient_id": "sim_159",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 44,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.29,
+    "energy": 5.21,
+    "stress": 4.56,
+    "mood": 5.71,
+    "focus": 5.24,
+    "routine_stability": 4.72,
+    "social_connection": 3.53,
+    "task_completion": 4.61
+   }
+  },
+  {
+   "patient_id": "sim_160",
+   "track": "SCHIZOPHRENIA",
+   "scenario": "psychosis_prodrome",
+   "episode_onset_day": 40,
+   "blip_days": [],
+   "baseline": {
+    "sleep_hours": 7.32,
+    "energy": 6.29,
+    "stress": 2.77,
+    "mood": 7.38,
+    "focus": 4.86,
+    "routine_stability": 5.59,
+    "social_connection": 6.27,
+    "task_completion": 6.17
+   }
+  }
+ ]
+}

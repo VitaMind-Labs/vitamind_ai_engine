@@ -1,0 +1,8 @@
+Raw inputs expected by data_prep/build_final_all.py (LUMINA_RAW_NEW points here):
+goemotions_1.csv goemotions_2.csv goemotions_3.csv (unzip goemotions_*_csv.zip)
+Emotional-Tone-Dataset.csv
+flattened_data.csv (from data.tar -> processed/)
+mental-health.csv (from mental-health_csv.zip)
+Conversation.csv, intent.json, Combined_Data.csv
+Psychotic_Disorders.csv Psychological_Issues_and_Guidance.csv Personality_and_Self_Development.csv
+Neuropsychological_Conditions.csv Behavioral_Psychological_Conditions.csv

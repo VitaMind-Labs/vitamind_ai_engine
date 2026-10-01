@@ -164,25 +164,59 @@ Une entrée `is_private` sans `analysis_consent` lève `PermissionError`. Le bac
 reste l'autorité, mais refuser ici aussi empêche un appelant mal câblé de
 contourner la règle silencieusement.
 
-## Intent — pourquoi les règles, pas le modèle
+## Intent — les règles d'abord, le modèle en repli
 
-Aucun corpus de `data/` ne porte d'étiquettes d'intention Lumina. J'ai donc écrit
-un jeu de semences (`data_prep/intent_seed.py`, 17 intentions × 3 significations
-× EN/AR). Avec 3 significations par intention, le seul découpage groupé possible
-est 1/1/1 — soit **88 lignes d'entraînement pour 17 classes**.
+Aucun corpus de `data/` ne porte d'étiquettes d'intention Lumina, d'où un jeu de
+semences rédigé (`data_prep/intent_seed.py` + `intent_seed_families.py`).
 
-Comparaison sur le **même split retenu** :
+**Le défaut qui rendait la tête inutilisable était le découpage, pas le modèle.**
+Le jeu d'origine portait 3 significations par intention et le split est fait *par
+signification* — le seul découpage possible était donc 1/1/1 : 88 lignes
+d'entraînement pour 17 classes, un entraînement sur une seule façon de dire une
+chose et un test sur une autre. Douze des dix-sept intentions sortaient à F1 0.00.
+
+Corrigé en portant chaque intention à 9-10 familles de sens (≈ 8 en `train`), et
+en fusionnant `datasets/intent` et l'ancien `datasets/intent_addon` en **un seul
+jeu, découpé une seule fois** : 1 356 / 152 / 171 lignes, 23 intentions.
+
+| Tête seule | macro-F1 (test) | Exactitude | ECE |
+|---|---|---|---|
+| avant | 0.093 | 0.336 | 0.148 |
+| **après** | **0.494** | 0.498 | 0.060 |
+
+À lire comme **0.45 ± 0.04** : sur quatre graines de découpage le score va de 0.407
+à 0.494 (267 lignes de test seulement). Voir [MODELS.md](MODELS.md).
+
+Comparaison des routeurs sur le **même split retenu** (171 lignes, 23 classes ;
+`UNKNOWN` compte comme une classe, d'où des chiffres plus bas que la tête seule) :
 
 | Routeur | macro-F1 (test) | Exactitude | Abstention |
 |---|---|---|---|
-| **Règles** | **0.549** | 0.521 | 31 % |
-| Modèle appris | 0.000 | 0.000 | **100 %** |
-| Règles + modèle | 0.549 | 0.521 | 31 % |
+| Règles | 0.274 | 0.225 | 49 % |
+| Modèle appris | 0.355 | 0.281 | 63 % |
+| **Règles + modèle** | **0.397** | 0.371 | **26 %** |
 
-Le modèle s'abstient sur *tout* — comportement correct pour un modèle qui ne sait
-rien, et inutile comme routeur. Les règles sont donc câblées ; le modèle est
-enregistré comme `candidate` et **désactivé par défaut**. Il reprendra la main
-quand il sera réentraîné sur des données réelles revues et battra les règles.
+Le seuil d'abstention vise désormais 0.70 de précision et non 0.80 : s'abstenir coûte
+une réponse générique, une intention fausse coûte une réponse mal ciblée mais toujours
+soutenante, et l'intention n'atteint jamais le chemin de sécurité. Sur `val` ce choix
+fait passer le macro-F1 du routeur de 0.407 à 0.444 et son abstention de 40 % à 30 %.
+Sur test, la tête répond maintenant à 63 des 132 lignes où les règles s'abstiennent
+(contre 35), à 62 % de précision.
+
+Ces chiffres ne sont **pas comparables** aux 0.549 publiés avant : le split est
+nouveau et contient les six intentions méta que l'ancien n'avait pas.
+
+Le modèle **bat maintenant les règles**, et la combinaison bat les deux tout en
+réduisant l'abstention de 43 % à 27 %. L'ordre reste néanmoins *règles d'abord* :
+elles sont lisibles et corrigibles par un relecteur, et la tête reste `candidate`,
+entraînée sur du texte rédigé et non sur du langage de patient. La tête n'est
+consultée que si aucune règle ne déclenche et si elle ne s'abstient pas — seuil
+0.6, exactitude 0.78 sur les prédictions qu'elle accepte.
+
+À noter pour la suite : l'exactitude du modèle seul (0.363) dépasse celle de
+`règles + modèle` (0.357). L'ordre *règles d'abord* coûte donc un peu d'exactitude
+en échange de lisibilité ; c'est un arbitrage à revoir quand la tête sera
+réentraînée sur des données réelles revues.
 
 `SAFETY` et `CRISIS` sont volontairement **absents** du jeu d'intentions : un
 second chemin non calibré vers la décision la plus lourde du système serait un
