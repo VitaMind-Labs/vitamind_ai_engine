@@ -44,13 +44,66 @@ une seule fois, à la fin.
 
 | Modèle | Tête | Macro-F1 (test) | Exactitude | ECE | Utilisable |
 |---|---|---|---|---|---|
-| `safety` | `safety_signal` | **0.793** | 0.804 | 0.036 | oui, comme signal |
-| `understanding` | `act` | **0.673** | 0.755 | 0.020 | oui |
-| `understanding` | `emotion` | **0.358** | 0.814 | 0.042 | non — voir limites |
-| `intent` | `intent` | **0.173** | 0.183 | 0.055 | non — remplacé par des règles ([ENGINES.md](ENGINES.md)) |
+| `safety` | `safety_signal` | **0.797** | 0.803 | 0.026 | oui, comme signal |
+| `understanding` | `emotion` | **0.538** | 0.720 | 0.034 | avis seulement — voir limites |
+| `intent` | `intent` | **0.494** | 0.498 | 0.060 | oui, en repli derrière les règles ([ENGINES.md](ENGINES.md)) |
 
-L'exactitude est trompeuse sur ces données (84 % des énoncés DailyDialog sont
-`NEUTRAL`). **Le macro-F1 est le chiffre à lire.**
+⚠️ **Le macro-F1 d'`intent` est à lire comme 0.45 ± 0.04, pas comme 0.494.** Le jeu
+de test ne fait que 267 lignes et le découpage est groupé par famille de sens, donc
+le score dépend beaucoup de *quelles* familles tombent en test. Mesuré sur quatre
+graines de découpage : 0.494 / 0.484 / 0.420 / 0.407, soit moyenne 0.451, écart-type
+0.044. La graine livrée (42) est la plus favorable des quatre. Une comparaison entre
+deux modèles n'est donc valable que sur un jeu d'évaluation **identique**.
+
+L'exactitude est trompeuse sur ces données (`CONTENT` et `NEUTRAL` représentent
+67 % du test émotion). **Le macro-F1 est le chiffre à lire.**
+
+La tête `act` de DailyDialog n'est plus entraînée : la tête émotion est maintenant
+apprise sur GoEmotions + tweets arabes, sans corpus d'actes de dialogue apparié.
+`orchestrator.py` renvoie `act: None` dans ce cas, sans échouer.
+
+Historique des deux têtes corrigées dans cette itération :
+
+| Tête | Avant | Après | Cause du changement |
+|---|---|---|---|
+| `intent` | 0.093 | **0.494** | 3 → 17 familles de sens par intention (en deux passes) ; les deux jeux d'intentions fusionnés en un seul ; seuil d'abstention visant 0.70 et non 0.80 |
+| `safety` | 0.782 | **0.797** | entraînement porté de 3 à 10 époques — voir plus bas, le chiffre qui compte n'est pas le macro-F1 |
+| `emotion` | 0.534 | **0.538** | poids 0.5 réellement appliqué aux lignes synthétiques ; 80 k features ; plafond de pondération de classe 10 |
+
+Le gain sur `intent` vient des **données**, pas du modèle. Preuve sur un jeu
+d'évaluation *constant* (le même `val`, en ne variant que le volume
+d'entraînement) : 982 lignes → 0.387, 1 554 → 0.412, 1 940 → 0.440. La courbe
+monte encore.
+
+### Ce qui a été essayé et ne marche pas
+
+Mesuré avant d'écrire la moindre ligne de données supplémentaire, et conservé ici
+pour que personne ne recommence :
+
+| Piste | `intent` | `emotion` | Verdict |
+|---|---|---|---|
+| SGD maison (actuel) | **0.505** | **0.552** | référence |
+| TF-IDF + régression logistique | 0.477 | 0.543 | perd, même avec les mêmes poids de classe |
+| TF-IDF + LinearSVC | — | 0.499 | perd, et mal calibré (ECE 0.15–0.22) |
+| Architecture fastText (rang réduit, écrite en numpy) | — | 0.473 | perd ; le score *monte* avec le rang, donc le goulot ne fait que retirer de la capacité |
+| Moyennage sur 5 graines | 0.505 | — | identique : le SGD a convergé |
+| Espace de features plus large / plus étroit | ≤ 0.505 | — | aucun gain |
+
+Deux conclusions utiles. La première : **l'optimiseur n'est pas le levier.** Un
+solveur convergé (lbfgs) fait *moins* bien que ce SGD partiellement convergé, sur
+les deux têtes et à pondération de classe identique — la convergence partielle
+joue ici un rôle de régularisation. La seconde : l'architecture fastText n'apporte
+rien parce que son atout principal, la généralisation par sous-mots, est **déjà
+présent** — les n-grammes de caractères de `lumina/features.py` valent 0.13 de
+macro-F1 à eux seuls (les retirer fait tomber `intent` de 0.505 à 0.373).
+
+`fasttext` lui-même n'est pas installé et n'a pas été testé : il faudrait une
+dépendance C++ supplémentaire et un téléchargement, et le test d'architecture
+ci-dessus suggère qu'il n'y a rien à y gagner.
+
+Le quasi-non-gain sur `emotion` est documenté dans `training/train_emotion.py` — la
+contrainte est la table de correspondance GoEmotions → vocabulaire Lumina, pas le
+modèle ni l'optimiseur.
 
 ### `safety` — signal de détresse à 3 niveaux
 
@@ -58,12 +111,49 @@ Entraîné sur `NORMAL` / `ELEVATED` / `HIGH` (+ `UNKNOWN` par abstention).
 
 | Classe | n | Précision | Rappel | F1 |
 |---|---|---|---|---|
-| NORMAL | 1 760 | 0.894 | 0.903 | 0.899 |
-| ELEVATED | 2 787 | 0.859 | 0.753 | 0.802 |
-| HIGH | 1 146 | 0.603 | 0.774 | 0.678 |
+| HIGH | 1 906 | 0.572 | **0.848** | 0.683 |
 
-Sous-évaluation 7.2 %, sur-évaluation 12.4 % — l'erreur penche du côté prudent,
-ce qui est voulu. Rappel sur les lignes ≥ HIGH : 0.774.
+Sous-évaluation **5.3 %** (contre 7.1 % avant), sur-évaluation 14.4 %. L'erreur
+penche du côté prudent, ce qui est voulu. Rappel sur les lignes ≥ HIGH : 0.848.
+
+Les époques ont été choisies sur `val` contre le **rappel HIGH et le taux de
+sous-évaluation**, pas contre le macro-F1 : sous-évaluer le risque est l'erreur qui
+atteint le patient. Passer de 3 à 10 époques fait tomber de 78 à 42 le nombre de
+lignes réellement HIGH notées NORMAL. Vingt époques gagnent 0.006 de macro-F1 mais
+reperdent du rappel HIGH (0.814) : ce n'est pas l'arbitrage à prendre ici.
+
+#### ⚠️ Défaut connu, non corrigé : la surcharge exécutive lue comme de la détresse
+
+La tête note HIGH des phrases de surcharge de tâches sans aucun contenu de risque —
+« I have so much to do and I cannot start any of it » à 0.864, « I have ten things to
+do and I am doing none of them » à 0.556. Son corpus est du texte Reddit
+depression / SuicideWatch où rien n'est formulé ainsi : le langage de dysfonction
+exécutive (la piste ADHD) est **hors distribution** pour elle.
+
+Ce défaut **préexiste** : la tête précédente notait les mêmes phrases 0.848, 0.694,
+0.543 et 0.499. Elle passait les tests seulement parce que les deux phrases qu'ils
+utilisaient tombaient juste sous le seuil d'abstention — l'une à 0.007 près.
+
+Deux corrections ont été essayées et **rejetées** :
+
+1. *Un plancher de confiance sur le HIGH de la tête.* Les plages se recouvrent et ne
+   sont pas séparables : surcharge bénigne à 0.556 / 0.623 / 0.682 / 0.864, détresse
+   réelle à 0.624 (« worthless and everything is pointless ») et 0.890 (« hopeless
+   and like a burden »). Tout plancher qui attrape le 0.864 bénigne jette le 0.624
+   authentique.
+2. *Un motif de surcharge, appliqué seulement si le lexique ne signale aucun indice.*
+   La porte n'est pas fiable, parce que le lexique est précisément ce qui a manqué le
+   risque : il ne signalait aucun indice sur « I cannot start anything anymore and I
+   want it to end », et le garde-fou a alors supprimé un HIGH à 0.966 sur un message
+   qui le mérite clairement. Supprimer un risque sur la foi du détecteur qui vient
+   d'échouer n'est pas un échange acceptable.
+
+La correction est de la **supervision**, pas un seuil ni une regex : le corpus de
+sécurité a besoin de langage de surcharge exécutive étiqueté, avec validation
+clinicienne de chaque ligne HIGH. Suivi par cinq tests `xfail(strict=True)` —
+`tests/test_recent_safety.py`, `tests/test_lumina_engines.py`,
+`tests/test_answers_what_was_said.py` — qui échoueront dès que le comportement sera
+correct, pour signaler qu'il faut les supprimer.
 
 **Pas de classe CRISIS apprise, délibérément.** Toutes les lignes CRISIS viennent
 du corpus journal curé, qui ne contient que **dix significations distinctes** de
@@ -72,15 +162,48 @@ contient une ou deux : un F1 calculé là-dessus mesure une phrase, pas une
 capacité. La première version entraînée sur 4 niveaux donnait un rappel CRISIS de
 0.20 sur un seul item de test. CRISIS est donc décidé par les règles.
 
-### `understanding` — émotion + acte de communication
+### `understanding` — émotion
 
-L'acte de dialogue est exploitable (QUESTION F1 0.85, INFORM 0.80).
+Entraîné sur `emotion_en` (GoEmotions agrégé par accord d'annotateurs),
+`emotion_ar` (tweets) et `emotion_synth` (lignes rédigées, `train` seulement,
+poids 0.5). Évalué sur `emotion_en` + `emotion_ar` uniquement.
 
-L'émotion ne l'est pas au-delà de `NEUTRAL` (0.89) et `CONTENT` (0.52) :
-`SAD` 0.26, `ANGRY` 0.24, `FEARFUL` 0.24, `IRRITABLE` 0.04. DailyDialog est de la
-conversation quotidienne, pas du langage de patient, et n'annote que quelques
-centaines d'exemples par émotion négative. **GoEmotions, que la spec §19 demande
-précisément pour cette tête, n'est pas présent dans `data/`.**
+| Classe | n | Précision | Rappel | F1 |
+|---|---|---|---|---|
+| CONTENT | 1 537 | 0.863 | 0.850 | **0.856** |
+| FEARFUL | 168 | 0.890 | 0.816 | **0.851** |
+| NEUTRAL | 955 | 0.637 | 0.764 | 0.695 |
+| DISTRESSED | 67 | 0.694 | 0.642 | 0.667 |
+| ANGRY | 263 | 0.688 | 0.586 | 0.632 |
+| HOPEFUL | 114 | 0.647 | 0.579 | 0.611 |
+| ANXIOUS | 9 | 0.556 | 0.556 | 0.556 |
+| SAD | 222 | 0.548 | 0.518 | 0.532 |
+| MOTIVATED | 51 | 0.447 | 0.412 | 0.429 |
+| CONFUSED | 101 | 0.388 | 0.307 | 0.343 |
+| IRRITABLE | 148 | 0.416 | 0.284 | 0.337 |
+| FRUSTRATED | 71 | 0.355 | 0.310 | 0.331 |
+| CALM | 9 | 0.250 | 0.111 | 0.154 |
+
+Abstention sous 0.55 : couverture 78 %, exactitude 0.80 quand la tête répond.
+
+**Le plafond est la table de correspondance, pas le modèle.** GoEmotions est
+replié sur le vocabulaire Lumina : six étiquettes source deviennent `CONTENT`,
+tandis que trois étiquettes voisines (*annoyance* / *anger* / *disappointment*)
+sont séparées en `IRRITABLE` / `ANGRY` / `FRUSTRATED` — précisément les trois
+scores les plus bas, avec `CALM` (*relief*) et `MOTIVATED` (*excitement*) que le
+manifeste de `emotion_en` qualifie lui-même de correspondances approximatives.
+
+Un balayage sur validation (époques, features, pas d'apprentissage,
+régularisation, plafond de pondération, emphase par classe, moyennage des poids)
+a déplacé le macro-F1 de 0.02 au total. Aller plus loin demande de revoir la
+correspondance à partir des CSV GoEmotions bruts, **absents de `data/`**.
+
+`OVERWHELMED`, `LONELY` et `LOW_ENERGY` n'ont aucune ligne d'évaluation réelle :
+seules des lignes rédigées les couvrent, en `train`. Elles sont donc entraînées
+et **non mesurées** — le macro-F1 ci-dessus porte sur les 13 classes présentes.
+
+**Avis seulement.** `lumina/decision.py` ne lit pas cette tête, et un test vérifie
+que la décision est identique quelle que soit l'émotion prédite.
 
 ## Fusion de sécurité (`lumina/safety.py`)
 

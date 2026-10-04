@@ -47,6 +47,9 @@ PROHIBITED_PATTERNS = {
         r"\b(?:instead of|rather than|replaces?)\b.{0,20}\b(?:therapy|treatment|medication)\b", re.I),
 }
 
+from .ar_guard import extend as _extend_arabic_guard
+_extend_arabic_guard(PROHIBITED_PATTERNS)
+
 # One entry per strategy, per language. A value is one approved sentence or a
 # list of approved variants; a turn picks one variant by a stable seed, so a
 # replay says the same thing while a conversation does not repeat itself.

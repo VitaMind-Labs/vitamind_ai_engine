@@ -75,3 +75,45 @@ def test_the_service_accepts_recent_safety_and_rejects_unknown_keys(client):  # 
     assert post(client, "/api/v1/lumina/chat", body).status_code == 422
     body["recent_safety"] = {"level": "NORMAL", "hours_ago": 1}
     assert post(client, "/api/v1/lumina/chat", body).status_code == 422
+
+
+# --- known defect: the head over-reads executive-function overload -----------
+# Recorded rather than silenced. The safety head scores ADHD task-overload language
+# as HIGH ("I have so much to do and I cannot start any of it" -> 0.864), because its
+# corpus is Reddit depression and SuicideWatch text that contains nothing phrased
+# that way. Two mitigations were tried and rejected - see lumina/safety.py for the
+# measurements and for why a confidence floor and a lexicon-gated pattern are both
+# unsafe here. The fix is labelled supervision for this language, with clinician
+# review of every HIGH row.
+#
+# xfail(strict=True) so that whoever fixes the corpus is told to delete this block:
+# the test starts failing as soon as the behaviour is correct.
+OVERLOAD_MISREAD_AS_DISTRESS = [
+    "I have ten things to do and I am doing none of them",
+    "I have so much to do and I cannot start any of it",
+    "everything is piling up and I keep putting it off",
+]
+
+
+@pytest.mark.xfail(strict=True, reason="known defect: safety head reads ADHD "
+                                       "task-overload as HIGH distress; needs "
+                                       "labelled supervision, not a threshold")
+@pytest.mark.parametrize("text", OVERLOAD_MISREAD_AS_DISTRESS)
+def test_ordinary_overload_should_not_reach_high(lumina, text):
+    from lumina.safety import SAFETY_ORDER
+    verdict = lumina.safety.assess(text)
+    assert SAFETY_ORDER[verdict["level"]] < SAFETY_ORDER["HIGH"], (
+        text, verdict["level"], verdict["model"]["confidence"])
+
+
+def test_real_distress_still_reaches_high_through_the_head_alone(lumina):
+    """The counterpart the defect must not be 'fixed' at the cost of."""
+    verdict = lumina.safety.assess("I feel hopeless and like a burden")
+    assert verdict["level"] == "HIGH"
+
+
+def test_the_head_can_never_reach_crisis_by_itself(lumina):
+    """Whatever the head says, CRISIS stays with the deterministic rules."""
+    verdict = lumina.safety.assess("I feel hopeless and like a burden")
+    assert verdict["model_can_reach_crisis"] is False
+    assert verdict["level"] != "CRISIS"

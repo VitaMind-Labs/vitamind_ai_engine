@@ -10,7 +10,8 @@ model is always allowed to abstain (spec s54, s124).
 INTENTS = ("CHECK_IN", "JOURNAL", "EMOTIONAL_SUPPORT", "TASK_SUPPORT", "SLEEP",
            "ENERGY", "FOCUS", "ROUTINE", "STRESS", "SOCIAL", "EXERCISE", "GOAL",
            "PROGRESS", "MEDICATION_MENTION", "CLINICIAN_MENTION", "SAFETY",
-           "CRISIS", "QUESTION", "GENERAL_CONVERSATION", "UNKNOWN")
+           "CRISIS", "QUESTION", "GENERAL_CONVERSATION", "GREETING", "GOODBYE",
+           "THANKS", "ABOUT_BOT", "BOT_FEEDBACK", "DISENGAGE", "UNKNOWN")
 
 # NEUTRAL is an addition to the spec list: the annotated corpora mark "no
 # emotion expressed", which is a different statement from CALM (an assessed

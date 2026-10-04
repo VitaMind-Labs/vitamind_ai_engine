@@ -1,0 +1,77 @@
+{
+ "purpose": "Arabic patient-side utterances (MSA/Egyptian/Gulf/Levantine): dialect head, Arabic corpus for self-trained embeddings, Arabic stress-test inputs",
+ "built_by": "data_prep/build_final_real.py",
+ "seed": 42,
+ "heads": [
+  "dialect"
+ ],
+ "source": {
+  "name": "data.tar -> processed/flattened_data.csv",
+  "note": "Turns alternate patient|assistant. Only patient turns are kept."
+ },
+ "cleaning": {
+  "rows_in_file": 27383,
+  "after_dropping_header_and_shifted_rows": 27102,
+  "dropped_unreadable_condition_label": 2,
+  "rows_kept": 27100
+ },
+ "deduplication": {
+  "conflicting_dropped": 2560,
+  "duplicates_dropped": 769,
+  "duplicate_dialogues_skipped": 501
+ },
+ "excluded": "Assistant turns are NOT shipped: they are machine-written, not clinician replies, and unreviewed. A narrow Arabic guard flags a small share for diagnosis, medication advice or episode naming (numbers in resources/validation_report.json); the rest are simply unvetted.",
+ "condition_label": "flattened_data.csv carries a text label per DIALOGUE (ocd, anxiety, depression, other, suicide, normal); final/*.csv encodes the same six as 0-5. Kept as dialogue_condition on every turn for traceability; it describes the whole dialogue, not each turn, so it is not a turn label.",
+ "honest_limits": [
+  "Undocumented provenance; appears machine-generated, so not real patient language.",
+  "Train/val/test of the original archive shared 692 identical texts; rebuilt here from the flattened file with duplicate dialogues removed and split by opening turn.",
+  "Condition labels had typos (e.g. Cyrillic letters in 'ocd'); repaired or dropped.",
+  "Dialect label comes from the source and was not independently checked."
+ ],
+ "dataset": "ar_dialogue_user",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 93600,
+   "dialect": {
+    "EGY": 21545,
+    "GLF": 11091,
+    "MSA": 50655,
+    "LEV": 10309
+   }
+  },
+  "val": {
+   "rows": 11637,
+   "dialect": {
+    "LEV": 1287,
+    "GLF": 1386,
+    "MSA": 6258,
+    "EGY": 2706
+   }
+  },
+  "test": {
+   "rows": 11776,
+   "dialect": {
+    "EGY": 2701,
+    "MSA": 6344,
+    "GLF": 1415,
+    "LEV": 1316
+   }
+  }
+ },
+ "rows": {
+  "train": 93600,
+  "val": 11637,
+  "test": 11776
+ },
+ "files_sha256": {
+  "train.jsonl": "92f8fd1d0eb387d31399f26d91afe77290e39aeea968cb27ea2f27ff23c86d8a",
+  "val.jsonl": "bebeb213f8afd2eccafe2d1261790f16e416780625a649f76832f954dba648ee",
+  "test.jsonl": "a792cc203b94e05838ee293988db46e7b95465adc94108b515ccecbf9ba8ddf2"
+ }
+}

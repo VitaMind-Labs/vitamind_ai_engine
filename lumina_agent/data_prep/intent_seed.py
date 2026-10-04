@@ -19,8 +19,10 @@ memorisation - and still not generalisation to real patients.
 """
 from __future__ import annotations
 
+from .intent_seed_families import MORE_SEEDS
+
 # (intent, family, english phrasings, arabic phrasings)
-SEEDS = [
+BASE_SEEDS = [
     ("CHECK_IN", "daily_report", [
         "Here is how today went for me",
         "Checking in for today",
@@ -427,6 +429,13 @@ SEEDS = [
         "فهمت، سأجرب ذلك",
     ]),
 ]
+
+# Three families per intent - all this file originally held - forces a grouped
+# split to put one family in train, one in val and one in test. The head then
+# trains on one way of saying a thing and is tested on a different meaning, which
+# scored F1 0.00 on twelve of the seventeen intents. `intent_seed_families.py`
+# raises every intent to seventeen families so train keeps thirteen or fourteen.
+SEEDS = BASE_SEEDS + MORE_SEEDS
 
 # Safety-bearing intents are deliberately NOT seeded here. Routing a message to
 # the safety workflow is the job of lumina/safety.py, which fuses a deterministic

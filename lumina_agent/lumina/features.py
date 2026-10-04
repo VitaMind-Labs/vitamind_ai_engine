@@ -10,19 +10,21 @@ import collections
 import math
 import re
 
-from .text import normalize
+from .text import feature_variants
 
 WORD = re.compile(r"[\w']+", flags=re.UNICODE)
 
 
 def tokens(text: str) -> list[str]:
-    words = WORD.findall(normalize(text))
-    result = ["w:" + w for w in words]
-    result += ["b:" + a + " " + b for a, b in zip(words, words[1:])]
-    for word in words:
-        padded = "^" + word + "$"
-        for n in (3, 4, 5):
-            result += ["c:" + padded[i:i + n] for i in range(len(padded) - n + 1)]
+    result = []
+    for variant in feature_variants(text):
+        words = WORD.findall(variant)
+        result += ["w:" + w for w in words]
+        result += ["b:" + a + " " + b for a, b in zip(words, words[1:])]
+        for word in words:
+            padded = "^" + word + "$"
+            for n in (2, 3, 4, 5):
+                result += ["c:" + padded[i:i + n] for i in range(len(padded) - n + 1)]
     return result
 
 

@@ -1,0 +1,70 @@
+{
+ "purpose": "Emotions with no or thin public data: OVERWHELMED, LONELY, LOW_ENERGY, ANXIOUS, CALM, DISTRESSED (English + MSA + Gulf)",
+ "built_by": "data_prep/build_final_all.py",
+ "seed": 42,
+ "heads": [
+  "emotion"
+ ],
+ "deduplication": {
+  "conflicting_dropped": 0,
+  "duplicates_dropped": 0
+ },
+ "use": "Add to TRAIN only, with weight<=0.5, next to emotion_en / emotion_ar. Do not report its val/test as accuracy.",
+ "honest_limits": [
+  "6-8 base sentences per emotion and language; lead-in variants are the same idea, not new evidence.",
+  "Gulf Arabic is ~2 sentences per emotion."
+ ],
+ "dataset": "emotion_synth",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 266,
+   "emotion": {
+    "OVERWHELMED": 45,
+    "LONELY": 45,
+    "LOW_ENERGY": 45,
+    "ANXIOUS": 46,
+    "CALM": 43,
+    "DISTRESSED": 42
+   }
+  },
+  "val": {
+   "rows": 24,
+   "emotion": {
+    "OVERWHELMED": 4,
+    "LONELY": 4,
+    "LOW_ENERGY": 3,
+    "ANXIOUS": 3,
+    "CALM": 3,
+    "DISTRESSED": 7
+   }
+  },
+  "test": {
+   "rows": 39,
+   "emotion": {
+    "OVERWHELMED": 7,
+    "LONELY": 7,
+    "LOW_ENERGY": 7,
+    "ANXIOUS": 7,
+    "CALM": 7,
+    "DISTRESSED": 4
+   }
+  }
+ },
+ "rows": {
+  "train": 266,
+  "val": 24,
+  "test": 39
+ },
+ "files_sha256": {
+  "train.jsonl": "ba0d7e9df669a6b96bf760b051a94d8686a6a575713a153b9150279d4224d5d0",
+  "val.jsonl": "fdd99ae5287a311e65d58d69be81606ec8a8599b9cb84c1a35922a227423e166",
+  "test.jsonl": "1e6708c75c1f8cc61b1c26867e62a4e5950dc0a4c298fdd6235686344a4bdad5"
+ },
+ "row_weights": "synthetic rows carry weight 0.5; the field used to be absent, so loaders defaulted them to 1.0"
+}

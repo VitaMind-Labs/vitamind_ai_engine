@@ -7,6 +7,7 @@ nothing may require a pretrained checkpoint or a network call.
 """
 from __future__ import annotations
 
+import collections
 import json
 from pathlib import Path
 
@@ -194,7 +195,7 @@ def test_empty_input_is_rejected(engine):
 
 
 # --- datasets and provenance -------------------------------------------
-@pytest.mark.parametrize("dataset", ["dialogue", "safety"])
+@pytest.mark.parametrize("dataset", ["dialogue", "safety", "intent"])
 def test_every_training_row_carries_its_provenance(dataset):
     if not (DATASETS / dataset / "manifest.json").exists():
         pytest.skip(f"{dataset} dataset not built")
@@ -207,7 +208,7 @@ def test_every_training_row_carries_its_provenance(dataset):
 
 def test_no_group_is_shared_between_splits():
     """The split guarantee the reported metrics depend on."""
-    for dataset in ("dialogue", "safety"):
+    for dataset in ("dialogue", "safety", "intent"):
         if not (DATASETS / dataset / "manifest.json").exists():
             pytest.skip(f"{dataset} dataset not built")
         groups = {s: {r["group"] for r in read_dataset(dataset, s)}
@@ -215,6 +216,47 @@ def test_no_group_is_shared_between_splits():
         assert not groups["train"] & groups["val"]
         assert not groups["train"] & groups["test"]
         assert not groups["val"] & groups["test"]
+
+
+def test_every_intent_trains_on_several_distinct_meanings():
+    """The regression that made the intent head useless.
+
+    The authored seed set held three phrasings-of-one-meaning per intent, and the
+    split is by meaning-family, so each intent got exactly one family in train,
+    one in val and one in test. The head trained on a single way of saying a thing
+    and was tested on a different meaning: twelve of seventeen intents scored
+    F1 0.00. Guard the shape of the data, not the score.
+    """
+    if not (DATASETS / "intent" / "manifest.json").exists():
+        pytest.skip("intent dataset not built")
+    families = collections.defaultdict(set)
+    for row in read_dataset("intent", "train"):
+        families[row["labels"]["intent"]].add(row["group"])
+    thin = {intent: len(groups) for intent, groups in families.items() if len(groups) < 4}
+    assert not thin, f"intents with fewer than 4 training meaning-families: {thin}"
+
+
+def test_the_intent_corpus_is_not_split_across_two_datasets():
+    """`datasets/intent_addon` was merged into `datasets/intent`.
+
+    While both existed, training merged them in memory, so the split the head
+    actually got was not the split either manifest described.
+    """
+    assert not (DATASETS / "intent_addon").exists(), (
+        "intent_addon is back; build_intent.py is meant to merge it into intent")
+
+
+@pytest.mark.parametrize("dataset", ["emotion_synth", "safety_synth",
+                                     "track_signals", "slots"])
+def test_authored_rows_carry_the_weight_the_manifest_promises(dataset):
+    """Every manifest said `weight<=0.5`; the field was never emitted, so every
+    loader defaulted these template rows to a full 1.0."""
+    if not (DATASETS / dataset / "manifest.json").exists():
+        pytest.skip(f"{dataset} dataset not built")
+    for split in ("train", "val", "test"):
+        for row in read_dataset(dataset, split):
+            if row.get("source_type") == "synthetic":
+                assert row.get("weight") == 0.5, f"{dataset}/{split} {row['id']}"
 
 
 def test_safety_splits_all_contain_the_rare_crisis_rows_for_auditing():

@@ -25,40 +25,58 @@ from lumina.linear import calibrate, fit_abstention, train
 ARTIFACTS = Path(__file__).resolve().parents[1] / "artifacts" / "models"
 
 
-def expand_by_weight(rows):
-    """Oversample trusted rows by repeating them.
-
-    The curated bilingual journal data is a few percent of the corpus but is the
-    only human-reviewed evidence and the only Arabic coverage; without this it is
-    statistically invisible next to 50k weakly-labelled English statements.
-    """
-    expanded = []
-    for row in rows:
-        repeats = max(1, int(round(float(row.get("weight", 1.0)))))
-        expanded.extend([row] * repeats)
-    return expanded
+def merge_datasets(name, train_names, eval_names=None):
+    """Build an in-memory merged dataset without mixing synthetic eval rows."""
+    eval_names = eval_names or train_names
+    return {
+        "name": name,
+        "splits": {
+            "train": [row for dataset in train_names
+                      for row in read_dataset(dataset, "train")],
+            "val": [row for dataset in eval_names
+                    for row in read_dataset(dataset, "val")],
+            "test": [row for dataset in eval_names
+                     for row in read_dataset(dataset, "test")],
+        },
+        "manifest": {"clinical_validity": "not_clinical"},
+    }
 
 
 def run(name, dataset, head_definitions, abstain_labels, *, seed=42, epochs=20,
         max_features=20000, emphasis=None, target_precision=0.80,
-        learning_rate=0.2, use_weights=True, notes=None, log=print):
-    splits = {s: read_dataset(dataset, s) for s in ("train", "val", "test")}
-    dataset_manifest = json.loads(
-        (DATASETS / dataset / "manifest.json").read_text(encoding="utf-8"))
+        min_document_frequency=2, learning_rate=0.2, l2=1e-4,
+        class_weight_cap=4.0, use_weights=True, notes=None, log=print):
+    if isinstance(dataset, dict):
+        splits = dataset["splits"]
+        dataset_name = dataset.get("name", name)
+        dataset_manifest = dataset.get("manifest", {})
+    else:
+        splits = {s: read_dataset(dataset, s) for s in ("train", "val", "test")}
+        dataset_name = dataset
+        dataset_manifest = json.loads(
+            (DATASETS / dataset / "manifest.json").read_text(encoding="utf-8"))
 
     def label_of(row, head):
         return row["labels"][head]
 
-    train_rows = expand_by_weight(splits["train"]) if use_weights else list(splits["train"])
-    log(f"[{name}] train={len(splits['train'])} (weighted {len(train_rows)}) "
+    train_rows = list(splits["train"])
+    if not use_weights:
+        # Used when a dataset's `weight` field is not meant to reach the loss.
+        train_rows = [{**row, "weight": 1.0} for row in train_rows]
+    total_weight = sum(float(r.get("weight", 1.0)) for r in train_rows)
+    log(f"[{name}] train={len(train_rows)} rows (total weight {total_weight:.1f}) "
         f"val={len(splits['val'])} test={len(splits['test'])}")
 
     # Fit the feature space on the training partition only.
-    spec = fit_features([r["text"] for r in splits["train"]], max_features=max_features)
-    log(f"[{name}] features: {len(spec['vocabulary'])} of at most {max_features}")
+    spec = fit_features([r["text"] for r in splits["train"]],
+                        max_features=max_features,
+                        min_document_frequency=min_document_frequency)
+    log(f"[{name}] features: {len(spec['vocabulary'])} of at most {max_features} "
+        f"(min document frequency {min_document_frequency})")
 
     model = train(train_rows, head_definitions, label_of, spec, seed=seed,
-                  epochs=epochs, learning_rate=learning_rate, emphasis=emphasis, log=log)
+                  epochs=epochs, learning_rate=learning_rate, l2=l2,
+                  class_weight_cap=class_weight_cap, emphasis=emphasis, log=log)
 
     calibrate(model, splits["val"], label_of)
     log(f"[{name}] temperatures: " +
@@ -92,10 +110,11 @@ def run(name, dataset, head_definitions, abstain_labels, *, seed=42, epochs=20,
         "version": version,
         "status": "candidate",
         "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "dataset": {"name": dataset,
+        "dataset": {"name": dataset_name,
                     "rows": dataset_manifest.get("rows"),
                     "files_sha256": dataset_manifest.get("files_sha256"),
                     "clinical_validity": dataset_manifest.get("clinical_validity")},
+        "row_weights_applied": bool(use_weights),
         "abstention": abstention,
         "evaluation": evaluation,
         "notes": notes or [],

@@ -1,19 +1,22 @@
 """Intent routing by inspectable rules, with the learned head as a fallback.
 
-The learned intent model trained on the authored seed set abstains on every input
-and scores macro-F1 0.17 on held-out meanings - correct behaviour for a model
-with under a hundred training sentences across seventeen classes, and useless as
-a router. The spec anticipates exactly this trade (s70, s101): prefer
-deterministic code, and do not run a model where a rule does the job better.
+Routing is done by bilingual cue patterns that a reviewer can read and correct.
+The spec asks for exactly this trade (s70, s101): prefer deterministic code, and
+do not run a model where a rule does the job better.
 
-So routing is done by bilingual cue patterns that a reviewer can read and correct.
-When no rule fires, the router returns UNKNOWN and the decision engine falls back
-to a generic supportive strategy - the same conservative default the learned head
-would have produced, reached honestly.
+The learned head is consulted only when no rule fires, and only when it does not
+abstain. It used to score macro-F1 0.09 on held-out meanings and was useless even
+as a fallback, because the authored seed set held three phrasings-of-one-meaning
+per intent and the split gave training exactly one of them. With nine or ten
+meaning-families per intent it scores macro-F1 0.46 with 0.84 precision on the
+predictions it does accept - still not a router on its own, now worth consulting
+when the rules have nothing.
 
-This is not a permanent answer. Once reviewed real conversations exist, the
-learned head is retrained and takes over where it measurably beats these rules.
-Intent never influences safety: that path is owned by lumina/safety.py.
+When neither fires, the router returns UNKNOWN and the decision engine falls back
+to a generic supportive strategy - the conservative default, reached honestly.
+
+Retrain on reviewed real conversations before letting the head lead. Intent never
+influences safety: that path is owned by lumina/safety.py.
 """
 from __future__ import annotations
 
@@ -28,6 +31,18 @@ RULE_VERSION = "intent-rules-v2"
 # Ordered most specific first: the first rule that matches wins, so narrow
 # patterns are not swallowed by broad ones.
 PATTERNS = [
+    ("ABOUT_BOT", r"\b(?:who are you|what are you|what can you do|how can you help|"
+                  r"what do you do|what is lumina|are you (?:a )?(?:bot|robot|ai|human|real))\b"
+                  r"|(?:من انت|ماذا تستطيع|ما هي لومينا|كيف تساعدني|ماذا تفعلين|من تكونين)"),
+    ("GOODBYE", r"^\s*(?:bye|goodbye|good night|talk to you later|see you|that is all|that's all|"
+                r"وداعا|باي|تصبح على خير|الى اللقاء|هذا كل شيء|اراك)\s*[.!]*\s*$"),
+    ("THANKS", r"^\s*(?:thanks|thank you|thx|شكرا|اشكرك|مشكور)\s*[.!]*\s*$"),
+    ("GREETING", r"^\s*(?:hello|hi|hey|good morning|good evening|good afternoon|"
+                 r"مرحبا|اهلا|السلام عليكم|صباح الخير|مساء الخير|هاي)\s*[.!]*\s*$"),
+    ("DISENGAGE", r"\b(?:leave me alone|stop talking|do not contact|don't contact|"
+                  r"لا تكلمني|اتركني وحدي|لا اريد الحديث)\b"),
+    ("BOT_FEEDBACK", r"\b(?:you are helpful|you are not helpful|this is helpful|"
+                      r"this is not helpful|that helped|لم تساعدني|ساعدتني)\b"),
     ("MEDICATION_MENTION", r"\b(?:medication|meds|prescription|dose|dosage|pills?|tablets?|side effects?)\b"
                            r"|(?:دوا(?:ء|ئي)|الدواء|وصفة|جرعة|حبوب|اثار جانبية|آثار جانبية)"),
     ("CLINICIAN_MENTION", r"\b(?:psychiatrist|therapist|clinician|my doctor|appointment|session|clinic)\b"
@@ -39,6 +54,26 @@ PATTERNS = [
                  r"|(?:ملخص|كيف كان ادائي|انماطي|الشهر الماضي|افضل ام اسوا|تغير شيء)"),
     ("GOAL", r"\b(?:set a goal|my goal|a goal for|build a habit|target|drop the goal)\b"
              r"|(?:هدف|اهداف|عادة جديدة)"),
+    # A falling-out with someone, reported as an event. Filed as EMOTIONAL_SUPPORT and
+    # not SOCIAL on purpose: SOCIAL answers with "connection with other people can
+    # help", which lands badly on someone who has just argued with their brother. What
+    # they want first is for it to be heard. SOCIAL keeps the *relationship* cases -
+    # isolation, unanswered messages, ongoing tension.
+    #
+    # The learned head cannot be trusted with this: "I had a fight with my brother" has
+    # the same shape as "I made bread today", and the head scored it
+    # GENERAL_CONVERSATION at 0.82 confidence - which a stressed check-in then answered
+    # with a productivity nudge. Kinship and conflict cues are named here instead,
+    # where a reviewer can read and correct them.
+    ("EMOTIONAL_SUPPORT",
+     r"\b(?:fight|fought|argument|argu(?:ed|ing)|row|fell out|falling out|"
+     r"shouted|yelled|screamed)\b(?:\s+\w+){0,3}\s+(?:with|at)\s+"
+     r"(?:my|the|his|her|their|our)?\s*"
+     r"(?:brother|sister|mother|father|mum|mom|dad|parents?|wife|husband|"
+     r"partner|boyfriend|girlfriend|cousin|son|daughter|uncle|aunt|family|"
+     r"friend|flat ?mate|room ?mate|colleague|boss|neighbou?r|him|her|them)\b"
+     r"|\b(?:not|stopped)\s+speaking\b"
+     r"|(?:تشاجرت|تخاصمنا|زعلت من|لا نتكلم|خلاف مع|اختلفت مع|صرخ في)"),
     # Named low moods outrank topic words in the same sentence ("depressed and I can't focus").
     ("EMOTIONAL_SUPPORT", r"\b(?:depress\w*|hopeless|worthless|numb)\b|(?:اكتئاب|مكتئب|يائس)"),
     ("SLEEP", r"\b(?:sleep|slept|sleeping|insomnia|wake up|woke up|bed(?:time)?|nap)\b"
@@ -51,6 +86,11 @@ PATTERNS = [
                  r"|(?:مشي|النادي|تمارين|رياضة|اطالة|نشاط بدني)"),
     ("ROUTINE", r"\b(?:routine|schedule|regular|rhythm|same time)\b"
                 r"|(?:روتين|جدول|منتظم|ايقاع|الوقت نفسه)"),
+    # Interpersonal conflict, plainly reported. A learned head reads "I had a fight
+    # with my brother" as neutral small talk - it has the same shape as "I made
+    # bread today" - and a stressed check-in then answers it with a productivity
+    # nudge. Naming the conflict and kinship cues here keeps that in rules, where a
+    # reviewer can see and correct it.
     ("SOCIAL", r"\b(?:friends?|people|lonely|alone|social|messages|cancelled on|"
                r"spoken to anyone|replied to)\b|(?:اصدقاء|صديق|الناس|وحدة|بوحدي|رسائل|اجتماعي)"),
     ("TASK_SUPPORT", r"\b(?:task|tasks|start(?:ing|ed)?|finish\w*|to ?do|list|deadline|"

@@ -1,0 +1,132 @@
+{
+ "purpose": "English emotion head, replacing DailyDialog for distress emotions",
+ "built_by": "data_prep/build_final_real.py",
+ "seed": 42,
+ "heads": [
+  "emotion"
+ ],
+ "source": {
+  "name": "GoEmotions raw rater rows (goemotions_1..3.csv)",
+  "note": "Raw file has one row per rater. Aggregated per comment id; kept when >=3 raters and exactly one Lumina class has >=50% rater support."
+ },
+ "label_mapping": {
+  "neutral": "NEUTRAL",
+  "joy": "CONTENT",
+  "amusement": "CONTENT",
+  "love": "CONTENT",
+  "pride": "CONTENT",
+  "gratitude": "CONTENT",
+  "admiration": "CONTENT",
+  "relief": "CALM",
+  "optimism": "HOPEFUL",
+  "excitement": "MOTIVATED",
+  "confusion": "CONFUSED",
+  "annoyance": "IRRITABLE",
+  "anger": "ANGRY",
+  "disappointment": "FRUSTRATED",
+  "sadness": "SAD",
+  "grief": "SAD",
+  "fear": "FEARFUL",
+  "nervousness": "ANXIOUS",
+  "remorse": "DISTRESSED",
+  "embarrassment": "DISTRESSED"
+ },
+ "unmapped_source_labels": [
+  "approval",
+  "caring",
+  "curiosity",
+  "desire",
+  "disapproval",
+  "disgust",
+  "realization",
+  "surprise"
+ ],
+ "neutral_cap": 8000,
+ "aggregation": {
+  "unique_comments": 58011,
+  "kept_with_agreement": 35654
+ },
+ "deduplication": {
+  "conflicting_dropped": 150,
+  "duplicates_dropped": 379
+ },
+ "honest_limits": [
+  "Reddit replies, median ~13 words - not first-person patient language.",
+  "No data for OVERWHELMED, LONELY, LOW_ENERGY - see datasets/emotion_synth.",
+  "CALM (relief) and MOTIVATED (excitement) are loose matches to the source labels.",
+  "Mapping is a judgement call; review it with a clinician before relying on it."
+ ],
+ "dataset": "emotion_en",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 23268,
+   "emotion": {
+    "FRUSTRATED": 580,
+    "CONTENT": 10277,
+    "MOTIVATED": 408,
+    "NEUTRAL": 6322,
+    "IRRITABLE": 1172,
+    "SAD": 790,
+    "HOPEFUL": 906,
+    "CONFUSED": 801,
+    "ANGRY": 924,
+    "FEARFUL": 404,
+    "DISTRESSED": 536,
+    "ANXIOUS": 76,
+    "CALM": 72
+   }
+  },
+  "val": {
+   "rows": 2933,
+   "emotion": {
+    "CONTENT": 1288,
+    "ANGRY": 115,
+    "NEUTRAL": 810,
+    "HOPEFUL": 113,
+    "MOTIVATED": 50,
+    "SAD": 101,
+    "FRUSTRATED": 72,
+    "ANXIOUS": 10,
+    "DISTRESSED": 67,
+    "FEARFUL": 51,
+    "CONFUSED": 101,
+    "IRRITABLE": 146,
+    "CALM": 9
+   }
+  },
+  "test": {
+   "rows": 2932,
+   "emotion": {
+    "NEUTRAL": 803,
+    "CONTENT": 1292,
+    "IRRITABLE": 148,
+    "ANGRY": 119,
+    "CONFUSED": 101,
+    "FEARFUL": 50,
+    "MOTIVATED": 51,
+    "SAD": 98,
+    "FRUSTRATED": 71,
+    "HOPEFUL": 114,
+    "DISTRESSED": 67,
+    "CALM": 9,
+    "ANXIOUS": 9
+   }
+  }
+ },
+ "rows": {
+  "train": 23268,
+  "val": 2933,
+  "test": 2932
+ },
+ "files_sha256": {
+  "train.jsonl": "8ee93baf1352286c4a4bf04e58dcb406823a1af2059d9b3919a8f8e973102b0d",
+  "val.jsonl": "c5590a6fa00c007a3a67bc980a8f5324ef36ceaf9ae39edc7cf9f8828a86e967",
+  "test.jsonl": "d9276c8401f6af0684f2ee69efb9373b80b2c299e30b2c04670ba1ab57df0a4c"
+ }
+}

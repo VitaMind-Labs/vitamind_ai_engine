@@ -1,0 +1,62 @@
+{
+ "purpose": "Short first-person distress, idioms and attributions in EN/MSA/Gulf; counters the length confound of Combined_Data and gives the Arabic head short inputs",
+ "built_by": "data_prep/build_final_all.py",
+ "seed": 42,
+ "heads": [
+  "safety"
+ ],
+ "deduplication": {
+  "conflicting_dropped": 0,
+  "duplicates_dropped": 0
+ },
+ "excluded": "CRISIS is never a training label here; rules own it (see resources/safety_eval_seeds.jsonl).",
+ "use": "Train-only supplement. Clinician must confirm every HIGH row.",
+ "honest_limits": [
+  "About 70 rows; a seed set, not a corpus.",
+  "Levels are authored judgements, unverified."
+ ],
+ "dataset": "safety_synth",
+ "clinical_validity": "not_clinical",
+ "split_policy": "grouped, stratified by label; no group spans two splits",
+ "leakage_check": {
+  "group": 0,
+  "text": 0
+ },
+ "distribution": {
+  "train": {
+   "rows": 63,
+   "safety": {
+    "ELEVATED": 23,
+    "HIGH": 19,
+    "NORMAL": 21
+   }
+  },
+  "val": {
+   "rows": 8,
+   "safety": {
+    "ELEVATED": 3,
+    "HIGH": 3,
+    "NORMAL": 2
+   }
+  },
+  "test": {
+   "rows": 8,
+   "safety": {
+    "ELEVATED": 3,
+    "HIGH": 2,
+    "NORMAL": 3
+   }
+  }
+ },
+ "rows": {
+  "train": 63,
+  "val": 8,
+  "test": 8
+ },
+ "files_sha256": {
+  "train.jsonl": "6731a9b2dbd460b4cff7869e6d3443377778f0c9cbce73b1df5157f81de57252",
+  "val.jsonl": "4915ac1d7533b8ae15e9f45c37c9c8200fc834708a06e629a51c051a06e477e7",
+  "test.jsonl": "0acf03f1f38b23dc6096be36a1de15ff8ccab498074571cffce5feb9f08f2a45"
+ },
+ "row_weights": "synthetic rows carry weight 0.5; the field used to be absent, so loaders defaulted them to 1.0"
+}

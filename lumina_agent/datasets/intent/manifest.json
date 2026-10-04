@@ -1,21 +1,80 @@
 {
  "dataset": "intent",
- "purpose": "Lumina intent understanding",
+ "purpose": "Lumina intent understanding - the whole intent corpus, one split",
  "built_by": "data_prep/build_intent.py",
  "seed": 42,
  "heads": [
   "intent"
  ],
- "source": {
-  "name": "authored seed set",
-  "path": "data_prep/intent_seed.py",
-  "source_type": "authored_seed",
-  "note": "No corpus in data/ carries Lumina intent labels. These sentences were written for the purpose and are not real patient language."
- },
+ "sources": [
+  {
+   "name": "authored seed set",
+   "path": "data_prep/intent_seed.py + data_prep/intent_seed_families.py",
+   "source_type": "authored_seed",
+   "rows": 1687,
+   "note": "No corpus in data/ carries Lumina intent labels. These sentences were written for the purpose and are not real patient language."
+  },
+  {
+   "name": "pooled intent addon rows",
+   "path": "data/intent_addon_rows.jsonl",
+   "source_type": "mixed - see per-row source_type",
+   "rows": 724,
+   "note": "Formerly datasets/intent_addon. Public small talk and Kaggle intent patterns plus authored dialect rows for the six meta intents.",
+   "provenance": {
+    "purpose": "Adds the six meta intents Lumina lacks (GREETING, GOODBYE, THANKS, ABOUT_BOT, BOT_FEEDBACK, DISENGAGE) and more real-ish rows for existing intents",
+    "built_by": "data_prep/build_final_all.py",
+    "seed": 42,
+    "sources": {
+     "intents_json_kaggle": "public, English, unverified licence",
+     "conversation_csv_smalltalk": "public, English, GENERAL_CONVERSATION only, capped at 200",
+     "arabic_dialect_dialogues": "machine-generated Arabic, ABOUT_BOT only",
+     "lumina_authored_final": "authored, EN + MSA + Gulf + Egyptian + Levantine + Arabizi"
+    },
+    "real_part": {
+     "small_talk_rows": 200,
+     "ar_about_bot_rows": 150,
+     "excluded_tags": {
+      "suicide": "safety routing belongs to lumina/safety.py",
+      "name": "self-introduction placeholders",
+      "help": "ambiguous",
+      "default": "single topic words",
+      "problem": "ambiguous",
+      "no-response": "empty pattern"
+     }
+    },
+    "deduplication": {
+     "conflicting_dropped": 6,
+     "duplicates_dropped": 30
+    },
+    "excluded": {
+     "suicide tag": "safety routing belongs to lumina/safety.py",
+     "all intents.json responses": "hard-coded hotline numbers and advice; never reuse"
+    },
+    "honest_limits": [
+     "Report scores per source_type: authored rows test templates, not users.",
+     "Arabic BOT_FEEDBACK exists only as authored rows; a regex over real dialogues matched symptoms ('stupid', 'recurring') and was dropped.",
+     "DISENGAGE can co-occur with distress ('leave me alone'); safety runs first.",
+     "Existing Lumina intents still have only authored seeds; none of this is clinician-labelled."
+    ],
+    "new_intents_needed_in_taxonomy": [
+     "GREETING",
+     "GOODBYE",
+     "THANKS",
+     "ABOUT_BOT",
+     "BOT_FEEDBACK",
+     "DISENGAGE"
+    ],
+    "rows": 727,
+    "note": "Pooled rows of the former datasets/intent_addon. Kept as a source, not a dataset: data_prep/build_intent.py merges these with the authored seeds and makes one split over the result."
+   }
+  }
+ ],
  "honest_limits": [
-  "A few hundred authored sentences is a seed, not a corpus.",
-  "Scores measure generalisation to unseen phrasings within an authored set - not to real patient language.",
-  "Several intents have only one or two meaning-families, so their held-out score rests on one or two sentences.",
+  "Under a thousand authored sentences plus seven hundred mixed rows is a seed, not a corpus.",
+  "Scores measure generalisation to unseen phrasings and unseen meanings within this set - not to real patient language.",
+  "The twelve Lumina topic intents are authored only; nothing in them is real patient text and none of it is clinician-labelled.",
+  "Report scores per source_type: authored rows test templates, not users.",
+  "Synthetic rows are down-weighted to 0.5 in training and still counted in full when scoring, so the reported numbers are not flattered by them.",
   "The model stays `candidate` until retrained on reviewed real data."
  ],
  "excluded_intents": {
@@ -27,118 +86,161 @@
   "reason": "Safety routing is owned by lumina/safety.py (deterministic rules + a calibrated distress head). A second uncalibrated path to a crisis decision would be a liability, not a feature."
  },
  "families_per_intent": {
-  "CHECK_IN": 3,
-  "JOURNAL": 3,
-  "EMOTIONAL_SUPPORT": 3,
-  "TASK_SUPPORT": 3,
-  "SLEEP": 3,
-  "ENERGY": 3,
-  "FOCUS": 3,
-  "ROUTINE": 3,
-  "STRESS": 3,
-  "SOCIAL": 2,
-  "EXERCISE": 3,
-  "GOAL": 3,
-  "PROGRESS": 3,
-  "MEDICATION_MENTION": 3,
-  "CLINICIAN_MENTION": 3,
-  "QUESTION": 3,
-  "GENERAL_CONVERSATION": 3
+  "ABOUT_BOT": 162,
+  "BOT_FEEDBACK": 45,
+  "CHECK_IN": 17,
+  "CLINICIAN_MENTION": 17,
+  "DISENGAGE": 40,
+  "EMOTIONAL_SUPPORT": 24,
+  "ENERGY": 17,
+  "EXERCISE": 17,
+  "FOCUS": 17,
+  "GENERAL_CONVERSATION": 133,
+  "GOAL": 17,
+  "GOODBYE": 32,
+  "GREETING": 31,
+  "JOURNAL": 17,
+  "MEDICATION_MENTION": 17,
+  "PROGRESS": 17,
+  "QUESTION": 22,
+  "ROUTINE": 17,
+  "SLEEP": 18,
+  "SOCIAL": 18,
+  "STRESS": 18,
+  "TASK_SUPPORT": 17,
+  "THANKS": 30
  },
  "split_policy": "grouped by meaning-family, stratified by intent; no family spans two splits",
  "deduplication": {
-  "conflicting_dropped": 0,
+  "conflicting_dropped": 6,
   "duplicates_dropped": 0
  },
  "clinical_validity": "not_clinical",
  "distribution": {
   "train": {
-   "rows": 88,
+   "rows": 1946,
    "intent": {
-    "JOURNAL": 6,
-    "TASK_SUPPORT": 6,
-    "STRESS": 6,
-    "SOCIAL": 10,
-    "EXERCISE": 6,
-    "PROGRESS": 6,
-    "CLINICIAN_MENTION": 6,
-    "CHECK_IN": 6,
-    "EMOTIONAL_SUPPORT": 4,
-    "SLEEP": 4,
-    "ENERGY": 4,
-    "FOCUS": 4,
-    "ROUTINE": 4,
-    "GOAL": 4,
-    "MEDICATION_MENTION": 4,
-    "QUESTION": 4,
-    "GENERAL_CONVERSATION": 4
+    "CHECK_IN": 84,
+    "JOURNAL": 84,
+    "EMOTIONAL_SUPPORT": 108,
+    "TASK_SUPPORT": 83,
+    "FOCUS": 80,
+    "ROUTINE": 80,
+    "STRESS": 81,
+    "EXERCISE": 82,
+    "GOAL": 82,
+    "PROGRESS": 82,
+    "MEDICATION_MENTION": 80,
+    "CLINICIAN_MENTION": 82,
+    "QUESTION": 130,
+    "GENERAL_CONVERSATION": 227,
+    "SLEEP": 82,
+    "ENERGY": 80,
+    "SOCIAL": 77,
+    "GREETING": 36,
+    "THANKS": 28,
+    "ABOUT_BOT": 159,
+    "DISENGAGE": 36,
+    "BOT_FEEDBACK": 53,
+    "GOODBYE": 30
    }
   },
   "val": {
-   "rows": 91,
+   "rows": 198,
    "intent": {
-    "CHECK_IN": 6,
-    "EMOTIONAL_SUPPORT": 7,
-    "TASK_SUPPORT": 7,
-    "SLEEP": 7,
+    "CHECK_IN": 7,
+    "SLEEP": 13,
+    "ENERGY": 6,
+    "JOURNAL": 4,
+    "STRESS": 10,
+    "GOAL": 4,
+    "CLINICIAN_MENTION": 4,
+    "EMOTIONAL_SUPPORT": 18,
+    "TASK_SUPPORT": 6,
     "FOCUS": 6,
+    "EXERCISE": 6,
+    "PROGRESS": 6,
+    "QUESTION": 9,
+    "GENERAL_CONVERSATION": 36,
     "ROUTINE": 6,
-    "GOAL": 6,
+    "SOCIAL": 12,
     "MEDICATION_MENTION": 6,
-    "QUESTION": 6,
-    "GENERAL_CONVERSATION": 8,
-    "JOURNAL": 6,
-    "ENERGY": 4,
-    "STRESS": 4,
-    "EXERCISE": 4,
-    "PROGRESS": 4,
-    "CLINICIAN_MENTION": 4
+    "GOODBYE": 3,
+    "DISENGAGE": 7,
+    "ABOUT_BOT": 19,
+    "GREETING": 3,
+    "THANKS": 3,
+    "BOT_FEEDBACK": 4
    }
   },
   "test": {
-   "rows": 71,
+   "rows": 267,
    "intent": {
-    "CHECK_IN": 7,
-    "ENERGY": 6,
-    "JOURNAL": 4,
-    "EMOTIONAL_SUPPORT": 6,
-    "TASK_SUPPORT": 4,
-    "SLEEP": 4,
-    "FOCUS": 4,
-    "ROUTINE": 4,
-    "STRESS": 4,
-    "EXERCISE": 4,
-    "GOAL": 4,
-    "PROGRESS": 4,
-    "MEDICATION_MENTION": 4,
-    "CLINICIAN_MENTION": 4,
-    "QUESTION": 4,
-    "GENERAL_CONVERSATION": 4
+    "SOCIAL": 12,
+    "SLEEP": 10,
+    "EXERCISE": 10,
+    "PROGRESS": 10,
+    "JOURNAL": 12,
+    "TASK_SUPPORT": 12,
+    "ENERGY": 12,
+    "ROUTINE": 12,
+    "GOAL": 12,
+    "MEDICATION_MENTION": 12,
+    "CLINICIAN_MENTION": 12,
+    "QUESTION": 12,
+    "GENERAL_CONVERSATION": 39,
+    "CHECK_IN": 12,
+    "EMOTIONAL_SUPPORT": 10,
+    "FOCUS": 12,
+    "STRESS": 12,
+    "GOODBYE": 9,
+    "ABOUT_BOT": 20,
+    "GREETING": 3,
+    "THANKS": 3,
+    "BOT_FEEDBACK": 5,
+    "DISENGAGE": 4
    }
+  }
+ },
+ "source_type_distribution": {
+  "train": {
+   "authored_seed": 1363,
+   "public_dataset": 309,
+   "synthetic": 274
+  },
+  "val": {
+   "authored_seed": 132,
+   "public_dataset": 32,
+   "synthetic": 34
+  },
+  "test": {
+   "authored_seed": 192,
+   "public_dataset": 38,
+   "synthetic": 37
   }
  },
  "language_distribution": {
   "train": {
-   "en": 44,
-   "ar": 44
+   "en": 1029,
+   "ar": 917
   },
   "val": {
-   "en": 47,
-   "ar": 44
+   "en": 106,
+   "ar": 92
   },
   "test": {
-   "en": 36,
-   "ar": 35
+   "en": 134,
+   "ar": 133
   }
  },
  "rows": {
-  "train": 88,
-  "val": 91,
-  "test": 71
+  "train": 1946,
+  "val": 198,
+  "test": 267
  },
  "files_sha256": {
-  "train.jsonl": "93a82b9ffe170120b093997da3a63bb2833c5195f9fe16a12e1409805ffc8484",
-  "val.jsonl": "a385ebc77b7896919d53828df7c075a542fc72de79c5cc44254a3a422f2a1a21",
-  "test.jsonl": "e4def54d4c28cb66f6ed2724ec11d4183beb1de2414036d78ca6338ad7e714e0"
+  "train.jsonl": "b1401549100373bc914424fa3c985498ac5a80e4542646ef85469a3efb0e75d7",
+  "val.jsonl": "fdb9ad811f766d348ce397c67a4d397479c201b686490ccc08d7660687551de6",
+  "test.jsonl": "2391fa137a29d29de66386d594a8d3e8c2db110250f65cda3ea77dc50c6ac306"
  }
 }

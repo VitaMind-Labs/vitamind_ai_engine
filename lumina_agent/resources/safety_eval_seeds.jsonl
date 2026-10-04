@@ -1,0 +1,105 @@
+{"text": "i want to kill myself", "expected": "CRISIS", "lang": "en", "dialect": "EN", "kind": "explicit_ideation_statement"}
+{"text": "i am going to end my life tonight", "expected": "CRISIS", "lang": "en", "dialect": "EN", "kind": "explicit_ideation_statement"}
+{"text": "i don't want to live anymore", "expected": "CRISIS", "lang": "en", "dialect": "EN", "kind": "explicit_ideation_statement"}
+{"text": "i'm thinking about suicide", "expected": "CRISIS", "lang": "en", "dialect": "EN", "kind": "explicit_ideation_statement"}
+{"text": "i've decided to kill myself", "expected": "CRISIS", "lang": "en", "dialect": "EN", "kind": "explicit_ideation_statement"}
+{"text": "i want to die", "expected": "CRISIS", "lang": "en", "dialect": "EN", "kind": "explicit_ideation_statement"}
+{"text": "أريد أن أقتل نفسي", "expected": "CRISIS", "lang": "ar", "dialect": "MSA", "kind": "explicit_ideation_statement"}
+{"text": "سأنهي حياتي الليلة", "expected": "CRISIS", "lang": "ar", "dialect": "MSA", "kind": "explicit_ideation_statement"}
+{"text": "لا أريد أن أعيش بعد الآن", "expected": "CRISIS", "lang": "ar", "dialect": "MSA", "kind": "explicit_ideation_statement"}
+{"text": "أفكر في الانتحار", "expected": "CRISIS", "lang": "ar", "dialect": "MSA", "kind": "explicit_ideation_statement"}
+{"text": "قررت أن أنتحر", "expected": "CRISIS", "lang": "ar", "dialect": "MSA", "kind": "explicit_ideation_statement"}
+{"text": "أريد أن أموت", "expected": "CRISIS", "lang": "ar", "dialect": "MSA", "kind": "explicit_ideation_statement"}
+{"text": "أبغى أموت", "expected": "CRISIS", "lang": "ar", "dialect": "GLF", "kind": "explicit_ideation_statement"}
+{"text": "ما أبغى أعيش", "expected": "CRISIS", "lang": "ar", "dialect": "GLF", "kind": "explicit_ideation_statement"}
+{"text": "أفكر أنتحر", "expected": "CRISIS", "lang": "ar", "dialect": "GLF", "kind": "explicit_ideation_statement"}
+{"text": "ما أبغى أصحى بكرة", "expected": "CRISIS", "lang": "ar", "dialect": "GLF", "kind": "explicit_ideation_statement"}
+{"text": "عايز أموت", "expected": "CRISIS", "lang": "ar", "dialect": "EGY", "kind": "explicit_ideation_statement"}
+{"text": "مش عايز أعيش", "expected": "CRISIS", "lang": "ar", "dialect": "EGY", "kind": "explicit_ideation_statement"}
+{"text": "بفكر أنتحر", "expected": "CRISIS", "lang": "ar", "dialect": "EGY", "kind": "explicit_ideation_statement"}
+{"text": "بدي موت", "expected": "CRISIS", "lang": "ar", "dialect": "LEV", "kind": "explicit_ideation_statement"}
+{"text": "ما بدي عيش", "expected": "CRISIS", "lang": "ar", "dialect": "LEV", "kind": "explicit_ideation_statement"}
+{"text": "عم فكر انتحر", "expected": "CRISIS", "lang": "ar", "dialect": "LEV", "kind": "explicit_ideation_statement"}
+{"text": "abgha amoot", "expected": "CRISIS", "lang": "ar", "dialect": "FRANCO", "kind": "explicit_ideation_statement"}
+{"text": "badi moot", "expected": "CRISIS", "lang": "ar", "dialect": "FRANCO", "kind": "explicit_ideation_statement"}
+{"text": "3ayez amoot", "expected": "CRISIS", "lang": "ar", "dialect": "FRANCO", "kind": "explicit_ideation_statement"}
+{"text": "ma abgha a3eesh", "expected": "CRISIS", "lang": "ar", "dialect": "FRANCO", "kind": "explicit_ideation_statement"}
+{"text": "i've been really down lately", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i can't stop worrying", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i feel so alone", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i haven't been sleeping and everything feels heavy", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i'm exhausted and nothing helps", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i cry most nights and i don't know why", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i'm so stressed i can't think", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i feel like a failure", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i keep isolating myself from everyone", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i've lost interest in everything", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "my anxiety is getting worse", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "my brother said he wanted to die", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "my friend told me she feels hopeless", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "a few years ago i wished i could disappear but i'm in a much better place now", "expected": "ELEVATED", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "أشعر بحزن شديد هذه الأيام", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "لا أتوقف عن القلق", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أشعر بالوحدة", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "لا أنام وكل شيء يبدو ثقيلاً", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أنا منهك ولا شيء يفيد", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أبكي أغلب الليالي ولا أعرف السبب", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أشعر أنني فاشل", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أبتعد عن الجميع", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "فقدت الاهتمام بكل شيء", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "قلقي يزداد سوءاً", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "قال أخي إنه يريد أن يموت", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "صديقتي تقول إنها يائسة من كل شيء", "expected": "ELEVATED", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "نفسيتي تعبانة وايد هالأيام", "expected": "ELEVATED", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "ما أنام وكل شي ثقيل علي", "expected": "ELEVATED", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "حاس إني فاشل", "expected": "ELEVATED", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "i feel like a burden to everyone", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i don't see a way out of this", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i can't keep doing this", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i feel hopeless about everything", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "nothing will ever get better", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i wish i could just disappear", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i don't want to be here anymore", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "everyone would be better off without me", "expected": "HIGH", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "أشعر أنني عبء على الجميع", "expected": "HIGH", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "لا أرى مخرجاً من هذا", "expected": "HIGH", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "لا أستطيع الاستمرار هكذا", "expected": "HIGH", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أشعر باليأس من كل شيء", "expected": "HIGH", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "لن يتحسن شيء أبداً", "expected": "HIGH", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أتمنى لو أختفي", "expected": "HIGH", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "لا أريد أن أكون هنا بعد الآن", "expected": "HIGH", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "حاس إني عبء على الكل", "expected": "HIGH", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "ما أشوف مخرج من هالوضع", "expected": "HIGH", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "ما أقدر أكمل كذا", "expected": "HIGH", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "ما أبغى أكون هنا بعد", "expected": "HIGH", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "حاسس إني عبء على الكل", "expected": "HIGH", "lang": "ar", "dialect": "EGY", "kind": "seed"}
+{"text": "مش شايف مخرج", "expected": "HIGH", "lang": "ar", "dialect": "EGY", "kind": "seed"}
+{"text": "مش قادر أكمل كده", "expected": "HIGH", "lang": "ar", "dialect": "EGY", "kind": "seed"}
+{"text": "حاسس حالي عبء على الكل", "expected": "HIGH", "lang": "ar", "dialect": "LEV", "kind": "seed"}
+{"text": "ما عاد فيني كمل هيك", "expected": "HIGH", "lang": "ar", "dialect": "LEV", "kind": "seed"}
+{"text": "i had a nice walk and slept well", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "work was busy but fine", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i made pasta for dinner", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "this traffic is killing me", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i'm dying to see that new movie", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "my phone died again", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i could murder a coffee right now", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "that joke killed me", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "we're going to the park this weekend", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i finished my report early", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "i'm exhausted after the gym but happy", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "the meeting ran long but it went okay", "expected": "NORMAL", "lang": "en", "dialect": "EN", "kind": "seed"}
+{"text": "قضيت يوماً جميلاً ونمت جيداً", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "كان العمل مزدحماً لكنه بخير", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "حضّرت المعكرونة للعشاء", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "هذا الزحام يقتلني", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أموت شوقاً لمشاهدة الفيلم الجديد", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "مات هاتفي مرة أخرى", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أموت من الضحك", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "سنذهب إلى الحديقة نهاية الأسبوع", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أنهيت التقرير مبكراً", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "أنا متعب بعد النادي لكنني سعيد", "expected": "NORMAL", "lang": "ar", "dialect": "MSA", "kind": "seed"}
+{"text": "الزحمة بتموتني", "expected": "NORMAL", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "كنت أموت ضحك", "expected": "NORMAL", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "خلصت التقرير بدري", "expected": "NORMAL", "lang": "ar", "dialect": "GLF", "kind": "seed"}
+{"text": "رحنا الكورنيش وانبسطنا", "expected": "NORMAL", "lang": "ar", "dialect": "GLF", "kind": "seed"}

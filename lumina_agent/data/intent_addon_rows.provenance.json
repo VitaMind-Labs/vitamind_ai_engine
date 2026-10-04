@@ -1,0 +1,47 @@
+{
+ "purpose": "Adds the six meta intents Lumina lacks (GREETING, GOODBYE, THANKS, ABOUT_BOT, BOT_FEEDBACK, DISENGAGE) and more real-ish rows for existing intents",
+ "built_by": "data_prep/build_final_all.py",
+ "seed": 42,
+ "sources": {
+  "intents_json_kaggle": "public, English, unverified licence",
+  "conversation_csv_smalltalk": "public, English, GENERAL_CONVERSATION only, capped at 200",
+  "arabic_dialect_dialogues": "machine-generated Arabic, ABOUT_BOT only",
+  "lumina_authored_final": "authored, EN + MSA + Gulf + Egyptian + Levantine + Arabizi"
+ },
+ "real_part": {
+  "small_talk_rows": 200,
+  "ar_about_bot_rows": 150,
+  "excluded_tags": {
+   "suicide": "safety routing belongs to lumina/safety.py",
+   "name": "self-introduction placeholders",
+   "help": "ambiguous",
+   "default": "single topic words",
+   "problem": "ambiguous",
+   "no-response": "empty pattern"
+  }
+ },
+ "deduplication": {
+  "conflicting_dropped": 6,
+  "duplicates_dropped": 30
+ },
+ "excluded": {
+  "suicide tag": "safety routing belongs to lumina/safety.py",
+  "all intents.json responses": "hard-coded hotline numbers and advice; never reuse"
+ },
+ "honest_limits": [
+  "Report scores per source_type: authored rows test templates, not users.",
+  "Arabic BOT_FEEDBACK exists only as authored rows; a regex over real dialogues matched symptoms ('stupid', 'recurring') and was dropped.",
+  "DISENGAGE can co-occur with distress ('leave me alone'); safety runs first.",
+  "Existing Lumina intents still have only authored seeds; none of this is clinician-labelled."
+ ],
+ "new_intents_needed_in_taxonomy": [
+  "GREETING",
+  "GOODBYE",
+  "THANKS",
+  "ABOUT_BOT",
+  "BOT_FEEDBACK",
+  "DISENGAGE"
+ ],
+ "rows": 727,
+ "note": "Pooled rows of the former datasets/intent_addon. Kept as a source, not a dataset: data_prep/build_intent.py merges these with the authored seeds and makes one split over the result."
+}
